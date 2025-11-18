@@ -4,98 +4,583 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TD3 - Variables Aléatoires Continues</title>
-    <link rel="stylesheet" href="style2.css">
-    <script src="script.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
-        /* Styles thématiques TD3 */
-        .td-detail h2 { border-bottom: 3px solid var(--td-color-3); padding-bottom: 10px; }
-        .fiche-revision { border-left-color: var(--td-color-3); }
-        .fiche-revision h4 { color: var(--td-color-3); } 
-        .solution.active { border-left-color: var(--td-color-3); background-color: #fff4e5; }
-        .quiz-box { border: 1px solid var(--td-color-3); }
-        .quiz-box h4 { color: var(--td-color-3) !important; }
+        :root {
+            /* --- Couleurs Générales --- */
+            --primary-orange: #e67e22; /* Couleur principale TD3 */
+            --primary-dark: #2C3E50; /* Couleur du texte et des éléments sombres */
+            --secondary-gray: #f8f9fa; /* Arrière-plan clair */
+            --white: #FFFFFF;
+            --light-orange: #fef9e7;
+            --medium-orange: #fdebd0;
+            --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 6px 15px rgba(0, 0, 0, 0.1);
+            --shadow-heavy: 0 10px 30px rgba(0, 0, 0, 0.15);
+            
+            /* --- Couleurs de feedback --- */
+            --bg-solution: #fff8e1; /* Fond très clair pour la solution */
+            --bg-quiz: #f4f6f8;     /* Fond clair pour les zones d'exercices supp. et quiz */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: var(--secondary-gray);
+            color: var(--primary-dark);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+            padding: 0;
+        }
+
+        /* ------------------------------------- */
+        /* --- 1. STRUCTURE ET NAVIGATION --- */
+        /* ------------------------------------- */
+
+        .page {
+            padding: 20px 5%;
+            min-height: 100vh;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .td-detail {
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-heavy);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .td-detail::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary-orange), #d35400);
+        }
+
+        .td-detail h2 {
+            color: var(--primary-orange);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            border-bottom: 3px solid var(--primary-orange);
+            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 25px;
+            padding: 12px 20px;
+            background-color: var(--primary-orange);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background-color: #d35400;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .section-description {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            padding: 15px;
+            background-color: var(--light-orange);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-orange);
+        }
+
+        .separator {
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--primary-orange), transparent);
+            margin: 40px 0;
+        }
+
+        /* ------------------------------------- */
+        /* --- 2. FICHES ET EXERCICES (CLE) --- */
+        /* ------------------------------------- */
+
+        /* Style du bloc de révision */
+        .fiche-revision {
+            border-left: 5px solid var(--primary-orange);
+            padding: 25px;
+            margin: 30px 0;
+            background-color: var(--light-orange);
+            border-radius: 0 12px 12px 0;
+            box-shadow: var(--shadow-light);
+        }
+
+        .fiche-revision h3 {
+            color: var(--primary-orange);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .fiche-revision h4 {
+            margin-top: 1.8rem;
+            color: var(--primary-orange);
+            font-size: 1.2rem;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed var(--medium-orange);
+        }
+
+        .fiche-revision p {
+            margin-bottom: 15px;
+        }
+
+        /* Style des exercices */
+        .exercice {
+            border: 1px solid #e0e0e0;
+            padding: 25px;
+            margin-top: 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-light);
+            background-color: var(--white);
+            transition: all 0.3s;
+        }
+
+        .exercice:hover {
+            box-shadow: var(--shadow-medium);
+            transform: translateY(-3px);
+        }
+
+        .exercice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .exercice h4 {
+            color: var(--primary-dark);
+            font-size: 1.3rem;
+        }
+
+        .difficulty {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .facile { background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+        .moyen { background-color: #fff3e0; color: #ef6c00; border: 1px solid #ffe0b2; }
+        .difficile { background-color: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+
+        /* Bouton et solution (Animation Smooth) */
+        .toggle-solution {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--primary-orange);
+            color: var(--white);
+            border: none;
+            padding: 12px 20px;
+            margin-top: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .toggle-solution:hover {
+            background-color: #d35400;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .solution {
+            margin-top: 20px;
+            padding: 0 20px;
+            border-left: 4px solid var(--primary-orange);
+            background-color: var(--bg-solution);
+            border-radius: 0 8px 8px 0;
+            
+            /* Propriétés pour l'animation (Initial state) */
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.4s ease-out;
+        }
+
+        /* État actif (géré par JS) */
+        .solution.active {
+            opacity: 1;
+            max-height: 2000px;
+            padding: 20px;
+        }
+
+        .formula {
+            background-color: var(--primary-dark);
+            color: var(--white);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            box-shadow: var(--shadow-light);
+        }
+
+        /* Styles des Tips et des Fiches Supp. */
+        .example {
+            margin-top: 20px;
+            border-left: 4px solid #ff9800;
+            padding: 20px;
+            background-color: #fff8e1;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .example h4 {
+            color: #ff9800;
+            margin-top: 0;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Style de la carte d'exercices supplémentaires */
+        .topic-card {
+            padding: 20px;
+            background-color: var(--bg-quiz);
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid var(--primary-orange);
+        }
+
+        .topic-card h4 {
+            color: var(--primary-orange);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .topic-card ul {
+            padding-left: 20px;
+        }
+
+        .topic-card li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        /* Style du quiz */
+        .quiz-box {
+            border: 2px solid var(--primary-orange);
+            background-color: var(--light-orange);
+        }
+
+        .quiz-box h4 {
+            color: var(--primary-orange) !important;
+        }
+
+        /* Style pour les listes */
+        ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page {
+                padding: 15px 3%;
+            }
+            
+            .td-detail {
+                padding: 25px;
+            }
+            
+            .td-detail h2 {
+                font-size: 1.8rem;
+            }
+            
+            .exercice-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .formula {
+                font-size: 0.9rem;
+                padding: 15px;
+            }
+        }
+
+        /* Animation pour les éléments qui apparaissent */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .exercice, .fiche-revision, .topic-card {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Style pour les icônes */
+        .icon {
+            margin-right: 8px;
+        }
+        
+        /* Tableau pour les lois de probabilité */
+        .probability-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .probability-table th, .probability-table td {
+            padding: 12px 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        
+        .probability-table th {
+            background-color: var(--primary-orange);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .probability-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .probability-table tr:hover {
+            background-color: #f1f1f1;
+        }
     </style>
 </head>
 <body>
     <section id="td3" class="page active">
-        <a href="index.html#proba-tds" class="back-btn">← Retour aux TDs</a>
+        <a href="index.html#proba-tds" class="back-btn"><i class="fas fa-arrow-left"></i> Retour aux TDs</a>
+        
         <div class="td-detail">
-            <h2>🟠 TD3 - Variables Aléatoires Continues</h2>
-            <p class="section-description">Densité, fonction de répartition, Loi Normale, Exponentielle et Inégalité de Tchebychev.</p>
-            <hr class="separator" style="margin: 20px 0;">
+            <h2><i class="fas fa-chart-area"></i> TD3 - Variables Aléatoires Continues</h2>
+            <p class="section-description">Étude approfondie des densités, fonctions de répartition, Loi Normale, Exponentielle et Inégalité de Tchebychev. Ce TD vous prépare à modéliser des phénomènes continus et à calculer des probabilités pour des variables à densité.</p>
+            
+            <hr class="separator">
 
             <div class="fiche-revision">
-                <h3>💡 Fiche de Révision : Lois Continues</h3>
+                <h3><i class="fas fa-lightbulb"></i> Fiche de Révision : Lois Continues</h3>
                 
-                <h4 class="td-theme-color">1. Densité et FdR</h4>
-                <p>$$P(a \le X \le b) = F_X(b) - F_X(a) = \int_{a}^{b} f_X(x) dx$$</p>
+                <h4>1. Densité et Fonction de Répartition</h4>
+                <p><strong>Densité :</strong> $f_X(x) \ge 0$ et $\int_{-\infty}^{\infty} f_X(x) dx = 1$</p>
+                <p><strong>Probabilité :</strong> $P(a \le X \le b) = F_X(b) - F_X(a) = \int_{a}^{b} f_X(x) dx$</p>
+                <p><strong>Relation :</strong> $F_X(x) = \int_{-\infty}^{x} f_X(t) dt$ et $f_X(x) = \frac{d}{dx} F_X(x)$</p>
                 
-                <h4 class="td-theme-color">2. Loi Normale $N(\mu, \sigma^2)$</h4>
-                <p>$$Z = \frac{X-\mu}{\sigma} \sim N(0, 1)$$</p>
+                <h4>2. Loi Normale $N(\mu, \sigma^2)$</h4>
+                <p><strong>Densité :</strong> $f(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}$</p>
+                <p><strong>Standardisation :</strong> $Z = \frac{X-\mu}{\sigma} \sim N(0, 1)$</p>
+                <p><strong>Propriétés :</strong> $E(X) = \mu$, $V(X) = \sigma^2$</p>
                 
-                <h4 class="td-theme-color">3. Loi Exponentielle $E(\lambda)$</h4>
-                <p>$$F(t) = P(T \le t) = 1 - e^{-\lambda t} \quad ; \quad E(T)=1/\lambda$$</p>
+                <h4>3. Loi Exponentielle $E(\lambda)$</h4>
+                <p><strong>Densité :</strong> $f(t) = \lambda e^{-\lambda t}$ pour $t \ge 0$</p>
+                <p><strong>Fonction de répartition :</strong> $F(t) = P(T \le t) = 1 - e^{-\lambda t}$</p>
+                <p><strong>Propriétés :</strong> $E(T)=1/\lambda$, $V(T)=1/\lambda^2$</p>
+                <p><strong>Absence de mémoire :</strong> $P(T > t+s | T > s) = P(T > t)$</p>
                 
                 <div class="example">
-                    <h4>🔥 Tip : Tchebychev (Majorant Universel)</h4>
-                    <p>$$P(|X-\mu| \ge \epsilon) \le \frac{V(X)}{\epsilon^2}$$</p>
-                </div>
-            </div>
-
-            <h3 style="color: var(--primary-dark); margin-top: 3rem;">📝 Exercices Corrigés Détaillés</h3>
-
-            <div class="exercice">
-                <div class="exercice-header"><h4>Exercice 3.1 - Note Seuil (Loi Normale) (TD2-4)</h4><span class="difficulty difficile">Difficile</span></div>
-                <p><strong>Énoncé :</strong> Notes $X \sim N(13, 3^2)$. Déterminer la note $x$ pour être dans le top 10% ($P(X \ge x) = 0.10$).</p>
-                <button class="toggle-solution">Voir la solution</button>
-                <div class="solution">
-                    <p>On cherche $z$ tel que $P(Z \le z) = 0.90$, soit $G(z) = 0.40$. Les tables donnent $z \approx 1.28$.</p>
-                    <div class="formula">$$x = \mu + z\sigma = 13 + 1.28 \times 3 = \mathbf{16.84}$$</div>
-                </div>
-            </div>
-
-            <div class="exercice">
-                <div class="exercice-header"><h4>Exercice 3.2 - Détermination de Densité (TD3-4)</h4><span class="difficulty moyen">Moyen</span></div>
-                <p><strong>Énoncé :</strong> $f_X(x) = ax$ pour $x \in [0, 2]$, et 0 ailleurs. 1. Déterminer $a$. 2. Calculer $E(X)$.</p>
-                <button class="toggle-solution">Voir la solution</button>
-                <div class="solution">
-                    <p>1. **Constante $a$ :** Condition de normalisation $\int_{0}^{2} ax dx = 1$.</p>
-                    <div class="formula">$$a \left[ \frac{x^2}{2} \right]_0^2 = a \cdot 2 = 1 \implies \mathbf{a = 1/2}$$</div>
-                    <p>2. **Espérance $E(X)$ :** $E(X) = \int_{0}^{2} x f_X(x) dx = \int_{0}^{2} \frac{1}{2} x^2 dx$.</p>
-                    <div class="formula">$$E(X) = \frac{1}{2} \left[ \frac{x^3}{3} \right]_0^2 = \frac{1}{2} \cdot \frac{8}{3} = \mathbf{4/3}$$</div>
-                </div>
-            </div>
-
-            <div class="exercice">
-                <div class="exercice-header"><h4>Exercice 3.3 - Garantie (Loi Exponentielle) (TD3-6)</h4><span class="difficulty difficile">Difficile</span></div>
-                <p><strong>Énoncé :</strong> Durée de vie $T \sim E(\lambda)$. Le fabricant garantit que $P(T \le 1 \text{ an}) \le 0.01$. Calculer la durée de vie moyenne minimale $E(T)_{min}$.</p>
-                <button class="toggle-solution">Voir la solution</button>
-                <div class="solution">
-                    <p>$$P(T \le 1) = 1 - e^{-\lambda} \le 0.01 \implies e^{-\lambda} \ge 0.99$$</p>
+                    <h4><i class="fas fa-fire"></i> Tip : Inégalité de Tchebychev (Majorant Universel)</h4>
+                    <p>Pour toute variable aléatoire d'espérance $\mu$ et variance $\sigma^2$ :</p>
                     <div class="formula">
-                        $$-\lambda \ge \ln(0.99) \implies \lambda \le -\ln(0.99) \approx 0.01005$$<br>
+                        $$P(|X-\mu| \ge \epsilon) \le \frac{\sigma^2}{\epsilon^2}$$
+                    </div>
+                    <p>Cette inégalité donne une borne supérieure pour la probabilité que X s'écarte de son espérance, quelle que soit la loi de X.</p>
+                </div>
+            </div>
+
+            <h3 style="color: var(--primary-orange); margin-top: 3rem; margin-bottom: 1.5rem; font-size: 1.8rem;"><i class="fas fa-pencil-alt"></i> Exercices Corrigés Détaillés</h3>
+
+            <div class="exercice">
+                <div class="exercice-header">
+                    <h4>Exercice 3.1 - Note Seuil (Loi Normale) (TD2-4)</h4>
+                    <span class="difficulty difficile">Difficile</span>
+                </div>
+                <p><strong>Énoncé :</strong> Les notes d'un examen suivent une loi normale $X \sim N(13, 3^2)$. Déterminer la note $x$ nécessaire pour être dans le top 10% (c'est-à-dire $P(X \ge x) = 0.10$).</p>
+                <button class="toggle-solution"><i class="fas fa-eye"></i> Voir la solution</button>
+                <div class="solution">
+                    <p><strong>Étape 1 : Standardisation</strong></p>
+                    <p>On cherche $x$ tel que $P(X \ge x) = 0.10$, ce qui équivaut à $P(X < x) = 0.90$.</p>
+                    <div class="formula">
+                        $$P\left(\frac{X-13}{3} < \frac{x-13}{3}\right) = 0.90$$
+                    </div>
+                    
+                    <p><strong>Étape 2 : Utilisation de la table de la loi normale centrée réduite</strong></p>
+                    <p>On cherche $z$ tel que $P(Z \le z) = 0.90$, soit $\Phi(z) = 0.90$.</p>
+                    <p>Les tables donnent $z \approx 1.28$.</p>
+                    
+                    <p><strong>Étape 3 : Calcul de la note</strong></p>
+                    <div class="formula">
+                        $$\frac{x-13}{3} = 1.28 \implies x = 13 + 1.28 \times 3 = \mathbf{16.84}$$
+                    </div>
+                    
+                    <p><strong>Interprétation :</strong> Pour être dans le top 10%, il faut obtenir au moins 16.84/20.</p>
+                </div>
+            </div>
+
+            <div class="exercice">
+                <div class="exercice-header">
+                    <h4>Exercice 3.2 - Détermination de Densité (TD3-4)</h4>
+                    <span class="difficulty moyen">Moyen</span>
+                </div>
+                <p><strong>Énoncé :</strong> Soit $X$ une variable aléatoire continue de densité $f_X(x) = ax$ pour $x \in [0, 2]$, et 0 ailleurs.</p>
+                <p>1. Déterminer la constante $a$ pour que $f_X$ soit bien une densité de probabilité.</p>
+                <p>2. Calculer l'espérance $E(X)$.</p>
+                <button class="toggle-solution"><i class="fas fa-eye"></i> Voir la solution</button>
+                <div class="solution">
+                    <p><strong>1. Détermination de la constante $a$</strong></p>
+                    <p>Pour que $f_X$ soit une densité de probabilité, elle doit vérifier $\int_{-\infty}^{\infty} f_X(x) dx = 1$.</p>
+                    <div class="formula">
+                        $$\int_{0}^{2} ax dx = a \left[ \frac{x^2}{2} \right]_0^2 = a \cdot \frac{4}{2} = 2a = 1 \implies \mathbf{a = 1/2}$$
+                    </div>
+                    
+                    <p><strong>2. Calcul de l'espérance $E(X)$</strong></p>
+                    <div class="formula">
+                        $$E(X) = \int_{-\infty}^{\infty} x f_X(x) dx = \int_{0}^{2} x \cdot \frac{1}{2}x dx = \frac{1}{2} \int_{0}^{2} x^2 dx$$
+                        $$E(X) = \frac{1}{2} \left[ \frac{x^3}{3} \right]_0^2 = \frac{1}{2} \cdot \frac{8}{3} = \mathbf{4/3}$$
+                    </div>
+                    
+                    <p><strong>Vérification :</strong> La densité est bien $f_X(x) = \frac{1}{2}x$ pour $x \in [0, 2]$.</p>
+                </div>
+            </div>
+
+            <div class="exercice">
+                <div class="exercice-header">
+                    <h4>Exercice 3.3 - Garantie (Loi Exponentielle) (TD3-6)</h4>
+                    <span class="difficulty difficile">Difficile</span>
+                </div>
+                <p><strong>Énoncé :</strong> La durée de vie $T$ d'un appareil suit une loi exponentielle $E(\lambda)$. Le fabricant garantit que la probabilité de panne dans la première année est au plus de 1% ($P(T \le 1 \text{ an}) \le 0.01$). Calculer la durée de vie moyenne minimale $E(T)_{min}$ que doit avoir l'appareil.</p>
+                <button class="toggle-solution"><i class="fas fa-eye"></i> Voir la solution</button>
+                <div class="solution">
+                    <p><strong>Étape 1 : Traduction de la condition</strong></p>
+                    <p>Pour une loi exponentielle, $P(T \le t) = 1 - e^{-\lambda t}$.</p>
+                    <div class="formula">
+                        $$P(T \le 1) = 1 - e^{-\lambda} \le 0.01$$
+                    </div>
+                    
+                    <p><strong>Étape 2 : Résolution de l'inéquation</strong></p>
+                    <div class="formula">
+                        $$1 - e^{-\lambda} \le 0.01 \implies e^{-\lambda} \ge 0.99$$
+                        $$-\lambda \ge \ln(0.99) \implies \lambda \le -\ln(0.99) \approx 0.01005$$
+                    </div>
+                    
+                    <p><strong>Étape 3 : Calcul de la durée de vie moyenne</strong></p>
+                    <p>Pour une loi exponentielle, $E(T) = \frac{1}{\lambda}$.</p>
+                    <div class="formula">
                         $$E(T)_{min} = \frac{1}{\lambda_{max}} = \frac{1}{0.01005} \approx \mathbf{99.5 \text{ ans}}$$
                     </div>
+                    
+                    <p><strong>Interprétation :</strong> Pour respecter la garantie, l'appareil doit avoir une durée de vie moyenne d'au moins 99.5 ans.</p>
                 </div>
             </div>
             
-            <h3 style="color: var(--primary-dark); margin-top: 3rem;">❓ Quiz TD3 & Ex. Supplémentaires</h3>
+            <h3 style="color: var(--primary-orange); margin-top: 3rem; margin-bottom: 1.5rem; font-size: 1.8rem;"><i class="fas fa-question-circle"></i> Quiz TD3 & Exercices Supplémentaires</h3>
+            
             <div class="topic-card">
-                <h4>Fiche d'Exercices Supplémentaires</h4>
-                <ul style="padding-left: 20px;">
-                    <li>**TD3-5 :** Calcul complet de $E(X)$ et $V(X)$ pour la Loi Uniforme $U(a,b)$.</li>
-                    <li>**Exam 2018 Ex. 2 :** Transformation de V.A. ($Y=g(X)$) : trouver la densité $f_Y(y)$.</li>
+                <h4><i class="fas fa-plus-circle"></i> Fiche d'Exercices Supplémentaires</h4>
+                <ul>
+                    <li><strong>TD3-5 :</strong> Calcul complet de $E(X)$ et $V(X)$ pour la Loi Uniforme $U(a,b)$.</li>
+                    <li><strong>Exam 2018 Ex. 2 :</strong> Transformation de V.A. ($Y=g(X)$) : trouver la densité $f_Y(y)$.</li>
+                    <li><strong>Loi Normale :</strong> Calculer $P(|X-\mu| < k\sigma)$ pour différentes valeurs de $k$.</li>
+                    <li><strong>Loi Exponentielle :</strong> Étudier la propriété d'absence de mémoire et ses applications.</li>
                 </ul>
             </div>
+            
             <div class="exercice quiz-box">
-                <div class="exercice-header"><h4 style="color: var(--td-color-3);">QUIZ TD3 - Propriétés</h4></div>
-                <p>Pour une V.A. continue $X$, que vaut toujours $P(X=x)$ ?</p>
-                <button class="toggle-solution">Voir la réponse</button>
+                <div class="exercice-header">
+                    <h4><i class="fas fa-brain"></i> QUIZ TD3 - Propriétés des Variables Continues</h4>
+                </div>
+                <p><strong>Question 1 :</strong> Pour une variable aléatoire continue $X$, que vaut toujours $P(X=x)$ ?</p>
+                <p><strong>Question 2 :</strong> Quelle est la relation entre la fonction de répartition $F_X(x)$ et la densité $f_X(x)$ ?</p>
+                <p><strong>Question 3 :</strong> Si $X \sim N(\mu, \sigma^2)$, que vaut $P(\mu - \sigma \le X \le \mu + \sigma)$ (environ) ?</p>
+                <button class="toggle-solution"><i class="fas fa-lightbulb"></i> Voir les réponses</button>
                 <div class="solution">
-                    <p>Réponse : $\mathbf{0}$. Pour une V.A. continue, la probabilité d'une valeur exacte est nulle (seules les plages d'intégration comptent).</p>
+                    <p><strong>Réponse 1 :</strong></p>
+                    <p>$\mathbf{0}$. Pour une variable aléatoire continue, la probabilité d'une valeur exacte est nulle (seules les plages d'intégration comptent).</p>
+                    
+                    <p><strong>Réponse 2 :</strong></p>
+                    <div class="formula">
+                        $$F_X(x) = \int_{-\infty}^{x} f_X(t) dt \quad \text{et} \quad f_X(x) = \frac{d}{dx} F_X(x)$$
+                    </div>
+                    
+                    <p><strong>Réponse 3 :</strong></p>
+                    <p>$\mathbf{0.6827}$ (environ 68%). C'est une propriété fondamentale de la loi normale.</p>
+                    
+                    <p><strong>Justification :</strong> Ces propriétés sont fondamentales pour l'étude des variables aléatoires continues.</p>
                 </div>
             </div>
         </div>
     </section>
+
+    <script>
+        // Gestion des solutions d'exercices
+        document.querySelectorAll('.toggle-solution').forEach(button => {
+            button.addEventListener('click', function() {
+                const solution = this.nextElementSibling;
+                solution.classList.toggle('active');
+                this.innerHTML = solution.classList.contains('active') 
+                    ? '<i class="fas fa-eye-slash"></i> Masquer la solution' 
+                    : '<i class="fas fa-eye"></i> Voir la solution';
+            });
+        });
+
+        // Animation au défilement
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observer les éléments à animer
+        document.querySelectorAll('.exercice, .fiche-revision, .topic-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
