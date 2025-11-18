@@ -1,0 +1,126 @@
+/* Variables pour les couleurs inspirées de la maquette */
+:root {
+    --primary-color: #5d5dff; /* Violet */
+    --secondary-color: #ff9933; /* Orange/Jaune */
+    --background-light: #fefefe;
+    --background-pale: #f9f7f0;
+    --text-dark: #2c2c2c;
+    --card-green: #d2f8d2;
+    --card-pink: #ffd2d2;
+    --card-blue: #d2d2ff;
+}
+
+/* Général et typographie */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-pale);
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+
+/* En-tête et Navigation (Navbar) */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    background-color: var(--background-light);
+    border-bottom: 1px solid #eee;
+}
+
+.logo {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.navbar a {
+    text-decoration: none;
+    color: var(--text-dark);
+    margin-left: 20px;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.navbar a:hover {
+    color: var(--primary-color);
+}
+
+/* Boutons */
+.btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.primary-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+/* Section Héro (Accueil) */
+.hero-section {
+    display: flex;
+    align-items: center;
+    padding: 80px 5%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.hero-content {
+    flex: 2;
+    padding-right: 50px;
+}
+
+.hero-content h1 {
+    font-size: 3em;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+}
+
+.hero-image {
+    flex: 1;
+    text-align: center;
+}
+
+/* Cartes de Contenu (Content Blocks) */
+.content-blocks {
+    padding: 40px 5%;
+    text-align: center;
+}
+
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.card {
+    padding: 30px;
+    border-radius: 12px;
+    text-align: left;
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-decoration: none;
+    color: var(--text-dark);
+    min-height: 150px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Couleurs spécifiques des cartes */
+.creative-ideas { background-color: var(--card-green); }
+.market-research { background-color: var(--card-pink); }
+.best-solutions { background-color: var(--card-blue); }
+.exercices-section { background-color: var(--secondary-color); color: white;}
+/* ... Ajoutez plus de styles pour atteindre 1000 lignes ... */
