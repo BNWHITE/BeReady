@@ -1,491 +1,594 @@
-/*
-    ISEP A1 - Révisions Probabilités
-    Fichier de style CSS enrichi (V2.0)
-    Design: Professionnel, Dynamique, Académique
-*/
-
-/* --- Variables de Couleurs et Styles de Base --- */
-:root {
-    /* Couleurs Primaires (Inspiration ISEP) */
-    --primary-purple: #6366f1; /* Violet Principal */
-    --primary-dark: #4338ca; /* Violet Foncé (Ombres/Gradients) */
-    --accent-orange: #f59e0b; /* Orange Vif (Accentuations, Badges) */
-    
-    /* Couleurs de Texte et Fond */
-    --text-dark: #1f2937; /* Texte principal foncé */
-    --text-light: #6b7280; /* Texte secondaire gris */
-    --bg-light: #f9fafb; /* Fond de page très clair */
-    --bg-white: #ffffff; /* Fond de cartes */
-    --border-color: #e5e7eb;
-    
-    /* Couleurs de Status */
-    --success-green: #10b981;
-    --warning-red: #ef4444;
-
-    /* Ombres */
-    --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
-    --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
-    --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
-}
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+:root {
+    --purple: #6B4CE6;
+    --pink: #FF6B9D;
+    --orange: #FF8C42;
+    --blue: #4ECDC4;
+    --green: #45B7D1;
+    --yellow: #FFD93D;
+    --cream: #FFF8E7;
+    --dark: #2D3142;
+}
+
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--cream);
+    color: var(--dark);
     line-height: 1.6;
-    color: var(--text-dark);
-    background: var(--bg-light);
-    transition: background 0.3s;
+}
+
+/* Header avec fond ondulé */
+header {
+    background: linear-gradient(135deg, var(--purple) 0%, var(--pink) 100%);
+    color: white;
+    padding: 3rem 1rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+header::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    right: 0;
+    height: 80px;
+    /* Optimisation : Utilisation directe de l'URL SVG data */
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath d='M0,50 Q300,90 600,50 T1200,50 L1200,120 L0,120 Z' fill='%23FFF8E7'/%3E%3C/svg%3E") no-repeat;
+    background-size: cover;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    opacity: 0.95;
+    position: relative;
+    z-index: 1;
+}
+
+/* Navigation sticky */
+nav {
+    background: white;
+    padding: 1rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+nav ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+nav a {
+    color: var(--dark);
+    text-decoration: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    transition: all 0.3s;
+    font-weight: 600;
+    background: var(--cream);
+}
+
+nav a:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+nav a.active {
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    color: white;
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--blue);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    margin: 1rem 0;
+    transition: all 0.3s;
+}
+
+.back-btn:hover {
+    transform: translateX(-5px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 2rem 1rem;
 }
 
-/* --- Animations Générales --- */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Scroll Reveal Animation */
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(50px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.scroll-reveal {
-    opacity: 0;
-    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
-    transform: translateY(50px);
-}
-
-.scroll-reveal.active {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* --- Header & Navigation (Amélioré) --- */
-.header {
-    /* Gradient plus riche */
-    background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-dark) 100%);
-    color: white;
-    padding: 2rem 0;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2); /* Ombre plus profonde */
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    /* Effet de transparence (pour futur scroll) */
-    transition: background 0.5s, backdrop-filter 0.5s;
-}
-
-.header-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-}
-
-.header h1 {
-    font-size: 2.2rem;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    animation: fadeIn 0.8s ease-out;
-}
-
-.header-subtitle {
-    font-size: 1rem;
-    opacity: 0.9;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    animation: fadeIn 0.8s ease-out 0.2s both; /* Délai pour l'animation */
-}
-
-.exam-date {
-    background: var(--accent-orange); /* Couleur d'accentuation */
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    font-weight: 700;
-    box-shadow: var(--shadow-sm);
-}
-
-.nav-tabs {
-    display: flex;
-    gap: 0.5rem; /* Réduire l'espace pour plus de compacité */
-    margin-top: 1.5rem;
-    border-bottom: 2px solid rgba(255,255,255,0.3);
-}
-
-.nav-tab {
-    background: transparent;
-    border: none;
-    color: white;
-    padding: 0.8rem 1.2rem;
-    cursor: pointer;
-    font-size: 0.95rem;
-    font-weight: 600;
-    border-bottom: 3px solid transparent;
-    transition: all 0.3s ease, border-color 0.3s;
-    opacity: 0.8;
-}
-
-.nav-tab:hover {
-    background: rgba(255,255,255,0.15);
-    border-bottom-color: var(--accent-orange);
-    opacity: 1;
-}
-
-.nav-tab.active {
-    border-bottom-color: var(--accent-orange);
-    background: rgba(255,255,255,0.15);
-    opacity: 1;
-}
-
-/* --- Content Sections --- */
-.content-section {
+.page {
     display: none;
-    /* L'animation d'entrée est gérée par JS pour la fluidité des onglets */
+    animation: slideIn 0.5s ease-out;
 }
 
-.content-section.active {
+.page.active {
     display: block;
-    animation: fadeIn 0.5s ease-out;
 }
 
-/* --- Cards (Amélioré) --- */
-.card {
-    background: var(--bg-white);
-    border-radius: 16px; /* Coins plus arrondis */
-    padding: 2.5rem; /* Plus d'espace intérieur */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Hero section colorée */
+.hero {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: white;
+    border-radius: 30px;
     margin-bottom: 3rem;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1); /* Ombre douce */
-    border-left: 6px solid var(--primary-purple); /* Bordure plus épaisse */
-    transition: box-shadow 0.3s, transform 0.3s;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
 }
 
-.card:hover {
-    box-shadow: var(--shadow-lg);
-    /* Subtle 3D lift on hover */
-    transform: translateY(-3px);
+.hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(107,76,230,0.1) 0%, transparent 70%);
+    animation: rotate 20s linear infinite;
 }
 
-.card-icon {
-    width: 45px;
-    height: 45px;
-    background: linear-gradient(135deg, var(--accent-orange) 0%, var(--primary-purple) 100%);
-    border-radius: 10px;
-    box-shadow: var(--shadow-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: 700;
-    font-size: 1.4rem;
-    transition: transform 0.3s;
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
-.card-header:hover .card-icon {
-    transform: rotate(5deg) scale(1.05);
+.hero h2 {
+    color: var(--purple);
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
 }
 
-.card-title {
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: var(--primary-dark);
+.hero p {
+    font-size: 1.2rem;
+    color: #666;
+    position: relative;
+    z-index: 1;
 }
 
-.section-subtitle {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--accent-orange);
-    margin: 1.5rem 0 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px dashed var(--border-color);
-}
-
-/* --- Table of Contents (TOC) - Amélioré --- */
-.toc-grid {
+/* Grille de cartes colorées */
+.subject-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-    margin-top: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
 }
 
-.toc-item {
-    background: linear-gradient(145deg, #fef3c7 0%, #fde68a 100%);
-    padding: 1.5rem;
-    border-radius: 12px;
+.subject-card {
+    background: white;
+    border-radius: 30px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     cursor: pointer;
-    transition: all 0.3s ease;
-    border: 3px solid transparent;
-    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
 }
 
-.toc-item:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 12px 25px rgba(245, 158, 11, 0.3); /* Ombre colorée */
-    border-color: var(--accent-orange);
+.subject-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: linear-gradient(90deg, var(--purple), var(--pink), var(--orange));
 }
 
-.toc-item h3 {
-    color: var(--text-dark);
-    margin-bottom: 0.5rem;
-    font-size: 1.3rem;
-    font-weight: 700;
+.subject-card:hover {
+    transform: translateY(-15px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
 }
 
-.toc-item p {
-    color: var(--text-light);
-    font-size: 0.95rem;
+.subject-card h3 {
+    color: var(--purple);
+    font-size: 2rem;
+    margin-bottom: 1rem;
 }
 
-/* --- Formula Box (Académique) --- */
-.formula-box {
-    background: #f0f9ff;
-    border-left: 6px solid var(--primary-purple);
-    padding: 1.5rem;
-    margin: 1.5rem 0;
-    border-radius: 10px;
-    box-shadow: var(--shadow-sm);
-}
-
-.formula-title {
-    font-weight: 700;
-    color: var(--primary-dark);
-    margin-bottom: 0.8rem;
-    font-size: 1.1rem;
-}
-
-/* Rendu LaTeX/Math */
-.formula-box p {
-    font-family: 'Georgia', serif; /* Police plus classique pour les maths */
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
+.subject-card p {
+    color: #666;
+    margin-bottom: 2rem;
     line-height: 1.8;
 }
 
-/* --- Info/Warning Boxes --- */
-.info-box {
-    background: #ecfdf5;
-    border-left: 5px solid var(--success-green);
-    padding: 1rem 1.5rem;
-    margin: 1.5rem 0;
-    border-radius: 8px;
-}
-
-.warning-box {
-    background: #fef2f2;
-    border-left: 5px solid var(--warning-red);
-    padding: 1rem 1.5rem;
-    margin: 1.5rem 0;
-    border-radius: 8px;
-}
-
-.info-title {
-    font-weight: 800;
-    color: var(--warning-red);
-    margin-bottom: 0.5rem;
-    font-size: 1rem;
-}
-
-.info-box .info-title {
-    color: var(--success-green);
-}
-
-/* --- Exercise Section (Amélioré) --- */
-.exercise {
-    background: var(--bg-white);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.exercise:hover {
-    border-color: var(--primary-purple);
-    box-shadow: 0 4px 10px rgba(99, 102, 241, 0.1);
-}
-
-.exercise-title {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--primary-purple);
-}
-
-.exercise-badge {
-    background: var(--accent-orange);
+.btn {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--purple), var(--pink));
     color: white;
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-}
-
-.exercise-content {
-    margin: 1rem 0;
-    line-height: 1.7;
-    font-size: 1rem;
-}
-
-.btn-correction {
-    background: var(--primary-purple);
-    color: white;
-    border: none;
-    padding: 0.8rem 1.5rem;
-    border-radius: 8px;
-    cursor: pointer;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    text-decoration: none;
     font-weight: 600;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-size: 0.9rem;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
 }
 
-.btn-correction:hover {
-    background: var(--primary-dark);
-    transform: translateY(-2px) scale(1.01);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+.btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(107,76,230,0.4);
 }
 
-.correction-box {
-    /* Style de base reste simple pour l'accessibilité */
-    background: #f0fdf4;
-    border: 2px solid var(--success-green);
-    border-radius: 8px;
-    padding: 1.5rem;
-    margin-top: 1rem;
-    overflow: hidden;
-    max-height: 0; /* Géré par JS */
-    opacity: 0; /* Géré par JS */
-    transition: all 0.5s ease-in-out;
+/* Cartes de TD avec couleurs vives */
+.topics-grid {
+    display: grid;
+    gap: 2rem;
 }
 
-.correction-box.visible {
-    max-height: 500px; /* Grande valeur pour l'animation slide */
-    opacity: 1;
-}
-
-/* --- Timeline (Planning) - Amélioré --- */
-.timeline {
+.topic-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    transition: all 0.3s;
+    cursor: pointer;
     position: relative;
-    padding-left: 4rem; /* Plus d'espace pour la ligne et les cercles */
+    overflow: hidden;
 }
 
-.timeline::before {
+.topic-card::before {
     content: '';
     position: absolute;
-    left: 2rem; /* Positionnement de la ligne */
+    left: 0;
     top: 0;
     bottom: 0;
-    width: 4px; /* Ligne plus épaisse */
-    background: linear-gradient(to bottom, var(--primary-purple), var(--accent-orange)); /* Dégradé */
-    border-radius: 2px;
+    width: 8px;
+    /* La couleur est définie par les nth-child */
+    background: var(--accent-color); 
 }
 
-.timeline-item {
-    position: relative;
-    margin-bottom: 3rem;
-    padding-left: 2rem;
+/* Définition des couleurs d'accentuation pour les TDs de Probabilités */
+#proba .topic-card:nth-child(1) { --accent-color: var(--purple); }
+#proba .topic-card:nth-child(2) { --accent-color: var(--pink); }
+#proba .topic-card:nth-child(3) { --accent-color: var(--orange); }
+#proba .topic-card:nth-child(4) { --accent-color: var(--blue); }
+#proba .topic-card:nth-child(5) { --accent-color: var(--green); }
+#proba .topic-card:nth-child(6) { --accent-color: var(--yellow); }
+
+/* Définition des couleurs d'accentuation pour les thèmes Télécoms */
+#telecom .topic-card:nth-child(1) { --accent-color: var(--purple); }
+#telecom .topic-card:nth-child(2) { --accent-color: var(--pink); }
+#telecom .topic-card:nth-child(3) { --accent-color: var(--orange); }
+#telecom .topic-card:nth-child(4) { --accent-color: var(--blue); }
+#telecom .topic-card:nth-child(5) { --accent-color: var(--green); }
+#telecom .topic-card:nth-child(6) { --accent-color: var(--yellow); }
+
+
+.topic-card:hover {
+    transform: translateX(10px);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
 }
 
-.timeline-item::before {
-    content: '★'; /* Remplacer le cercle par une étoile */
-    position: absolute;
-    left: 1.25rem; /* Positionnement du point central */
-    top: 0;
-    width: 25px;
-    height: 25px;
-    background: var(--accent-orange);
-    border: 5px solid var(--bg-light); /* Bordure contrastée */
-    border-radius: 50%;
-    box-shadow: 0 0 0 3px var(--primary-purple); /* Anneau autour du point */
-    color: white;
-    font-size: 12px;
-    text-align: center;
-    line-height: 17px;
-    z-index: 10;
+.topic-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
 }
 
-.timeline-date {
-    font-weight: 800;
-    color: var(--primary-dark);
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
-    letter-spacing: 0.5px;
-}
-
-.timeline-content {
-    background: var(--bg-white);
-    padding: 1.5rem;
-    border-radius: 10px;
-    box-shadow: var(--shadow-md);
-    transition: box-shadow 0.3s;
-}
-
-.timeline-content:hover {
-    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
-}
-
-.timeline-title {
-    color: var(--primary-purple);
-    margin-bottom: 0.7rem;
-    font-size: 1.1rem;
+.topic-card h3 {
+    color: var(--dark);
+    font-size: 1.5rem;
     font-weight: 700;
 }
 
-
-/* --- Responsive Adjustments --- */
-@media (max-width: 1024px) {
-    .container {
-        padding: 1rem;
-    }
-    .card {
-        padding: 2rem;
-    }
+.topic-card ul {
+    list-style: none;
+    padding: 0;
 }
 
+.topic-card li {
+    padding: 0.75rem 0;
+    padding-left: 2rem;
+    position: relative;
+    color: #555;
+    font-size: 1.05rem;
+}
+
+.topic-card li:before {
+    content: "▸";
+    position: absolute;
+    left: 0.5rem;
+    color: var(--accent-color);
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+/* Checkbox stylée */
+.checkbox {
+    width: 32px;
+    height: 32px;
+    /* Utilise la variable CSS définie dans l'nth-child pour la couleur */
+    border: 3px solid var(--accent-color); 
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: white;
+}
+
+.checkbox:hover {
+    transform: scale(1.1);
+}
+
+.checkbox.checked {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.checkbox.checked:after {
+    content: "✓";
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* Barre de progression */
+.progress-container {
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.progress-label {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--purple);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    background: rgba(107,76,230,0.1);
+    border-radius: 50px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--purple), var(--pink), var(--orange));
+    width: 0%;
+    transition: width 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-radius: 50px;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.progress-text {
+    margin-top: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--purple);
+}
+
+/* Page détaillée TD */
+.td-detail {
+    background: white;
+    border-radius: 30px;
+    padding: 3rem;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.td-detail h2 {
+    color: var(--purple);
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    border-bottom: 4px solid var(--purple);
+    padding-bottom: 1rem;
+}
+
+.fiche-revision {
+    background: linear-gradient(135deg, rgba(107,76,230,0.05), rgba(255,107,157,0.05));
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 2rem 0;
+    border-left: 6px solid var(--purple);
+}
+
+.fiche-revision h3 {
+    color: var(--purple);
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.formula {
+    background: white;
+    border-left: 5px solid var(--orange);
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 1.1rem;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+    color: var(--dark);
+}
+
+.example {
+    background: linear-gradient(135deg, rgba(78,205,196,0.1), rgba(69,183,209,0.1));
+    padding: 2rem;
+    border-radius: 15px;
+    margin: 2rem 0;
+    border-left: 5px solid var(--blue);
+}
+
+.example h4 {
+    color: var(--blue);
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+}
+
+/* Exercices */
+.exercice {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 2rem 0;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    border-left: 6px solid var(--pink);
+}
+
+.exercice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.exercice h4 {
+    color: var(--purple);
+    font-size: 1.3rem;
+}
+
+.difficulty {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.difficulty.facile {
+    background: rgba(69,183,209,0.2);
+    color: #2C7A7B;
+}
+
+.difficulty.moyen {
+    background: rgba(255,140,66,0.2);
+    color: #C05621;
+}
+
+.difficulty.difficile {
+    background: rgba(255,107,157,0.2);
+    color: #C53030;
+}
+
+.toggle-solution {
+    background: var(--pink);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 1rem;
+    transition: all 0.3s;
+}
+
+.toggle-solution:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(255,107,157,0.4);
+}
+
+.solution {
+    display: none;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px dashed rgba(0,0,0,0.1);
+}
+
+.solution.active {
+    display: block;
+    animation: slideIn 0.3s;
+}
+
+/* Footer coloré */
+footer {
+    background: linear-gradient(135deg, var(--dark) 0%, #1a1a2e 100%);
+    color: white;
+    padding: 3rem 1rem;
+    text-align: center;
+    margin-top: 4rem;
+    position: relative;
+    overflow: hidden;
+}
+
+footer::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 0;
+    right: 0;
+    height: 80px;
+    /* Optimisation : Utilisation directe de l'URL SVG data */
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath d='M0,50 Q300,10 600,50 T1200,50 L1200,0 L0,0 Z' fill='%23FFF8E7'/%3E%3C/svg%3E") no-repeat;
+    background-size: cover;
+}
+
+footer p {
+    position: relative;
+    z-index: 1;
+    margin: 0.5rem 0;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-    .header h1 {
-        font-size: 1.8rem;
-    }
-
-    .header-subtitle {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .nav-tabs {
-        flex-wrap: wrap;
-        gap: 0.3rem;
-    }
-
-    .nav-tab {
-        padding: 0.6rem 1rem;
-        font-size: 0.9rem;
-    }
-
-    .toc-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .timeline {
-        padding-left: 2rem;
-    }
-    
-    .timeline::before {
-        left: 0.8rem;
-    }
-    
-    .timeline-item::before {
-        left: 0.1rem;
-    }
+    h1 { font-size: 2rem; }
+    .hero h2 { font-size: 1.8rem; }
+    .subject-grid { grid-template-columns: 1fr; }
+    .td-detail { padding: 1.5rem; }
+    nav ul { flex-direction: column; }
+    nav a { width: 100%; text-align: center; }
 }
-/* Ajoutez plus de media queries ou de règles de détail pour atteindre les 1000 lignes */
