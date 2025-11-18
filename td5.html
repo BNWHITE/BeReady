@@ -3,74 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TD5 - Variables Aléatoires Gaussiens & Covariance</title>
-    <link rel="stylesheet" href="style.css">
+    <title>TD5 - Vecteurs Gaussiens & Covariance</title>
+    <link rel="stylesheet" href="style2.css">
+    <script src="script.js"></script>
+    <style>
+        /* Styles thématiques TD5 */
+        .td-detail h2 { border-bottom: 3px solid var(--td-color-5); padding-bottom: 10px; }
+        .fiche-revision { border-left-color: var(--td-color-5); }
+        .fiche-revision h4 { color: var(--td-color-5); } 
+        .solution.active { border-left-color: var(--td-color-5); background-color: #e6f7e8; }
+        .quiz-box { border: 1px solid var(--td-color-5); }
+        .quiz-box h4 { color: var(--td-color-5) !important; }
+    </style>
 </head>
 <body>
     <section id="td5" class="page active">
-        <a href="index.html#proba-tds" class="back-btn" data-page="proba">← Retour aux TDs</a>
-        
+        <a href="index.html#proba-tds" class="back-btn">← Retour aux TDs</a>
         <div class="td-detail">
-            <h2>TD5 - Variables Aléatoires Gaussiens & Covariance</h2>
-            
+            <h2>🟢 TD5 - Vecteurs Gaussiens & Covariance</h2>
+            <p class="section-description">Analyse de la loi normale multivariée, matrice de covariance et non-corrélation.</p>
+            <hr class="separator" style="margin: 20px 0;">
+
             <div class="fiche-revision">
-                <h3>📋 Fiche de Révision : Vecteurs Gaussiens et Dépendance</h3>
-                <h4 style="color: var(--green-dark); margin-top: 1.5rem;">Propriété Fondamentale (Gaussien)</h4>
-                <p>Si $(X,Y)$ est un vecteur Gaussien, alors l'**indépendance** de $X$ et $Y$ est équivalente à la **non-corrélation** :</p>
+                <h3>💡 Fiche de Révision : Lois et Propriétés Gaussiennes</h3>
+                
+                <h4 class="td-theme-color">1. Règle d'Or du Gaussien (Cours 5)</h4>
+                <p>Si $(X,Y)$ est un vecteur Gaussien : **$X, Y$ indépendantes $\iff Cov(X,Y)=0$**.</p>
+                
+                <h4 class="td-theme-color">2. Matrice de Covariance $V(X,Y)$</h4>
                 <div class="formula">
-                    $X \text{ et } Y \text{ indépendantes} \iff Cov(X,Y)=0$
+                    $$V(X,Y)=\begin{pmatrix} Var(X) & Cov(X,Y) \\ Cov(X,Y) & Var(Y) \end{pmatrix}$$
                 </div>
-                <h4 style="color: var(--green-dark); margin-top: 1.5rem;">Matrice de Covariance $V(X,Y)$</h4>
-                <p>Caractérise la dispersion et la dépendance :</p>
+                
+                <h4 class="td-theme-color">3. Variance d'une Combinaison Linéaire</h4>
                 <div class="formula">
-                    $V(X,Y)=\begin{pmatrix} Var(X) & Cov(X,Y) \\ Cov(X,Y) & Var(Y) \end{pmatrix}$
+                    $$Var(aX+bY) = a^2 Var(X) + b^2 Var(Y) + 2ab Cov(X,Y)$$
+                </div>
+                
+                <div class="example">
+                    <h4>🔥 Tip : Combinaisons linéaires</h4>
+                    <p>Si $(X,Y)$ est un vecteur Gaussien, toute combinaison linéaire de $X$ et $Y$ est aussi une V.A. gaussienne.</p>
                 </div>
             </div>
 
-            <h3 style="color: var(--green-dark); margin-top: 3rem; margin-bottom: 1.5rem;">📝 Exercices Corrigés</h3>
+            <h3 style="color: var(--primary-dark); margin-top: 3rem;">📝 Exercices Corrigés Détaillés</h3>
 
             <div class="exercice">
-                <div class="exercice-header">
-                    <h4>Exercice 5.1 - Transformation en Variable Réduite</h4>
-                    <span class="difficulty facile">Facile</span>
-                </div>
-                <p><strong>Énoncé :</strong> $X \sim N(\mu=2, \sigma=2)$. Soit $T = \frac{X-\mu}{\sigma}$. Calculer $P(X<1.5)$.</p>
+                <div class="exercice-header"><h4>Exercice 5.1 - Variable Centrée Réduite (TD5-1)</h4><span class="difficulty facile">Facile</span></div>
+                <p><strong>Énoncé :</strong> $X \sim N(2, 2^2)$. Calculer $P(0 \le X < 4)$.</p>
                 <button class="toggle-solution">Voir la solution</button>
                 <div class="solution">
-                    <p>La variable $T$ suit la **Loi Normale Centrée Réduite** $T \sim N(0, 1)$.</p>
+                    <p>On centre et réduit $T = (X-2)/2$.</p>
                     <div class="formula">
-                        $P(X<1.5) = P(T<\frac{1.5-2}{2}) = P(T<-0.25) \approx \mathbf{0.4013}$
+                        $$P(0 \le X < 4) = P\left(\frac{0-2}{2} \le T < \frac{4-2}{2}\right) = P(-1 \le T < 1)$$
+                        $$P(-1 \le T < 1) = P(T<1) - P(T \le -1) = P(T<1) - (1 - P(T \le 1))$$
+                    </div>
+                    <p>En utilisant la table $P(T \le 1) \approx 0.8413$ : $P(-1 \le T < 1) = 2 \times P(0 \le T < 1) = 2 \times (0.8413 - 0.5) = \mathbf{0.6826}$ (TD5-1 d)).</p>
+                </div>
+            </div>
+
+            <div class="exercice">
+                <div class="exercice-header"><h4>Exercice 5.2 - Indépendance et Covariance (TD5-3)</h4><span class="difficulty difficile">Difficile</span></div>
+                <p><strong>Énoncé :</strong> $(X, Y)$ gaussien, $Var(X)=4, Var(Y)=1$. $U=2X+Y$ et $V=X-3Y$ sont **indépendantes**. Déterminer $Cov(X,Y)$.</p>
+                <button class="toggle-solution">Voir la solution</button>
+                <div class="solution">
+                    <p>L'indépendance $\iff Cov(U, V) = 0$. Utilisation de la bilinéarité de $Cov$ :</p>
+                    <div class="formula">
+                        $$Cov(U, V) = 2 Cov(X, X) + (1 \cdot 1 - 2 \cdot 3) Cov(X, Y) - 3 Cov(Y, Y) = 0$$<br>
+                        $$2 Var(X) - 5 Cov(X, Y) - 3 Var(Y) = 0 \implies 8 - 5 Cov(X, Y) - 3 = 0$$<br>
+                        $$Cov(X,Y) = \mathbf{1}$$
                     </div>
                 </div>
             </div>
 
             <div class="exercice">
-                <div class="exercice-header">
-                    <h4>Exercice 5.2 - Détermination des paramètres de corrélation</h4>
-                    <span class="difficulty difficile">Difficile</span>
-                </div>
-                <p><strong>Énoncé :</strong> $(X, Y)$ est un vecteur gaussien. $Var(X)=4$, $Var(Y)=1$. $U=2X+Y$ et $V=X-3Y$ sont **indépendantes**. Déterminer $Cov(X,Y)$.</p>
+                <div class="exercice-header"><h4>Exercice 5.3 - Matrice de Covariance (TD5-3)</h4><span class="difficulty difficile">Difficile</span></div>
+                <p><strong>Énoncé :</strong> Calculer la matrice de covariance $V$ du vecteur $(X+Y, 2X-Y)$ avec les données de l'Ex. 5.2.</p>
                 <button class="toggle-solution">Voir la solution</button>
                 <div class="solution">
-                    <p>Puisque $U$ et $V$ sont indépendantes, $Cov(U, V) = 0$.</p>
+                    <p>1. $Var(X+Y) = Var(X)+Var(Y)+2Cov(X,Y) = 4+1+2(1) = 7$.</p>
+                    <p>2. $Var(2X-Y) = 4Var(X)+Var(Y)-4Cov(X,Y) = 16+1-4(1) = 13$.</p>
+                    <p>3. $Cov(X+Y, 2X-Y) = 2Var(X) - Var(Y) + Cov(X,Y) = 2(4) - 1 + 1 = 8$.</p>
+                    <div class="formula">$$V = \begin{pmatrix} 7 & 8 \\ 8 & 13 \end{pmatrix}$$</div>
+                </div>
+            </div>
+            
+            <div class="exercice">
+                <div class="exercice-header"><h4>Exercice 5.4 - Espérance Conditionnelle (TD5-4)</h4><span class="difficulty moyen">Moyen</span></div>
+                <p><strong>Énoncé :</strong> Reprendre le couple (X,Y) du TD4-2. Calculer $E(X|Y \ne 2)$.</p>
+                <button class="toggle-solution">Voir la solution</button>
+                <div class="solution">
+                    <p>$P(Y \ne 2) = 1 - P(Y=2) = 1 - 0.20 = 0.80$.</p>
                     <div class="formula">
-                        $Cov(2X+Y, X-3Y) = 2 Var(X) - 5 Cov(X, Y) - 3 Var(Y) = 0$<br>
-                        $2(4) - 5 Cov(X, Y) - 3(1) = 0 \implies 5 - 5 Cov(X, Y) = 0$<br>
-                        $Cov(X,Y) = \mathbf{1}$
+                        $$P(X=-2|Y \ne 2) = \frac{P(X=-2, Y \ne 2)}{0.8} = \frac{0.2+0.2}{0.8} = 0.5$$<br>
+                        $$E(X|Y \ne 2) = (-2)(0.5) + (0)(0.25) + (1)(0.25) = \mathbf{-0.75}$$
                     </div>
                 </div>
             </div>
             
-            <h3 style="color: var(--orange); margin-top: 3rem; margin-bottom: 1.5rem;">❓ Quiz Révision TD5</h3>
-            <div class="exercice">
-                <p>1. Si $Cov(X,Y)=0$, sont-elles nécessairement indépendantes ?</p>
+            <h3 style="color: var(--primary-dark); margin-top: 3rem;">❓ Quiz TD5 & Ex. Supplémentaires</h3>
+            <div class="topic-card">
+                <h4>Fiche d'Exercices Supplémentaires</h4>
+                <ul style="padding-left: 20px;">
+                    <li>**TD5-2 :** Étudier le vecteur non-gaussien $Y=\epsilon X$ où $X \sim U(-1,1)$ et $\epsilon$ est un signe aléatoire pour prouver la non-réciproque de la Règle d'Or.</li>
+                </ul>
+            </div>
+            <div class="exercice quiz-box">
+                <div class="exercice-header"><h4 style="color: var(--td-color-5);">QUIZ TD5 - Corrélation</h4></div>
+                <p>Si $\rho(X,Y)=1/2$, est-ce que $X$ et $Y$ sont indépendantes ?</p>
                 <button class="toggle-solution">Voir la réponse</button>
                 <div class="solution">
-                    <p>**Réponse :** Non, sauf si elles forment un vecteur Gaussien.</p>
+                    <p>Réponse : Non. Un coefficient de corrélation non nul ($\ne 0$) indique une dépendance linéaire, donc une dépendance tout court.</p>
                 </div>
             </div>
         </div>
     </section>
-    <script src="script.js"></script>
 </body>
 </html>
