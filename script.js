@@ -1,135 +1,89 @@
-/*
-    ISEP A1 - Révisions Probabilités
-    Fichier JavaScript pour l'interactivité (V2.0)
-*/
+// Fonction pour naviguer entre les pages et mettre à jour l'état actif
+function navigateToPage(targetPage) {
+    // Masquer toutes les pages
+    document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+    });
 
+    // Afficher la page cible
+    const pageElement = document.getElementById(targetPage);
+    if (pageElement) {
+        pageElement.classList.add('active');
+    }
+
+    // Mettre à jour la navigation active (principale)
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
+
+    // Chercher le lien de navigation principal correspondant
+    const mainNavPage = ['home', 'proba', 'telecom'].includes(targetPage) ? targetPage : 
+                        targetPage.startsWith('td') ? 'proba' : 
+                        ['archi', 'bruit', 'bilan', 'portee', 'shannon', 'antennes'].includes(targetPage) ? 'telecom' : 
+                        'home';
+
+    const activeLink = document.querySelector(`.nav-link[data-page="${mainNavPage}"]`);
+    if (activeLink) {
+        activeLink.classList.add('active');
+    }
+
+    // Mettre à jour la progression à chaque changement de page
+    updateProgress();
+}
+
+// Fonction pour mettre à jour la progression
+function updateProgress() {
+    // Progression Probabilités
+    const probaCheckboxes = document.querySelectorAll('#proba .checkbox');
+    const probaChecked = document.querySelectorAll('#proba .checkbox.checked').length;
+    const probaProgress = (probaChecked / (probaCheckboxes.length || 1)) * 100; // Évite la division par zéro
+    
+    document.getElementById('proba-progress').style.width = `${probaProgress}%`;
+    document.getElementById('proba-percentage').textContent = `${Math.round(probaProgress)}%`;
+    
+    // Progression Télécoms
+    const telecomCheckboxes = document.querySelectorAll('#telecom .checkbox');
+    const telecomChecked = document.querySelectorAll('#telecom .checkbox.checked').length;
+    const telecomProgress = (telecomChecked / (telecomCheckboxes.length || 1)) * 100; // Évite la division par zéro
+    
+    document.getElementById('telecom-progress').style.width = `${telecomProgress}%`;
+    document.getElementById('telecom-percentage').textContent = `${Math.round(telecomProgress)}%`;
+}
+
+// Événement global pour la navigation (liens nav, boutons retour, cartes)
+document.querySelectorAll('.nav-link, .back-btn, .subject-card, .topic-card, .btn').forEach(element => {
+    element.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // La page cible est dans data-page ou data-td
+        const targetPage = this.dataset.page || this.dataset.td;
+        
+        if (targetPage) {
+            navigateToPage(targetPage);
+        }
+    });
+});
+
+// Événement pour la gestion des checkboxes de progression
+document.querySelectorAll('.checkbox').forEach(checkbox => {
+    checkbox.addEventListener('click', function() {
+        this.classList.toggle('checked');
+        updateProgress();
+    });
+});
+
+// Événement pour la gestion des solutions d'exercices
+document.querySelectorAll('.toggle-solution').forEach(button => {
+    button.addEventListener('click', function() {
+        const solution = this.nextElementSibling;
+        solution.classList.toggle('active');
+        this.textContent = solution.classList.contains('active') ? 'Masquer la solution' : 'Voir la solution';
+    });
+});
+
+// Initialisation au chargement de la page
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // ------------------------------------------
-    // 1. Gestion du basculement des sections (Onglets)
-    // ------------------------------------------
-    window.showSection = function(sectionId, clickedButton) {
-        const sections = document.querySelectorAll('.content-section');
-        const tabs = document.querySelectorAll('.nav-tab');
-        const targetSection = document.getElementById(sectionId);
-        
-        // 1. Désactiver toutes les sections et préparer l'animation de sortie
-        sections.forEach(section => {
-            if (section.classList.contains('active')) {
-                // Animation de sortie (optionnel: fadeIn gère l'entrée, nous faisons un fadeOut)
-                section.style.opacity = '0';
-                setTimeout(() => {
-                    section.classList.remove('active');
-                    section.style.opacity = '1';
-                }, 100); // Court délai pour l'effet de fade
-            }
-        });
-        
-        // 2. Mettre à jour les onglets actifs
-        tabs.forEach(tab => tab.classList.remove('active'));
-        clickedButton.classList.add('active');
-
-        // 3. Afficher la nouvelle section
-        setTimeout(() => {
-            targetSection.classList.add('active');
-            // Réinitialiser les animations de Scroll-Reveal pour la nouvelle section
-            resetScrollReveal();
-            // Déclencher le Scroll-Reveal sur la nouvelle section si elle est déjà visible
-            checkScrollReveal(); 
-        }, 100);
-        
-        // 4. Défilement vers le haut de la page
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // Gérer le clic sur les cartes TOC pour changer d'onglet
-    const tocItems = document.querySelectorAll('.toc-item');
-    tocItems.forEach(item => {
-        item.addEventListener('click', function() {
-            const targetSection = this.getAttribute('data-section-target');
-            const targetButton = document.querySelector(`.nav-tab[data-section="${targetSection}"]`);
-            if (targetButton) {
-                showSection(targetSection, targetButton);
-            }
-        });
-    });
-
-    // ------------------------------------------
-    // 2. Gestion de l'affichage/masquage des corrections
-    // ------------------------------------------
-    window.toggleCorrection = function(id) {
-        const correctionBox = document.getElementById(id);
-        const button = event.target;
-        
-        // Le CSS gère l'animation via max-height et opacity
-        correctionBox.classList.toggle('visible');
-        
-        if (correctionBox.classList.contains('visible')) {
-            button.textContent = 'Masquer la correction';
-            button.style.background = 'var(--text-light)';
-        } else {
-            button.textContent = 'Afficher la correction';
-            button.style.background = 'var(--primary-purple)';
-        }
-    }
-
-    // ------------------------------------------
-    // 3. Scroll Reveal (Animations au défilement)
-    // ------------------------------------------
-    const revealElements = document.querySelectorAll('.scroll-reveal');
-
-    // Fonction pour vérifier si un élément est visible
-    function isElementInViewport(el) {
-        const rect = el.getBoundingClientRect();
-        return (
-            rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.9 && // 90% de la hauteur de la vue
-            rect.bottom >= 0
-        );
-    }
-
-    // Fonction pour activer les animations
-    function checkScrollReveal() {
-        let delay = 0;
-        revealElements.forEach(el => {
-            if (isElementInViewport(el) && !el.classList.contains('active')) {
-                // Ajouter un léger délai pour un effet "staggered" (en cascade)
-                setTimeout(() => {
-                    el.classList.add('active');
-                }, delay);
-                delay += 100; // 100ms de délai entre chaque élément
-            }
-        });
-    }
-    
-    // Fonction pour réinitialiser les éléments (utile lors du changement d'onglet)
-    function resetScrollReveal() {
-        revealElements.forEach(el => {
-            el.classList.remove('active');
-        });
-    }
-
-    // Déclencher les animations au chargement et au scroll
-    checkScrollReveal();
-    window.addEventListener('scroll', checkScrollReveal);
-    
-    // ------------------------------------------
-    // 4. Animation du Header (Sticky/Scroll)
-    // ------------------------------------------
-    const header = document.querySelector('.header');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 100) {
-            // Effet de transparence après 100px de scroll
-            header.style.backgroundColor = 'rgba(99, 102, 241, 0.95)';
-            header.style.backdropFilter = 'blur(5px)';
-            header.style.boxShadow = '0 4px 15px rgba(0,0,0,0.3)';
-        } else {
-            // Revenir au style de base
-            header.style.backgroundColor = '';
-            header.style.backdropFilter = 'none';
-            header.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
-        }
-    });
-
-    // ... Ajoutez plus de fonctions ou de jeux d'interaction ici pour enrichir ...
-    console.log("Les animations et l'interactivité avancée sont prêtes !");
+    updateProgress();
+    // Assure que seule la page 'home' est active au départ si aucune autre page n'est spécifiée
+    navigateToPage('home');
 });
