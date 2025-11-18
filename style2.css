@@ -1,0 +1,219 @@
+:root {
+    /* --- Couleurs Générales (Inspiré du design "Focus") --- */
+    --primary-green: #00A651; /* Couleur principale (CTA, En-têtes) */
+    --primary-dark: #2C3E50; /* Couleur du texte et des éléments sombres */
+    --secondary-gray: #ECF0F1; /* Arrière-plan clair */
+    --white: #FFFFFF;
+    --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-heavy: 0 10px 20px rgba(0, 0, 0, 0.15);
+    
+    /* --- Couleurs Thématiques des TDs --- */
+    --td-color-1: #9b59b6; /* Purple (TD1) */
+    --td-color-2: #e74c3c; /* Pink/Red (TD2) */
+    --td-color-3: #f39c12; /* Orange (TD3) */
+    --td-color-4: #3498db; /* Blue (TD4) */
+    --td-color-5: #27ae60; /* Dark Green (TD5 / Général) */
+
+    /* --- Couleurs de feedback --- */
+    --bg-solution: #e8f9f0; /* Fond très clair pour la solution */
+    --bg-quiz: #f4f6f8;     /* Fond clair pour les zones d'exercices supp. et quiz */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    /* Activation des transitions pour une interface plus douce */
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
+}
+
+body {
+    background-color: var(--secondary-gray);
+    color: var(--primary-dark);
+    line-height: 1.6;
+    scroll-behavior: smooth;
+}
+
+/* ------------------------------------- */
+/* --- 1. STRUCTURE ET NAVIGATION --- */
+/* ------------------------------------- */
+
+.page {
+    padding: 20px 5%;
+    min-height: 100vh;
+}
+.td-detail {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: var(--white);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: var(--shadow-heavy);
+}
+
+.back-btn {
+    display: inline-block;
+    margin-bottom: 25px;
+    padding: 10px 15px;
+    background-color: var(--primary-dark);
+    color: var(--white);
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+.back-btn:hover {
+    background-color: #1a2734;
+}
+
+.section-description {
+    color: #555;
+    margin-bottom: 20px;
+    font-style: italic;
+}
+.separator {
+    border: none;
+    height: 1px;
+    background-color: #ddd;
+    margin: 40px 0;
+}
+
+/* ------------------------------------- */
+/* --- 2. FICHES ET EXERCICES (CLE) --- */
+/* ------------------------------------- */
+
+/* Style du bloc de révision */
+.fiche-revision {
+    border-left: 5px solid var(--primary-green);
+    padding: 15px 20px;
+    margin: 25px 0;
+    background-color: var(--bg-quiz);
+    border-radius: 0 8px 8px 0;
+}
+.fiche-revision h3 {
+    border-bottom: 2px solid var(--primary-dark);
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+/* Styles des titres dans les fiches (seront surchargés par le TDx.html pour la couleur spécifique) */
+.fiche-revision h4 {
+    margin-top: 1.5rem;
+    color: var(--primary-green); /* Couleur par défaut */
+    font-size: 1.15rem;
+}
+
+/* Style des exercices */
+.exercice {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: var(--shadow-light);
+}
+.exercice:hover {
+    background-color: #f9f9f9;
+}
+.exercice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.exercice h4 {
+    color: var(--primary-dark);
+}
+.difficulty {
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+.facile { background-color: #d4edda; color: #155724; }
+.moyen { background-color: #fff3cd; color: #856404; }
+.difficile { background-color: #f8d7da; color: #721c24; }
+
+/* Bouton et solution (Animation Smooth) */
+.toggle-solution {
+    background-color: var(--primary-green);
+    color: var(--white);
+    border: none;
+    padding: 10px 18px;
+    margin-top: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.toggle-solution:hover {
+    background-color: var(--td-color-5); /* Vert foncé */
+    transform: translateY(-1px);
+}
+
+.solution {
+    margin-top: 15px;
+    padding: 0 15px; /* Padding initial réduit pour l'animation */
+    border-left: 5px solid var(--primary-green);
+    background-color: var(--bg-solution);
+    border-radius: 0 5px 5px 0;
+    
+    /* Propriétés pour l'animation (Initial state) */
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.4s ease-out; /* Durée de la transition */
+}
+/* État actif (géré par JS) */
+.solution.active {
+    opacity: 1;
+    max-height: 1000px; /* Grande valeur pour simuler l'expansion */
+    padding: 15px; /* Rétablir le padding une fois visible */
+}
+
+.formula {
+    background-color: var(--primary-dark);
+    color: var(--white);
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    overflow-x: auto;
+    font-family: monospace;
+    font-size: 1.1rem;
+}
+.formula strong {
+    color: var(--primary-green);
+}
+
+/* Styles des Tips et des Fiches Supp. */
+.example {
+    margin-top: 15px;
+    border-left: 3px solid var(--td-color-3); /* Orange pour l'alerte/tip */
+    padding: 10px;
+    background-color: #fff8eb;
+    border-radius: 5px;
+}
+.example h4 {
+    color: var(--td-color-3);
+    margin-top: 0;
+    font-size: 1rem;
+}
+
+/* Style de la carte d'exercices supplémentaires */
+.topic-card {
+    list-style: none;
+    padding: 15px;
+    background-color: var(--bg-quiz);
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
+/* ------------------------------------- */
+/* --- 3. SURCHARGES TÉLÉCOM --- */
+/* ------------------------------------- */
+
+/* Utiliser une couleur spécifique pour le Télécom pour la distinction */
+.telecom-rev h3, .telecom-rev h4 {
+    color: var(--primary-dark) !important;
+    border-color: var(--primary-dark) !important;
+}
+.telecom-rev .fiche-revision {
+    border-left-color: var(--primary-dark);
+}
