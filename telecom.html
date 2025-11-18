@@ -11,70 +11,126 @@
         <a href="index.html#telecom-rev" class="back-btn">← Retour à l'Accueil</a>
         
         <div class="td-detail">
-            <h2 style="color: var(--primary-green);">📡 Fiche de Révision - Télécommunications (Projets & DM)</h2>
+            <h2 style="color: var(--primary-green);">📡 Fiche de Révision Complète - Télécommunications (Projets & DM)</h2>
             <p>Synthèse des concepts clés de l'architecture réseau, des bilans de liaison (Radio/Filaire) et du dimensionnement (Wi-Fi, Bluetooth, LTE, Fibre).</p>
             
             <hr style="margin: 30px 0;">
 
             <div class="fiche-revision">
-                <h3>1. Principes Fondamentaux et Capacités</h3>
+                <h3>1. Rappels Théoriques Fondamentaux</h3>
                 
-                <h4>1.1. Théorème de Shannon-Hartley</h4>
-                <p>Détermine le débit maximal théorique ($C$) d'un canal de communication en fonction de sa bande passante ($B$) et du rapport signal sur bruit ($SNR$).</p>
+                <h4 style="color: var(--orange); margin-top: 1rem;">1.1. Théorème de Shannon-Hartley</h4>
+                <p>Débit maximal ($C$) en fonction de la bande passante ($B$) et du rapport Signal/Bruit ($S/N$ en linéaire).</p>
                 <div class="formula">
-                    $$C = B \times \log_2 \left(1 + \frac{S}{N}\right) \quad \text{(bits/s)}$$
+                    $$C = B \cdot \log_2 \left(1 + \frac{S}{N}\right) \quad \text{(bits/s)}$$
                 </div>
-                <p><strong>Calcul du SNR requis :</strong> Pour un débit cible $C_{cible}$, le $SNR$ (en linéaire) est : $S/N = 2^{(C_{cible}/B)} - 1$.</p>
+                <div class="example">
+                    <h4>💡 Tip : Calcul du $S/N$ requis</h4>
+                    <p>Pour un débit cible $C_{cible}$, le $S/N$ (en linéaire) est : $S/N = 2^{(C_{cible}/B)} - 1$. Attention : la formule de Shannon ne prend pas en compte les interférences.</p>
+                </div>
                 
-                <h4>1.2. Puissance de Bruit Thermique ($P_{bruit}$)</h4>
-                <p>La puissance du bruit dans un canal est donnée par la formule :</p>
+                <h4 style="color: var(--orange); margin-top: 1rem;">1.2. Puissance de Bruit Thermique ($P_{bruit}$)</h4>
+                <p>Puissance minimale présente dans tout système. ($k$: cte de Boltzmann, $T$: T° en Kelvin, $B$: Bande passante).</p>
                 <div class="formula">
-                    $$P_{bruit} = k \cdot T \cdot B \quad \text{(Watts)}$$
-                </div>
-                <p>Où : $k$ (Constante de Boltzmann $\approx 1.38 \times 10^{-23} \text{ J/K}$), $T$ (Température en Kelvin, souvent $290\text{ K}$ pour la température ambiante), $B$ (Bande passante en Hertz).</p>
-                <div class="formula">
-                    $$P_{bruit}(\text{dBm}) = 10 \log_{10}(k T B) + 30$$
-                </div>
-            </div>
-            
-            <div class="fiche-revision" style="border-left-color: var(--orange);">
-                <h3>2. Bilans de Liaison et Puissances</h3>
-                
-                <h4>2.1. Puissance Isotrope Rayonnée Équivalente (PIRE)</h4>
-                <p>Représente la puissance effective émise par l'antenne.</p>
-                <div class="formula">
-                    $$\text{PIRE} (\text{W}) = P_{e} \cdot G_{e} \quad \text{ou} \quad \text{PIRE}(\text{dBm}) = P_{e}(\text{dBm}) + G_{e}(\text{dBi})$$
-                </div>
-                <p>Où : $P_{e}$ est la Puissance de l'émetteur, $G_{e}$ est le Gain de l'antenne d'émission.</p>
-                
-                <h4>2.2. Calcul de Puissance Reçue ($P_{r}$) - Liaison Radio</h4>
-                <p>La puissance reçue ($P_{r}$) est donnée par la formule du bilan de liaison :</p>
-                <div class="formula">
-                    $$P_{r}(\text{dBm}) = \text{PIRE}(\text{dBm}) + G_{r}(\text{dBi}) - L_{P}(\text{dB}) - L_{e}(\text{dB}) - L_{r}(\text{dB})$$
-                </div>
-                <p>Où : $L_{P}$ est l'affaiblissement de propagation (ex: Friis, Okumura-Hata) et $L_{e}/L_{r}$ sont les pertes dans les équipements.</p>
-                
-                <h4>2.3. SINR (Signal to Interference plus Noise Ratio)</h4>
-                <p>Indispensable dans un environnement multi-cellulaire/multi-AP (Wi-Fi, LTE) où les **interférences ($I$)** sont présentes.</p>
-                <div class="formula">
-                    $$\text{SINR}(\text{linéaire}) = \frac{P_{r}}{P_{bruit} + P_{interférences}}$$
+                    $$P_{bruit}(\text{W}) = k \cdot T \cdot B \quad \text{ou} \quad P_{bruit}(\text{dBm}) = -174 \text{ dBm} + 10 \cdot \log_{10}(B)$$
                 </div>
             </div>
             
             <div class="fiche-revision" style="border-left-color: var(--blue);">
-                <h3>3. Technologies Courtes et Longues Portées</h3>
+                <h3>2. Bilan de Liaison, PIRE et SINR</h3>
                 
-                <h4>3.1. Bluetooth & Wi-Fi (IoT Indoor / Local)</h4>
-                <p>Le **Bluetooth** est typiquement utilisé pour la liaison **Objet-Passerelle** (faible débit/conso). Le **Wi-Fi** est utilisé pour la liaison **Passerelles-Serveur Central** (débit moyen/élevé). Le dimensionnement nécessite le calcul du nombre de points d'accès (PA) pour couvrir la surface cible, en assurant un niveau de signal reçu (RSSI) suffisant (ex: $-59 \text{ dBm}$).</p>
-                
-                <h4>3.2. Fibre Optique (Liaisons Inter-Sites)</h4>
-                <p>Idéale pour les **longues distances** ($\text{ex: } 50 \text{ km}$). La **Fibre Monomode** est privilégiée pour son très faible affaiblissement ($\alpha \approx 0.2 \text{ dB/km}$) et sa capacité à éviter la régénération sur de grandes portées.</p>
+                <h4 style="color: var(--blue); margin-top: 1rem;">2.1. PIRE (Puissance Isotrope Rayonnée Équivalente)</h4>
+                <p>Puissance effective émise. $P_{e}$ est la puissance de l'émetteur, $G_{e}$ est le gain de l'antenne d'émission.</p>
                 <div class="formula">
-                    $$P_{r, optique} (\text{dBm}) = P_{e} (\text{dBm}) - \sum \text{Pertes} - \alpha \cdot L$$
+                    $$\text{PIRE}(\text{dBm}) = P_{e}(\text{dBm}) + G_{e}(\text{dBi})$$
+                </div>
+                
+                <h4 style="color: var(--blue); margin-top: 1rem;">2.2. Puissance Reçue ($P_{r}$)</h4>
+                <p>Formule du bilan de liaison : $L_{P}$ est l'affaiblissement de propagation (ex: Friis, Okumura-Hata).</p>
+                <div class="formula">
+                    $$P_{r}(\text{dBm}) = \text{PIRE}(\text{dBm}) + G_{r}(\text{dBi}) - L_{P}(\text{dB}) - \sum L_{\text{Pertes}}$$
+                </div>
+
+                <h4 style="color: var(--blue); margin-top: 1rem;">2.3. SINR (Signal to Interference plus Noise Ratio)</h4>
+                <p>Rapport critique en présence d'interférences ($I$). Doit être calculé en **linéaire** avant conversion en dB.</p>
+                <div class="formula">
+                    $$\text{SINR}(\text{linéaire}) = \frac{P_{r}}{P_{bruit} + P_{\text{interférences}}}$$
+                </div>
+            </div>
+
+            <h3 style="color: var(--primary-green); margin-top: 3rem;">📝 Exercices Corrigés Détaillés (Types DM / Projet)</h3>
+
+            <div class="exercice">
+                <div class="exercice-header">
+                    <h4>Exercice 1 - Bilan de Liaison (LTE) & PIRE</h4>
+                    <span class="difficulty difficile">DM Q7 & Project</span>
+                </div>
+                <p><strong>Énoncé :</strong> Émetteur LTE (Station de Base) de puissance $P_{e}=20\text{ W}$, antenne de gain $G_{e}=15\text{ dBi}$. L'affaiblissement entre émetteur et utilisateur est $L_{P}=100\text{ dB}$. Calculer la **PIRE** en dBm et la **Puissance Reçue** ($P_{r}$) en dBm.</p>
+                <button class="toggle-solution">Voir la solution</button>
+                <div class="solution">
+                    <p>1. **Calcul de la PIRE :** $P_{e}(\text{dBm}) \approx 43\text{ dBm}$. $\text{PIRE}(\text{dBm}) = 43\text{ dBm} + 15\text{ dBi} = \mathbf{58\text{ dBm}}$</p>
+                    <p>2. **Calcul de $P_{r}$ :** $P_{r}(\text{dBm}) = 58\text{ dBm} - 100\text{ dB} = \mathbf{-42\text{ dBm}}$</p>
+                </div>
+            </div>
+
+            <div class="exercice">
+                <div class="exercice-header">
+                    <h4>Exercice 2 - SINR et Interférences (DM Q7)</h4>
+                    <span class="difficulty difficile">Interférences Multiples</span>
+                </div>
+                <p><strong>Énoncé :</strong> (Suite de l'Ex 1) $P_{r} = -42\text{ dBm}$. Le bruit thermique est négligeable. L'utilisateur reçoit l'interférence de 6 interféreurs, chacun avec $P_{i} = -50\text{ dBm}$. Calculer le **SINR** de la liaison en dB.</p>
+                <button class="toggle-solution">Voir la solution</button>
+                <div class="solution">
+                    <p>1. **Puissance totale Interférence ($P_{int, tot}$) :** $P_{i} = -50\text{ dBm} \implies 10^{-5}\text{ mW}$. $P_{int, tot} = 6 \times 10^{-5}\text{ mW} \approx -42.2\text{ dBm}$.</p>
+                    <p>2. **Puissance reçue signal ($P_{r}$) :** $P_{r} \approx 6.31 \times 10^{-5}\text{ mW}$.</p>
+                    <p>3. **Calcul SINR :** $SINR(\text{linéaire}) \approx \frac{6.31 \times 10^{-5}}{6 \times 10^{-5}} \approx 1.05$.</p>
+                    <p>4. **Conversion en dB :** $SINR(\text{dB}) = 10 \cdot \log_{10}(1.05) \approx \mathbf{0.2\text{ dB}}$</p>
+                </div>
+            </div>
+
+            <div class="exercice">
+                <div class="exercice-header">
+                    <h4>Exercice 3 - Portée Maximale (Fibre)</h4>
+                    <span class="difficulty moyen">Project Livrable</span>
+                </div>
+                <p><strong>Énoncé :</strong> Fibre monomode. $P_{e}=0\text{ dBm}$. Sensibilité $S_{r}=-30\text{ dBm}$. Affaiblissement $\alpha = 0.2\text{ dB/km}$. Pertes $3\text{ dB}$. Quelle est la portée maximale $L$ (en km) sans répéteur ?</p>
+                <button class="toggle-solution">Voir la solution</button>
+                <div class="solution">
+                    <p>On utilise la formule pour la distance maximale : $L_{\max} = \frac{P_{e}(\text{dBm}) - S_{r}(\text{dBm}) - \sum L_{\text{Pertes}}}{\alpha}$</p>
+                    <div class="formula">
+                        $L_{\max} = \frac{0 - (-30) - 3}{0.2} = \frac{27}{0.2} = \mathbf{135\text{ km}}$
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="color: var(--blue); margin-top: 3rem;">🔥 Tips & Mises en Garde pour l'Examen</h3>
+
+            <div class="example" style="border-left: 3px solid var(--orange);">
+                <h4>Bilan Énergétique (DM Q9)</h4>
+                <p>Les différences entre calculs théoriques et mesures terrain sont causées par :</p>
+                <ul>
+                    <li>**Les masques de terrain :** Murs, objets (atténuation variable et imprévue).</li>
+                    <li>**Le Multipath (Trajets multiples) :** Le signal arrive avec des déphasages qui provoquent des évanouissements (fading).</li>
+                    <li>**Le Contrôle de Puissance :** Les équipements ajustent dynamiquement leur puissance d'émission.</li>
+                </ul>
+            </div>
+
+            <h3 style="color: var(--primary-green); margin-top: 3rem;">❓ Quiz de Révision Télécom</h3>
+            <div class="exercice">
+                <p>1. Quelle est l'unité du **SINR** lorsqu'il est utilisé dans la formule de Shannon ?</p>
+                <button class="toggle-solution">Voir la réponse</button>
+                <div class="solution">
+                    <p>**Réponse :** Le **linéaire** (rapport sans unité).</p>
+                </div>
+            </div>
+            <div class="exercice">
+                <p>2. Pourquoi la Fibre Monomode est-elle privilégiée pour des liaisons de $>50\text{ km}$ ?</p>
+                <button class="toggle-solution">Voir la réponse</button>
+                <div class="solution">
+                    <p>**Réponse :** Pour son **très faible affaiblissement ($\alpha \approx 0.2\text{ dB/km}$)**, permettant d'éviter l'usage de répéteurs sur de grandes distances.</p>
                 </div>
             </div>
         </div>
     </section>
-    <script src="script.js"></script>
 </body>
 </html>
