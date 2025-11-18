@@ -1,0 +1,153 @@
+<section id="td2" class="page">
+    <a href="#" class="back-btn" data-page="proba">← Retour aux TDs</a>
+    
+    <div class="td-detail">
+        <h2>TD2 - Lois Discrètes Usuelles</h2>
+        
+        <div class="fiche-revision">
+            <h3>📋 Fiche de Révision : Lois Discrètes Fondamentales</h3>
+            
+            <h4 style="color: var(--pink); margin-top: 1.5rem;">1. Loi Binomiale $B(n, p)$</h4>
+            <p>Décrit le nombre de succès $k$ dans $n$ répétitions indépendantes d'une expérience de Bernoulli (succès/échec) :</p>
+            <div class="formula">
+                P(X=k) = C(n,k) × p^k × (1-p)^(n-k)<br>
+                E(X) = np; Var(X) = np(1-p)
+            </div>
+            
+            <h4 style="color: var(--pink); margin-top: 1.5rem;">2. Loi de Poisson $P(\lambda)$</h4>
+            <p>Modélise le nombre d'événements rares qui se produisent dans un intervalle de temps/espace fixe, avec $\lambda$ le taux moyen :</p>
+            <div class="formula">
+                P(X=k) = (λ^k × e^(-λ)) / k!<br>
+                E(X) = λ; Var(X) = λ
+            </div>
+            
+            <h4 style="color: var(--pink); margin-top: 1.5rem;">3. Loi Géométrique $G(p)$</h4>
+            <p>Modélise le nombre d'essais de Bernoulli nécessaires pour obtenir le premier succès :</p>
+            <div class="formula">
+                P(X=k) = (1-p)^(k-1) × p<br>
+                E(X) = 1/p; Var(X) = (1-p)/p²
+            </div>
+            
+            <div class="example">
+                <h4>💡 Règle d'Approximation : Binomiale $\to$ Poisson</h4>
+                <p>La loi Binomiale $B(n, p)$ peut être approximée par $P(\lambda)$ avec $\lambda = np$ si :</p>
+                <ul style="margin-left: 2rem;">
+                    <li>$n$ est grand ($n \ge 50$)</li>
+                    <li>$p$ est petit ($p \le 0.1$)</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3 style="color: var(--pink); margin-top: 3rem; margin-bottom: 1.5rem;">📝 Exercices Corrigés</h3>
+
+        <div class="exercice">
+            <div class="exercice-header">
+                <h4>Exercice 2.1 - Redondance des Alimentations (TD3-2)</h4>
+                <span class="difficulty difficile">Difficile</span>
+            </div>
+            <p>**Énoncé :** Serveur avec 3 alimentations (indépendantes), probabilité de panne $p$. Le serveur tombe si $\ge 2$ pannes. Calculer la probabilité de panne du serveur.</p>
+            <button class="toggle-solution">Voir la solution</button>
+            <div class="solution">
+                <p>**Solution (Loi Binomiale $B(3, p)$) :**</p>
+                <p>Soit $X$ le nombre de pannes, $X \sim B(3, p)$. La panne arrive si $X \ge 2$.</p>
+                <div class="formula">
+                    P($\text{Panne}$) = P(X=2) + P(X=3)<br>
+                    P(X=2) = C(3,2)p²(1-p) = 3p²(1-p)<br>
+                    P(X=3) = C(3,3)p³(1-p)⁰ = p³<br><br>
+                    P($\text{Panne}$) = 3p²(1-p) + p³ = $3p^2 - 3p^3 + p^3 = \mathbf{p^2(3 - 2p)}$
+                </div>
+            </div>
+        </div>
+        
+        <div class="exercice">
+            <div class="exercice-header">
+                <h4>Exercice 2.2 - Cas de Poisson (Appels Téléphoniques)</h4>
+                <span class="difficulty moyen">Moyen</span>
+            </div>
+            <p>**Énoncé :** Un central téléphonique reçoit en moyenne $\lambda = 5$ appels par minute (Loi de Poisson). Quelle est la probabilité d'avoir :</p>
+            <p>1. Exactement 3 appels dans une minute.</p>
+            <p>2. Moins de 2 appels dans une minute.</p>
+            <button class="toggle-solution">Voir la solution</button>
+            <div class="solution">
+                <p>**Solution ($X \sim P(5)$) :**</p>
+                <p>1. Exactement 3 appels ($k=3$)</p>
+                <div class="formula">
+                    P(X=3) = (5³ × e⁻⁵) / 3! = 125 e⁻⁵ / 6 ≈ **0.1404**
+                </div>
+                <p>2. Moins de 2 appels ($k=0$ ou $k=1$)</p>
+                <div class="formula">
+                    P(X < 2) = P(X=0) + P(X=1)<br>
+                    P(X=0) = e⁻⁵ (0! = 1)<br>
+                    P(X=1) = 5 e⁻⁵ (1! = 1)<br>
+                    P(X < 2) = e⁻⁵ + 5e⁻⁵ = 6e⁻⁵ ≈ **0.0404**
+                </div>
+            </div>
+        </div>
+
+        <div class="exercice">
+            <div class="exercice-header">
+                <h4>Exercice 2.3 - Lancers pour un Premier Succès (Géométrique)</h4>
+                <span class="difficulty facile">Facile</span>
+            </div>
+            <p>**Énoncé :** On lance un dé équilibré jusqu'à obtenir un 6. $X$ est le nombre de lancers nécessaires. $p=1/6$ est la probabilité de succès.</p>
+            <p>1. Quelle est la probabilité d'obtenir le premier 6 au 4ème lancer ?</p>
+            <p>2. Quel est le nombre moyen de lancers nécessaires ?</p>
+            <button class="toggle-solution">Voir la solution</button>
+            <div class="solution">
+                <p>**Solution ($X \sim G(1/6)$) :**</p>
+                <p>1. $P(X=4)$ correspond à 3 échecs (5/6) puis 1 succès (1/6).</p>
+                <div class="formula">
+                    P(X=4) = (1-p)³ × p = (5/6)³ × (1/6) = 125 / 1296 ≈ **0.0964**
+                </div>
+                <p>2. Le nombre moyen est l'espérance $E(X)$.</p>
+                <div class="formula">
+                    E(X) = 1/p = 1 / (1/6) = **6 lancers**
+                </div>
+            </div>
+        </div>
+
+        <div class="exercice">
+            <div class="exercice-header">
+                <h4>Exercice 2.4 - Avion (TD3-2 - Deuxième partie)</h4>
+                <span class="difficulty moyen">Moyen</span>
+            </div>
+            <p>**Énoncé :** Un avion A (4 moteurs) arrive si moins de la moitié des moteurs (i.e., $X \le 1$ panne) tombent en panne. $p$ est la probabilité de panne par moteur. Calculer la probabilité de non-arrivée de l'avion (Panne).</p>
+            <button class="toggle-solution">Voir la solution</button>
+            <div class="solution">
+                <p>**Solution ($X \sim B(4, p)$) :**</p>
+                <p>L'avion tombe en panne si $X \ge 2$.</p>
+                <div class="formula">
+                    P($\text{Panne}$) = P(X=2) + P(X=3) + P(X=4)<br>
+                    P($\text{Panne}$) = $C_4^2 p^2 (1-p)^2 + C_4^3 p^3 (1-p) + C_4^4 p^4$
+                </div>
+                <p style="margin-top: 1rem;">Si $p=0.1$ : $P(\text{Panne}) = 6(0.01)(0.81) + 4(0.001)(0.9) + 0.0001$</p>
+                <div class="formula">
+                    $P(\text{Panne}) = 0.0486 + 0.0036 + 0.0001 = \mathbf{0.0523}$ (5.23%)
+                </div>
+            </div>
+        </div>
+
+        <h3 style="color: var(--pink); margin-top: 3rem; margin-bottom: 1.5rem;">📚 Fiche d'Exercices Supplémentaires</h3>
+        <ul class="topic-card" style="cursor: default;">
+            <li>**TD3-1 :** Calculs de l'Espérance et de la Variance d'une variable discrète non usuelle (Loi d'un jeu de dés).</li>
+            <li>**TD3-3 :** Calculs de $P(X \ge 6)$ pour la loi de Poisson (nécessite sommation).</li>
+            <li>**TD2-6 :** Problème de Tchebychev sur une V.A. $X$ de moyenne $m$ et variance $\sigma^2$ (donne un encadrement).</li>
+        </ul>
+
+        <h3 style="color: var(--orange); margin-top: 3rem; margin-bottom: 1.5rem;">❓ Quiz Révision TD2</h3>
+        <div class="exercice">
+            <p>1. Dans le cas d'une loi $B(n, p)$, si $p=0.5$, la distribution est-elle symétrique ?</p>
+            <button class="toggle-solution">Voir la réponse</button>
+            <div class="solution">
+                <p>**Réponse :** Oui, la loi Binomiale est parfaitement symétrique lorsque $p=0.5$.</p>
+            </div>
+        </div>
+        <div class="exercice">
+            <p>2. Peut-on calculer $P(X=0)$ pour une loi Géométrique $G(p)$ ?</p>
+            <button class="toggle-solution">Voir la réponse</button>
+            <div class="solution">
+                <p>**Réponse :** Non, la loi Géométrique commence à $k=1$ (il faut au moins un essai pour le premier succès), donc $P(X=0)=0$.</p>
+            </div>
+        </div>
+    </div>
+</section>
