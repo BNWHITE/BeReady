@@ -5,6 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Focus Révisions ISEP - Excellence Académique</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Configuration améliorée de MathJax -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                tags: 'ams'
+            },
+            svg: {
+                fontCache: 'global'
+            },
+            startup: {
+                ready: function() {
+                    console.log('MathJax is ready!');
+                    MathJax.startup.defaultReady();
+                    // Re-process math after page load
+                    MathJax.typesetPromise();
+                }
+            }
+        };
+    </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
     <style>
         :root {
             --primary-blue: #3498db;
@@ -164,7 +190,7 @@
         }
 
         .hero-image-placeholder::after {
-            content: "🎓 Plateforme de Révision ISEP";
+            content: src = "University.jpg";
             position: relative;
             z-index: 1;
             text-align: center;
@@ -473,6 +499,22 @@
                 this.classList.add('active');
             });
         });
+
+        // Re-process MathJax après le chargement de la page
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.MathJax) {
+                MathJax.typesetPromise().catch((err) => {
+                    console.log('MathJax typeset error:', err);
+                });
+            }
+        });
+
+        // Re-process MathJax après le chargement dynamique de contenu
+        function refreshMathJax() {
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
     </script>
 </body>
 </html>
