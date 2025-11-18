@@ -3,60 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Révision Probabilités ISEP A1</title>
+    <title>Révision Probabilités ISEP A1 - Dynamique</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header class="navbar">
-        <div class="logo">EC **EARTHY COLOR**</div>
+        <div class="logo">EC **EARTHY COLOR** | <span class="sub-logo">Probabilités A1</span></div>
         <nav>
-            <a href="index.html">Accueil</a>
-            <a href="probas.html">Probabilités</a>
-            <a href="telecom.html">Télécom (À venir)</a>
-            <a href="#contact">Contact</a>
+            <a href="#probas-overview" class="nav-item">Théorie</a>
+            <a href="#exercises-bank" class="nav-item">Exercices</a>
+            <a href="#revision-plan" class="nav-item">Programme</a>
+            <a href="#telecom" class="nav-item disabled">Télécom (À venir)</a>
         </nav>
-        <button class="login-btn">Réglages</button>
+        <button class="login-btn animate-pulse">Espace Étudiant</button>
     </header>
 
     <main class="hero-section">
         <div class="hero-content">
-            <h1>See what's in it for you: Révision Probas ISEP</h1>
-            <p>Depuis 2025, nous vous accompagnons pour la réussite de vos examens de Probabilités et Télécommunications.</p>
-            <a href="probas.html" class="btn primary-btn">Démarrer la Révision Probas</a>
-            <a href="telecom.html" class="btn secondary-btn">Révision Télécom (À venir)</a>
+            <h1 class="fade-in">See what's in it for you: Révision Probas ISEP</h1>
+            <p class="fade-in delay-100">Préparez efficacement vos examens de Probabilités et Télécommunications pour le 29 Novembre 2025.</p>
+            <div class="cta-group fade-in delay-200">
+                <a href="#probas-overview" class="btn primary-btn pulse-effect">Démarrer la Théorie 🧠</a>
+                <a href="#exercises-bank" class="btn secondary-btn">S'entrainer maintenant 📝</a>
+            </div>
         </div>
-        <div class="hero-image">
-                    </div>
+        <div class="hero-image zoom-in">
+            [Image of a student pointing to a concept map for probability]
+        </div>
     </main>
+    
+    <div class="hr-separator"></div>
 
-    <section id="probas-overview" class="content-blocks">
-        <h2>📚 Chapitres de Révision en Probabilités</h2>
+    <section id="probas-overview" class="content-blocks container">
+        <h2 class="title-header">📚 Fiches de Théorie : Les Fondamentaux</h2>
+        <p class="section-description">Naviguez à travers les chapitres du cours ISEP A1 pour maîtriser chaque notion. Cliquez pour voir les fiches détaillées.</p>
         <div class="cards-container">
-            <a href="proba_ch1.html" class="card creative-ideas">
+            <a href="#chapitre-1-2" class="card creative-ideas">
                 <h3>Ch. 1 & 2: Base & Indépendance</h3>
-                <p>Événements, Prob. conditionnelles, Formule des probabilités totales, Bayes.</p>
+                <p>Axiomes, Prob. conditionnelles, Formule des probabilités totales, Bayes. 🧐</p>
             </a>
-            <a href="proba_ch3.html" class="card market-research">
-                <h3>Ch. 3: Variables Aléatoires (VAR)</h3>
-                <p>Lois Discrètes (Binomiale, Poisson) et Continues (Normale, Uniforme, Expo).</p>
+            <a href="#chapitre-3-discret" class="card market-research">
+                <h3>Ch. 3.1: VAR Discrètes (NP)</h3>
+                <p>Bernoulli, **Binomiale $\mathcal{B}(n,p)$**, **Poisson $\mathcal{P}(\lambda)$**. Pourquoi et Quand les utiliser. 🔢</p>
             </a>
-            <a href="proba_ch4_5.html" class="card best-solutions">
-                <h3>Ch. 4 & 5: Moments & Fonctions</h3>
-                <p>Espérance E(X), Variance V(X), Écart-type, Covariance. Lois des grands nombres.</p>
+            <a href="#chapitre-3-continu" class="card best-solutions">
+                <h3>Ch. 3.2: VAR Continues (GUVE)</h3>
+                <p>**Gaussienne $\mathcal{N}(\mu, \sigma^2)$**, Uniforme, Exponentielle. Densités. 📈</p>
             </a>
-            <a href="proba_ch6_7.html" class="card exercices-section">
-                <h3>Ch. 6 & 7: Multidimensionnel & Gaussien</h3>
-                <p>Couple de VAR, Loi Jointe, Lois Marginales, Vecteurs Gaussiens.</p>
+            <a href="#chapitre-6-7" class="card exercices-section">
+                <h3>Ch. 6 & 7: Couple & Gaussien</h3>
+                <p>Lois Jointes/Marginales, Covariance, Vecteurs Gaussiens. 🌐</p>
             </a>
         </div>
     </section>
 
-    <section id="exercises-section" class="full-width-section">
-        <h2>📝 Entraînement : Exercices d'Examen Corrigés</h2>
+    <div class="hr-separator"></div>
+
+    <section id="chapitre-3-discret" class="detailed-content container">
+        <h2 class="title-header">📝 Chapitre 3.1 : Les Lois Discrètes Fondamentales</h2>
+        <article class="topic-card">
+            <h3 class="topic-title">Loi de Poisson $\mathcal{P}(\lambda)$ : Le Compte des Événements Rares</h3>
+            <div class="topic-body">
+                <p>**Règle d'Or (Pourquoi ?)** : On utilise la loi de Poisson pour modéliser le **nombre de réalisations d'événements rares** (succès) dans un intervalle de temps ou d'espace donné, à condition que ces événements soient indépendants.</p>
+                <p>**Formules Clés** :
+                    $$P[X=k]=e^{-\lambda}\frac{\lambda^{k}}{k!}$$
+                    $$E(X)=\lambda$$
+                    $$V(X)=\lambda$$
+                </p>
+                <p>**Cas d'Usage ISEP** : L'exercice 5 de l'Examen 2018 utilise la loi de Poisson pour modéliser le nombre de véhicules. La somme de deux lois de Poisson indépendantes, $Z=X+Y$, suit une loi de Poisson de paramètre $\lambda+\mu$.</p>
+                </div>
+        </article>
+        
+        <article class="topic-card">
+            <h3 class="topic-title">Loi Binomiale $\mathcal{B}(n,p)$ : Les Répétitions Indépendantes</h3>
+            <div class="topic-body">
+                <p>**Règle d'Or (Pourquoi ?)** : Elle compte le nombre de **succès $k$** obtenus sur un nombre fixe **$n$ d'épreuves de Bernoulli indépendantes**, où la probabilité de succès est $p$.</p>
+                <p>**Formules Clés** :
+                    $$P[X=k]=C_{n}^{k}p^{k}(1-p)^{n-k}$$
+                    $$E(X)=np$$
+                    $$V(X)=np(1-p)$$
+                </p>
+                <p>**Lien avec Poisson :** Si $n$ est grand et $p$ petit, la loi binomiale est approximée par la loi de Poisson $\mathcal{P}(\lambda=np)$.</p>
+                <p>**Cas d'Usage ISEP :** Dans l'exercice 3 de l'Examen 2022, la probabilité conditionnelle $P(Y=k \mid X=n)$ (le nombre de personnes choisissant le guichet 1 sachant qu'il y a $n$ personnes au total) suit une **loi binomiale $\mathcal{B}(n, p)$**.</p>
+                </div>
+        </article>
+        </section>
+
+    <div class="hr-separator"></div>
+
+    <section id="exercises-bank" class="full-width-section container">
+        <h2 class="title-header">📝 Banque d'Exercices et Problèmes ISEP A1</h2>
+        <p class="section-description">Testez votre compréhension avec des exercices tirés des examens et TD ISEP. Pratiquez et vérifiez instantanément vos résultats.</p>
+        
+        <div class="exercise-category">
+            <h3>I. Fondamentaux et Probabilités Conditionnelles (Ch. 1-2)</h3>
+            <article class="exercise-item">
+                <h4>TD1-4: Le Filtrage Téléphonique (Probas Totales & Bayes)</h4>
+                <p>Gontran filtre les appels (60% externes $E$, 40% internes $\overline{E}$). Il refuse 80% des externes ($R|E$) et 30% des internes ($R|\overline{E}$).</p>
+                <ol>
+                    <li>Calculer $P(R)$, la probabilité qu'un appel soit refusé.</li>
+                    <li>Calculer $P(E|R)$, la probabilité qu'un appel refusé provienne de l'extérieur.</li>
+                </ol>
+                <button class="toggle-correction btn secondary-btn" data-target="corr-td1-4">Afficher la Correction</button>
+                <div id="corr-td1-4" class="correction-box">
+                    <p>1. **$P(R)$ (Formule des Probas Totales)** :
+                        $$P(R) = P(R|E)P(E) + P(R|\overline{E})P(\overline{E})$$
+                        $$P(R) = (0.80 \times 0.60) + (0.30 \times 0.40) = 0.48 + 0.12 = \mathbf{0.6}$$
+                    </p>
+                    <p>2. **$P(E|R)$ (Formule de Bayes)** :
+                        $$P(E|R) = \frac{P(E \cap R)}{P(R)} = \frac{P(R|E)P(E)}{P(R)}$$
+                        $$P(E|R) = \frac{0.48}{0.6} = \mathbf{0.8}$$
+                        La probabilité qu'un appel refusé soit externe est de 80%.
+                    </p>
+                </div>
+            </article>
+
+            </div>
+
+        <div class="exercise-category">
+            <h3>II. Problèmes de Lois Normales et Gaussiennes (Ch. 3.2, 6, 7)</h3>
+            <article class="exercise-item">
+                <h4>Examen 2018 - Exercice 2 (Admissibilité ISEP)</h4>
+                <p>Les notes $X \sim \mathcal{N}(32.8; 8.5^2)$. Non-admissibles: $30\%$. Grands admissibles: $10\%$.</p>
+                <p>Déterminer l'intervalle de notes $[N_{min}, N_{max}]$ pour passer l'oral (Admissibles simples).</p>
+                <button class="toggle-correction btn secondary-btn" data-target="corr-exo2-2018">Afficher la Correction</button>
+                <div id="corr-exo2-2018" class="correction-box">
+                    <p>**Calcul du Seuil Non-Admissible ($N_{min}$)** : On cherche $n_{min}$ tel que $P(X < n_{min}) = 0.30$.</p>
+                    <p>En Centrant et Réduisant : $P(Z < z_{min}) = 0.30$. Par symétrie, $P(Z > -z_{min}) = 0.30$. Donc $P(0 < Z < -z_{min}) = 0.5 - 0.3 = 0.2$.</p>
+                    <p>D'après la table de $\mathcal{N}(0,1)$, $G(0.52) \approx 0.1985$ et $G(0.53) \approx 0.2019$. Nous prenons $z_{min} \approx -0.525$.</p>
+                    <p>$$n_{min} = \mu + z_{min} \sigma = 32.8 + (-0.525) \times 8.5 \approx 32.8 - 4.46 \approx \mathbf{28.34}$$</p>
+                    <p>**Calcul du Seuil Grand Admissible ($N_{max}$)** : On cherche $n_{max}$ tel que $P(X \ge n_{max}) = 0.10$.</p>
+                    <p>En Centrant et Réduisant : $P(Z \ge z_{max}) = 0.10$. Donc $P(0 < Z < z_{max}) = 0.5 - 0.1 = 0.4$.</p>
+                    <p>D'après la table, $G(1.28) \approx 0.3997$. Nous prenons $z_{max} \approx 1.28$.</p>
+                    <p>$$n_{max} = \mu + z_{max} \sigma = 32.8 + (1.28) \times 8.5 \approx 32.8 + 10.88 \approx \mathbf{43.68}$$</p>
+                    <p>L'intervalle de notes pour passer l'oral est $[\mathbf{28.34}, \mathbf{43.68}]$.</p>
+                </div>
+            </article>
+            </div>
+
+        <div class="exercise-category">
+            <h3>III. Couples de VAR et Lois Discrètes (Ch. 3.1, 6, 7)</h3>
+            <article class="exercise-item">
+                <h4>Examen 2018 - Exercice 5 (Loi Conditionnelle Poisson)</h4>
+                <p>Soient $X \sim \mathcal{P}(\lambda)$ (véhicules quittant Paris) et $Y \sim \mathcal{P}(\mu)$ (véhicules rentrant sur Paris) indépendantes. $Z=X+Y$ est le nombre total de véhicules.</p>
+                <p>Calculer la probabilité conditionnelle $P(X=k \mid Z=n)$, c'est-à-dire la probabilité que $k$ véhicules quittent Paris sachant que $n$ véhicules ont franchi le péage.</p>
+                <button class="toggle-correction btn secondary-btn" data-target="corr-exo5-2018">Afficher la Correction</button>
+                <div id="corr-exo5-2018" class="correction-box">
+                    <p>**Démonstration** :
+                        $$P(X=k \mid Z=n) = \frac{P(X=k \cap Z=n)}{P(Z=n)}$$
+                        Sachant que $Z=X+Y$, l'événement $\{X=k \cap Z=n\}$ est équivalent à $\{X=k \cap Y=n-k\}$.</p>
+                    <p>Puisque $X$ et $Y$ sont indépendantes :
+                        $$P(X=k \cap Y=n-k) = P(X=k)P(Y=n-k)$$
+                        $$P(X=k \cap Y=n-k) = \left(e^{-\lambda}\frac{\lambda^k}{k!}\right) \left(e^{-\mu}\frac{\mu^{n-k}}{(n-k)!}\right) = e^{-(\lambda+\mu)} \frac{\lambda^k \mu^{n-k}}{k! (n-k)!}$$
+                    </p>
+                    <p>D'autre part, $Z=X+Y \sim \mathcal{P}(\lambda+\mu)$ :
+                        $$P(Z=n) = e^{-(\lambda+\mu)}\frac{(\lambda+\mu)^n}{n!}$$
+                    </p>
+                    <p>En remplaçant :
+                        $$P(X=k \mid Z=n) = \frac{e^{-(\lambda+\mu)} \frac{\lambda^k \mu^{n-k}}{k! (n-k)!}}{e^{-(\lambda+\mu)}\frac{(\lambda+\mu)^n}{n!}} = \frac{n!}{k! (n-k)!} \frac{\lambda^k \mu^{n-k}}{(\lambda+\mu)^n}$$
+                    </p>
+                    <p>Finalement, en factorisant $(\lambda+\mu)^n = (\lambda+\mu)^k (\lambda+\mu)^{n-k}$ :
+                        $$P(X=k \mid Z=n) = C_n^k \left(\frac{\lambda}{\lambda+\mu}\right)^k \left(\frac{\mu}{\lambda+\mu}\right)^{n-k}$$
+                    </p>
+                    <p>**Conclusion (Bonus)** : On reconnaît la loi de probabilité Binomiale $\mathcal{B}(n, p)$, avec :
+                        $$p = \frac{\lambda}{\lambda+\mu}$$
+                        La probabilité d'avoir $k$ véhicules quittant Paris, sachant que le total est $n$, suit une Loi Binomiale.
+                    </p>
+                </div>
+            </article>
+
+            </div>
+
+    </section>
+
+    <div class="hr-separator"></div>
+
+    <section id="revision-plan" class="content-blocks container">
+        <h2 class="title-header">🗓️ Votre Programme de Révision (29 NOVEMBRE 2025)</h2>
         </section>
 
     <footer>
-        </footer>
+        <p>© 2025 ISEP A1 - Probabilités & Télécommunications. Tous droits réservés.</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
