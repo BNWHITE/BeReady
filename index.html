@@ -4,588 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Révision Académique - ISEP A1</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --purple: #6B4CE6;
-            --pink: #FF6B9D;
-            --orange: #FF8C42;
-            --blue: #4ECDC4;
-            --green: #45B7D1;
-            --yellow: #FFD93D;
-            --cream: #FFF8E7;
-            --dark: #2D3142;
-        }
-
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: var(--cream);
-            color: var(--dark);
-            line-height: 1.6;
-        }
-
-        /* Header avec fond ondulé */
-        header {
-            background: linear-gradient(135deg, var(--purple) 0%, var(--pink) 100%);
-            color: white;
-            padding: 3rem 1rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        header::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            right: 0;
-            height: 80px;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath d='M0,50 Q300,90 600,50 T1200,50 L1200,120 L0,120 Z' fill='%23FFF8E7'/%3E%3C/svg%3E") no-repeat;
-            background-size: cover;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.95;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Navigation sticky */
-        nav {
-            background: white;
-            padding: 1rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        nav ul {
-            display: flex;
-            justify-content: center;
-            list-style: none;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        nav a {
-            color: var(--dark);
-            text-decoration: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 50px;
-            transition: all 0.3s;
-            font-weight: 600;
-            background: var(--cream);
-        }
-
-        nav a:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-        }
-
-        nav a.active {
-            background: linear-gradient(135deg, var(--purple), var(--pink));
-            color: white;
-        }
-
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: var(--blue);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            margin: 1rem 0;
-            transition: all 0.3s;
-        }
-
-        .back-btn:hover {
-            transform: translateX(-5px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-
-        .page {
-            display: none;
-            animation: slideIn 0.5s ease-out;
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Hero section colorée */
-        .hero {
-            text-align: center;
-            padding: 3rem 2rem;
-            background: white;
-            border-radius: 30px;
-            margin-bottom: 3rem;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(107,76,230,0.1) 0%, transparent 70%);
-            animation: rotate 20s linear infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .hero h2 {
-            color: var(--purple);
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: #666;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Grille de cartes colorées */
-        .subject-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .subject-card {
-            background: white;
-            border-radius: 30px;
-            padding: 2.5rem;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .subject-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 8px;
-            background: linear-gradient(90deg, var(--purple), var(--pink), var(--orange));
-        }
-
-        .subject-card:hover {
-            transform: translateY(-15px) scale(1.02);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-        }
-
-        .subject-card h3 {
-            color: var(--purple);
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .subject-card p {
-            color: #666;
-            margin-bottom: 2rem;
-            line-height: 1.8;
-        }
-
-        .btn {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--purple), var(--pink));
-            color: white;
-            padding: 1rem 2.5rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        .btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(107,76,230,0.4);
-        }
-
-        /* Cartes de TD avec couleurs vives */
-        .topics-grid {
-            display: grid;
-            gap: 2rem;
-        }
-
-        .topic-card {
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transition: all 0.3s;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .topic-card::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 8px;
-            background: var(--accent-color);
-        }
-
-        .topic-card:nth-child(1) { --accent-color: var(--purple); }
-        .topic-card:nth-child(2) { --accent-color: var(--pink); }
-        .topic-card:nth-child(3) { --accent-color: var(--orange); }
-        .topic-card:nth-child(4) { --accent-color: var(--blue); }
-        .topic-card:nth-child(5) { --accent-color: var(--green); }
-        .topic-card:nth-child(6) { --accent-color: var(--yellow); }
-
-        .topic-card:hover {
-            transform: translateX(10px);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-        }
-
-        .topic-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .topic-card h3 {
-            color: var(--dark);
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-
-        .topic-card ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .topic-card li {
-            padding: 0.75rem 0;
-            padding-left: 2rem;
-            position: relative;
-            color: #555;
-            font-size: 1.05rem;
-        }
-
-        .topic-card li:before {
-            content: "▸";
-            position: absolute;
-            left: 0.5rem;
-            color: var(--accent-color);
-            font-size: 1.3rem;
-            font-weight: bold;
-        }
-
-        /* Checkbox stylée */
-        .checkbox {
-            width: 32px;
-            height: 32px;
-            border: 3px solid var(--accent-color);
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            background: white;
-        }
-
-        .checkbox:hover {
-            transform: scale(1.1);
-        }
-
-        .checkbox.checked {
-            background: var(--accent-color);
-            border-color: var(--accent-color);
-        }
-
-        .checkbox.checked:after {
-            content: "✓";
-            color: white;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-
-        /* Barre de progression */
-        .progress-container {
-            margin: 2rem 0;
-            text-align: center;
-        }
-
-        .progress-label {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--purple);
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 20px;
-            background: rgba(107,76,230,0.1);
-            border-radius: 50px;
-            overflow: hidden;
-            box-shadow: inset 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--purple), var(--pink), var(--orange));
-            width: 0%;
-            transition: width 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border-radius: 50px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            animation: shimmer 2s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        .progress-text {
-            margin-top: 0.5rem;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--purple);
-        }
-
-        /* Page détaillée TD */
-        .td-detail {
-            background: white;
-            border-radius: 30px;
-            padding: 3rem;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-        }
-
-        .td-detail h2 {
-            color: var(--purple);
-            font-size: 2rem;
-            margin-bottom: 2rem;
-            border-bottom: 4px solid var(--purple);
-            padding-bottom: 1rem;
-        }
-
-        .fiche-revision {
-            background: linear-gradient(135deg, rgba(107,76,230,0.05), rgba(255,107,157,0.05));
-            border-radius: 20px;
-            padding: 2rem;
-            margin: 2rem 0;
-            border-left: 6px solid var(--purple);
-        }
-
-        .fiche-revision h3 {
-            color: var(--purple);
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .formula {
-            background: white;
-            border-left: 5px solid var(--orange);
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-radius: 10px;
-            font-family: 'Courier New', monospace;
-            font-size: 1.1rem;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
-            color: var(--dark);
-        }
-
-        .example {
-            background: linear-gradient(135deg, rgba(78,205,196,0.1), rgba(69,183,209,0.1));
-            padding: 2rem;
-            border-radius: 15px;
-            margin: 2rem 0;
-            border-left: 5px solid var(--blue);
-        }
-
-        .example h4 {
-            color: var(--blue);
-            font-size: 1.4rem;
-            margin-bottom: 1rem;
-        }
-
-        /* Exercices */
-        .exercice {
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            margin: 2rem 0;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            border-left: 6px solid var(--pink);
-        }
-
-        .exercice-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .exercice h4 {
-            color: var(--purple);
-            font-size: 1.3rem;
-        }
-
-        .difficulty {
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        .difficulty.facile {
-            background: rgba(69,183,209,0.2);
-            color: #2C7A7B;
-        }
-
-        .difficulty.moyen {
-            background: rgba(255,140,66,0.2);
-            color: #C05621;
-        }
-
-        .difficulty.difficile {
-            background: rgba(255,107,157,0.2);
-            color: #C53030;
-        }
-
-        .toggle-solution {
-            background: var(--pink);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 600;
-            margin-top: 1rem;
-            transition: all 0.3s;
-        }
-
-        .toggle-solution:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 20px rgba(255,107,157,0.4);
-        }
-
-        .solution {
-            display: none;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 2px dashed rgba(0,0,0,0.1);
-        }
-
-        .solution.active {
-            display: block;
-            animation: slideIn 0.3s;
-        }
-
-        /* Footer coloré */
-        footer {
-            background: linear-gradient(135deg, var(--dark) 0%, #1a1a2e 100%);
-            color: white;
-            padding: 3rem 1rem;
-            text-align: center;
-            margin-top: 4rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        footer::before {
-            content: '';
-            position: absolute;
-            top: -5px;
-            left: 0;
-            right: 0;
-            height: 80px;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath d='M0,50 Q300,10 600,50 T1200,50 L1200,0 L0,0 Z' fill='%23FFF8E7'/%3E%3C/svg%3E") no-repeat;
-            background-size: cover;
-        }
-
-        footer p {
-            position: relative;
-            z-index: 1;
-            margin: 0.5rem 0;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            h1 { font-size: 2rem; }
-            .hero h2 { font-size: 1.8rem; }
-            .subject-grid { grid-template-columns: 1fr; }
-            .td-detail { padding: 1.5rem; }
-            nav ul { flex-direction: column; }
-            nav a { width: 100%; text-align: center; }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
@@ -602,7 +21,6 @@
     </nav>
 
     <div class="container">
-        <!-- PAGE ACCUEIL -->
         <section id="home" class="page active">
             <div class="hero">
                 <h2>Bienvenue sur votre espace de révision</h2>
@@ -613,18 +31,17 @@
                 <div class="subject-card" data-page="proba">
                     <h3>📊 Probabilités</h3>
                     <p>Maîtrisez les lois discrètes et continues, les vecteurs gaussiens, et les transformations de variables aléatoires à travers 5 TDs complets.</p>
-                    <button class="btn">Explorer →</button>
+                    <button class="btn" data-page="proba">Explorer →</button>
                 </div>
 
                 <div class="subject-card" data-page="telecom">
                     <h3>📡 Télécommunications</h3>
                     <p>Apprenez les bilans de liaison, modèles de propagation, et dimensionnement de réseaux indoor/outdoor avec des cas pratiques.</p>
-                    <button class="btn">Explorer →</button>
+                    <button class="btn" data-page="telecom">Explorer →</button>
                 </div>
             </div>
         </section>
 
-        <!-- PAGE PROBABILITÉS -->
         <section id="proba" class="page">
             <a href="#" class="back-btn" data-page="home">← Retour</a>
             
@@ -709,7 +126,6 @@
             </div>
         </section>
 
-        <!-- PAGE TD1 DÉTAIL -->
         <section id="td1" class="page">
             <a href="#" class="back-btn" data-page="proba">← Retour aux TDs</a>
             
@@ -848,7 +264,6 @@
             </div>
         </section>
 
-        <!-- PAGE TD2 DÉTAIL -->
         <section id="td2" class="page">
             <a href="#" class="back-btn" data-page="proba">← Retour aux TDs</a>
             
@@ -977,7 +392,6 @@
             </div>
         </section>
 
-        <!-- PAGE TD3 DÉTAIL -->
         <section id="td3" class="page">
             <a href="#" class="back-btn" data-page="proba">← Retour aux TDs</a>
             
@@ -1130,7 +544,6 @@
             </div>
         </section>
 
-        <!-- PAGE TD4 DÉTAIL -->
         <section id="td4" class="page">
             <a href="#" class="back-btn" data-page="proba">← Retour aux TDs</a>
             
@@ -1288,7 +701,6 @@
             </div>
         </section>
 
-        <!-- PAGE TD5 DÉTAIL -->
         <section id="td5" class="page">
             <a href="#" class="back-btn" data-page="proba">← Retour aux TDs</a>
             
@@ -1312,8 +724,8 @@
                     <h4 style="color: var(--green); margin-top: 1.5rem;">3. Matrice de Covariance</h4>
                     <p>Pour un vecteur (X,Y) gaussien :</p>
                     <div class="formula">
-                        Σ = [ Var(X)    Cov(X,Y) ]<br>
-                            [ Cov(X,Y)  Var(Y)   ]
+                        Σ = [ Var(X)  Cov(X,Y) ]<br>
+                            [ Cov(X,Y)  Var(Y)  ]
                     </div>
                     
                     <h4 style="color: var(--green); margin-top: 1.5rem;">4. Indépendance et Corrélation</h4>
@@ -1423,7 +835,7 @@
             </div>
         </section>
 
-        <!-- PAGE TÉLÉCOMMUNICATIONS -->
+
         <section id="telecom" class="page">
             <a href="#" class="back-btn" data-page="home">← Retour</a>
             
@@ -1521,7 +933,6 @@
             </div>
         </section>
 
-        <!-- PAGE ARCHITECTURE RÉSEAU -->
         <section id="archi" class="page">
             <a href="#" class="back-btn" data-page="telecom">← Retour aux Télécoms</a>
             
@@ -1606,7 +1017,6 @@
             </div>
         </section>
 
-        <!-- PAGE BILAN DE LIAISON -->
         <section id="bilan" class="page">
             <a href="#" class="back-btn" data-page="telecom">← Retour aux Télécoms</a>
             
@@ -1690,7 +1100,6 @@
             </div>
         </section>
 
-        <!-- PAGE CAPACITÉ DE SHANNON -->
         <section id="shannon" class="page">
             <a href="#" class="back-btn" data-page="telecom">← Retour aux Télécoms</a>
             
@@ -1778,6 +1187,41 @@
                 </div>
             </div>
         </section>
+        
+        <section id="bruit" class="page">
+            <a href="#" class="back-btn" data-page="telecom">← Retour aux Télécoms</a>
+            <div class="td-detail">
+                <h2>Bruit Thermique</h2>
+                <div class="fiche-revision">
+                    <h3>📋 Fiche de Révision (À compléter)</h3>
+                    <p>Contenu non fourni dans l'original. Vous pouvez l'ajouter ici.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="portee" class="page">
+            <a href="#" class="back-btn" data-page="telecom">← Retour aux Télécoms</a>
+            <div class="td-detail">
+                <h2>Portée Maximale</h2>
+                <div class="fiche-revision">
+                    <h3>📋 Fiche de Révision (À compléter)</h3>
+                    <p>Contenu non fourni dans l'original. Vous pouvez l'ajouter ici.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="antennes" class="page">
+            <a href="#" class="back-btn" data-page="telecom">← Retour aux Télécoms</a>
+            <div class="td-detail">
+                <h2>Antennes et Propagation</h2>
+                <div class="fiche-revision">
+                    <h3>📋 Fiche de Révision (À compléter)</h3>
+                    <p>Contenu non fourni dans l'original. Vous pouvez l'ajouter ici.</p>
+                </div>
+            </div>
+        </section>
+
+
     </div>
 
     <footer>
@@ -1785,75 +1229,6 @@
         <p>Probabilités & Télécommunications</p>
     </footer>
 
-    <script>
-        // Navigation entre pages
-        document.querySelectorAll('.nav-link, .back-btn, .subject-card, .topic-card').forEach(element => {
-            element.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetPage = this.dataset.page || this.dataset.td;
-                
-                // Masquer toutes les pages
-                document.querySelectorAll('.page').forEach(page => {
-                    page.classList.remove('active');
-                });
-                
-                // Afficher la page cible
-                document.getElementById(targetPage).classList.add('active');
-                
-                // Mettre à jour la navigation active
-                document.querySelectorAll('.nav-link').forEach(link => {
-                    link.classList.remove('active');
-                });
-                
-                // Mettre à jour la navigation principale si nécessaire
-                if (targetPage === 'home' || targetPage === 'proba' || targetPage === 'telecom') {
-                    document.querySelector(`.nav-link[data-page="${targetPage}"]`).classList.add('active');
-                }
-                
-                // Mettre à jour la progression
-                updateProgress();
-            });
-        });
-
-        // Gestion des checkboxes de progression
-        document.querySelectorAll('.checkbox').forEach(checkbox => {
-            checkbox.addEventListener('click', function() {
-                this.classList.toggle('checked');
-                updateProgress();
-            });
-        });
-
-        // Gestion des solutions d'exercices
-        document.querySelectorAll('.toggle-solution').forEach(button => {
-            button.addEventListener('click', function() {
-                const solution = this.nextElementSibling;
-                solution.classList.toggle('active');
-                this.textContent = solution.classList.contains('active') ? 'Masquer la solution' : 'Voir la solution';
-            });
-        });
-
-        // Mise à jour de la progression
-        function updateProgress() {
-            // Progression Probabilités
-            const probaCheckboxes = document.querySelectorAll('#proba .checkbox');
-            const probaChecked = document.querySelectorAll('#proba .checkbox.checked').length;
-            const probaProgress = (probaChecked / probaCheckboxes.length) * 100;
-            
-            document.getElementById('proba-progress').style.width = `${probaProgress}%`;
-            document.getElementById('proba-percentage').textContent = `${Math.round(probaProgress)}%`;
-            
-            // Progression Télécoms
-            const telecomCheckboxes = document.querySelectorAll('#telecom .checkbox');
-            const telecomChecked = document.querySelectorAll('#telecom .checkbox.checked').length;
-            const telecomProgress = (telecomChecked / telecomCheckboxes.length) * 100;
-            
-            document.getElementById('telecom-progress').style.width = `${telecomProgress}%`;
-            document.getElementById('telecom-percentage').textContent = `${Math.round(telecomProgress)}%`;
-        }
-
-        // Initialisation
-        updateProgress();
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
