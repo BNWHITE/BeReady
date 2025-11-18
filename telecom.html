@@ -4,187 +4,676 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Révision Télécom - Fiche Complète</title>
-    <link rel="stylesheet" href="style2.css">
-    <script src="script.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
-        /* Surcharge des styles pour la page Télécom (Thème Dark) */
-        .telecom-detail h2 { border-bottom: 3px solid var(--primary-dark); padding-bottom: 10px; }
-        .telecom-rev .fiche-revision { border-left-color: var(--primary-dark); }
-        .telecom-rev h4 { color: var(--primary-dark); }
-        .solution.active { border-left-color: var(--primary-dark); background-color: #f0f0f0; }
-        .quiz-box { border: 1px solid var(--primary-dark); }
-        .quiz-box h4 { color: var(--primary-dark) !important; }
-        .telecom-theme-color { color: var(--primary-dark); }
+        :root {
+            /* --- Couleurs Générales --- */
+            --primary-dark: #2C3E50; /* Couleur principale Télécom */
+            --primary-blue: #3498db; /* Couleur secondaire */
+            --secondary-gray: #f8f9fa; /* Arrière-plan clair */
+            --white: #FFFFFF;
+            --light-dark: #ecf0f1;
+            --medium-dark: #bdc3c7;
+            --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 6px 15px rgba(0, 0, 0, 0.1);
+            --shadow-heavy: 0 10px 30px rgba(0, 0, 0, 0.15);
+            
+            /* --- Couleurs de feedback --- */
+            --bg-solution: #f8f9fa; /* Fond très clair pour la solution */
+            --bg-quiz: #f4f6f8;     /* Fond clair pour les zones d'exercices supp. et quiz */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: var(--secondary-gray);
+            color: var(--primary-dark);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+            padding: 0;
+        }
+
+        /* ------------------------------------- */
+        /* --- 1. STRUCTURE ET NAVIGATION --- */
+        /* ------------------------------------- */
+
+        .page {
+            padding: 20px 5%;
+            min-height: 100vh;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .td-detail {
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-heavy);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .td-detail::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary-dark), #34495e);
+        }
+
+        .td-detail h2 {
+            color: var(--primary-dark);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            border-bottom: 3px solid var(--primary-dark);
+            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 25px;
+            padding: 12px 20px;
+            background-color: var(--primary-dark);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background-color: #34495e;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .section-description {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            padding: 15px;
+            background-color: var(--light-dark);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-dark);
+        }
+
+        .separator {
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--primary-dark), transparent);
+            margin: 40px 0;
+        }
+
+        /* ------------------------------------- */
+        /* --- 2. FICHES ET EXERCICES (CLE) --- */
+        /* ------------------------------------- */
+
+        /* Style du bloc de révision */
+        .fiche-revision {
+            border-left: 5px solid var(--primary-dark);
+            padding: 25px;
+            margin: 30px 0;
+            background-color: var(--light-dark);
+            border-radius: 0 12px 12px 0;
+            box-shadow: var(--shadow-light);
+        }
+
+        .fiche-revision h3 {
+            color: var(--primary-dark);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .fiche-revision h4 {
+            margin-top: 1.8rem;
+            color: var(--primary-dark);
+            font-size: 1.2rem;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed var(--medium-dark);
+        }
+
+        .fiche-revision p {
+            margin-bottom: 15px;
+        }
+
+        /* Style des exercices */
+        .exercice {
+            border: 1px solid #e0e0e0;
+            padding: 25px;
+            margin-top: 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-light);
+            background-color: var(--white);
+            transition: all 0.3s;
+        }
+
+        .exercice:hover {
+            box-shadow: var(--shadow-medium);
+            transform: translateY(-3px);
+        }
+
+        .exercice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .exercice h4 {
+            color: var(--primary-dark);
+            font-size: 1.3rem;
+        }
+
+        .difficulty {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .facile { background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+        .moyen { background-color: #fff3e0; color: #ef6c00; border: 1px solid #ffe0b2; }
+        .difficile { background-color: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+        .dm { background-color: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
+        .projet { background-color: #f3e5f5; color: #7b1fa2; border: 1px solid #e1bee7; }
+        .app { background-color: #e8f5e8; color: #2e7d32; border: 1px solid #c8e6c9; }
+
+        /* Bouton et solution (Animation Smooth) */
+        .toggle-solution {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--primary-dark);
+            color: var(--white);
+            border: none;
+            padding: 12px 20px;
+            margin-top: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .toggle-solution:hover {
+            background-color: #34495e;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .solution {
+            margin-top: 20px;
+            padding: 0 20px;
+            border-left: 4px solid var(--primary-dark);
+            background-color: var(--bg-solution);
+            border-radius: 0 8px 8px 0;
+            
+            /* Propriétés pour l'animation (Initial state) */
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.4s ease-out;
+        }
+
+        /* État actif (géré par JS) */
+        .solution.active {
+            opacity: 1;
+            max-height: 2000px;
+            padding: 20px;
+        }
+
+        .formula {
+            background-color: var(--primary-dark);
+            color: var(--white);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            box-shadow: var(--shadow-light);
+        }
+
+        /* Styles des Tips et des Fiches Supp. */
+        .example {
+            margin-top: 20px;
+            border-left: 4px solid #ff9800;
+            padding: 20px;
+            background-color: #fff8e1;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .example h4 {
+            color: #ff9800;
+            margin-top: 0;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Style de la carte d'exercices supplémentaires */
+        .topic-card {
+            padding: 20px;
+            background-color: var(--bg-quiz);
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid var(--primary-dark);
+        }
+
+        .topic-card h4 {
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .topic-card ul {
+            padding-left: 20px;
+        }
+
+        .topic-card li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        /* Style du quiz */
+        .quiz-box {
+            border: 2px solid var(--primary-dark);
+            background-color: var(--light-dark);
+        }
+
+        .quiz-box h4 {
+            color: var(--primary-dark) !important;
+        }
+
+        /* Style pour les listes */
+        ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page {
+                padding: 15px 3%;
+            }
+            
+            .td-detail {
+                padding: 25px;
+            }
+            
+            .td-detail h2 {
+                font-size: 1.8rem;
+            }
+            
+            .exercice-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .formula {
+                font-size: 0.9rem;
+                padding: 15px;
+            }
+        }
+
+        /* Animation pour les éléments qui apparaissent */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .exercice, .fiche-revision, .topic-card {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Style pour les icônes */
+        .icon {
+            margin-right: 8px;
+        }
+        
+        /* Tableau pour les lois de probabilité */
+        .probability-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .probability-table th, .probability-table td {
+            padding: 12px 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        
+        .probability-table th {
+            background-color: var(--primary-dark);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .probability-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .probability-table tr:hover {
+            background-color: #f1f1f1;
+        }
     </style>
 </head>
 <body>
-    <section id="telecom-page" class="page active telecom-rev">
-        <a href="index.html#telecom-rev" class="back-btn">← Retour à l'Accueil</a>
+    <section id="telecom-page" class="page active">
+        <a href="index.html#telecom-rev" class="back-btn"><i class="fas fa-arrow-left"></i> Retour à l'Accueil</a>
         
-        <div class="td-detail telecom-detail">
-            <h2>🛰️ Fiche de Révision Complète - Télécommunications</h2>
+        <div class="td-detail">
+            <h2><i class="fas fa-satellite"></i> Fiche de Révision Complète - Télécommunications</h2>
             <p class="section-description">Synthèse des concepts critiques pour les Évaluations, le DM et les Projets. Concentrez-vous sur le calcul en $\text{dBm}/\text{W}$ et la distinction $S/N$ vs $SINR$.</p>
             
-            <hr class="separator" style="margin: 20px 0;">
+            <hr class="separator">
 
             <div class="fiche-revision">
-                <h3>1. Capacité, Débit et Bruit (Théorie de l'Information)</h3>
+                <h3><i class="fas fa-lightbulb"></i> 1. Capacité, Débit et Bruit (Théorie de l'Information)</h3>
                 
-                <h4 class="telecom-theme-color">1.1. Théorème de Shannon-Hartley (Capacité Max.)</h4>
-                <p>Débit maximal ($C$) en fonction de la bande passante ($B$) et du rapport Signal/Bruit ($S/N$ en **linéaire**).</p>
+                <h4>1.1. Théorème de Shannon-Hartley (Capacité Max.)</h4>
+                <p>Débit maximal ($C$) en fonction de la bande passante ($B$) et du rapport Signal/Bruit ($S/N$ en <strong>linéaire</strong>).</p>
                 <div class="formula">
                     $$C = B \cdot \log_2 \left(1 + \frac{S}{N}\right) \quad \text{(bits/s)}$$
                 </div>
+                <p><strong>Application :</strong> Pour augmenter le débit, on peut soit augmenter la bande passante, soit améliorer le rapport signal/bruit.</p>
                 
-                <h4 class="telecom-theme-color">1.2. Puissance de Bruit Thermique ($P_{bruit}$)</h4>
+                <h4>1.2. Puissance de Bruit Thermique ($P_{bruit}$)</h4>
                 <p>Le bruit est fonction de la température $T=290\text{ K}$ et de la bande passante $B$.</p>
                 <div class="formula">
                     $$P_{bruit}(\text{W}) = k \cdot T \cdot B \quad \text{ou} \quad P_{bruit}(\text{dBm}) = -174 \text{ dBm} + 10 \cdot \log_{10}(B)$$
                 </div>
+                <p><strong>Où :</strong> $k = 1.38 \times 10^{-23} \text{ J/K}$ (constante de Boltzmann)</p>
+                
                 <div class="example">
-                    <h4>🔥 Tip : Calcul du SNR requis</h4>
+                    <h4><i class="fas fa-fire"></i> Tip : Calcul du SNR requis</h4>
                     <p>Pour un débit cible $C_{cible}$, le $S/N$ (en linéaire) est : $S/N = 2^{(C_{cible}/B)} - 1$.</p>
+                    <p>Cette formule permet de déterminer le SNR minimum nécessaire pour atteindre un débit donné avec une bande passante fixe.</p>
                 </div>
             </div>
             
             <div class="fiche-revision">
-                <h3>2. Bilan de Liaison, PIRE et SINR</h3>
+                <h3><i class="fas fa-chart-line"></i> 2. Bilan de Liaison, PIRE et SINR</h3>
                 
-                <h4 class="telecom-theme-color">2.1. Puissance Isotrope Rayonnée Équivalente (PIRE)</h4>
-                <p>$$ \text{PIRE}(\text{dBm}) = P_{e}(\text{dBm}) + G_{e}(\text{dBi}) - L_{\text{câbles}} $$</p>
+                <h4>2.1. Puissance Isotrope Rayonnée Équivalente (PIRE)</h4>
+                <div class="formula">
+                    $$ \text{PIRE}(\text{dBm}) = P_{e}(\text{dBm}) + G_{e}(\text{dBi}) - L_{\text{câbles}} $$
+                </div>
+                <p>La PIRE représente la puissance que devrait rayonner une antenne isotrope pour produire la même densité de puissance dans la direction de rayonnement maximale.</p>
                 
-                <h4 class="telecom-theme-color">2.2. Puissance Reçue (Bilan Général)</h4>
-                <p>$$P_{r}(\text{dBm}) = \text{PIRE}(\text{dBm}) + G_{r}(\text{dBi}) - L_{P}(\text{dB}) - L_{\text{autres}}$$</p>
+                <h4>2.2. Puissance Reçue (Bilan Général)</h4>
+                <div class="formula">
+                    $$P_{r}(\text{dBm}) = \text{PIRE}(\text{dBm}) + G_{r}(\text{dBi}) - L_{P}(\text{dB}) - L_{\text{autres}}$$
+                </div>
+                <p>Ce bilan permet de calculer la puissance reçue en tenant compte de tous les gains et pertes du système.</p>
                 
-                <h4 class="telecom-theme-color">2.3. Affaiblissements de Propagation</h4>
+                <h4>2.3. Affaiblissements de Propagation</h4>
                 <ul>
-                    <li>**Espace Libre (Friis) :** $L_{P}(\text{dB}) = 20 \log_{10}(f) + 20 \log_{10}(d) + 20 \log_{10}(4\pi/c)$.</li>
-                    <li>**Modèle Simplifié Indoor/Urban :** $L_{P}(d) = L_0 + \alpha \cdot 10 \log_{10}(d)$.</li>
-                    <li>**Okumura-Hata :** Modèle plus complexe pour la propagation macro-cellulaire.</li>
+                    <li><strong>Espace Libre (Friis) :</strong> $L_{P}(\text{dB}) = 20 \log_{10}(f) + 20 \log_{10}(d) + 20 \log_{10}(4\pi/c)$.</li>
+                    <li><strong>Modèle Simplifié Indoor/Urban :</strong> $L_{P}(d) = L_0 + \alpha \cdot 10 \log_{10}(d)$.</li>
+                    <li><strong>Okumura-Hata :</strong> Modèle plus complexe pour la propagation macro-cellulaire.</li>
                 </ul>
 
-                <h4 class="telecom-theme-color">2.4. SINR (En présence d'interférences $I$)</h4>
+                <h4>2.4. SINR (En présence d'interférences $I$)</h4>
                 <div class="formula">
                     $$\text{SINR}(\text{linéaire}) = \frac{P_{r}}{P_{bruit} + \sum P_{\text{interférences}}} \quad \text{et} \quad \text{SINR}(\text{dB}) = 10 \cdot \log_{10}(\text{SINR}_{\text{lin}})$$
                 </div>
+                <p><strong>Attention :</strong> Le SINR tient compte à la fois du bruit thermique et des interférences, contrairement au SNR qui ne considère que le bruit.</p>
             </div>
 
             <div class="fiche-revision">
-                <h3>3. Technologies et Dimensionnement (Wi-Fi, Fibre, LTE)</h3>
+                <h3><i class="fas fa-wifi"></i> 3. Technologies et Dimensionnement (Wi-Fi, Fibre, LTE)</h3>
                 
-                <h4 class="telecom-theme-color">3.1. Fibre Optique (Liaisons Longue Distance)</h4>
-                <p>La **Fibre Monomode** est essentielle pour les $>50\text{ km}$ car son affaiblissement ($\alpha \approx 0.2\text{ dB/km}$) est très faible. Le calcul de portée maximale est crucial.</p>
+                <h4>3.1. Fibre Optique (Liaisons Longue Distance)</h4>
+                <p>La <strong>Fibre Monomode</strong> est essentielle pour les $>50\text{ km}$ car son affaiblissement ($\alpha \approx 0.2\text{ dB/km}$) est très faible. Le calcul de portée maximale est crucial.</p>
                 <div class="formula">
                     $$L_{\max} (\text{km}) = \frac{\text{Marge}(\text{dB})}{\alpha (\text{dB/km})} \quad \text{où Marge} = P_{e} - S_{r} - L_{\text{autres}}$$
                 </div>
+                <p>Cette formule permet de dimensionner correctement les liaisons fibre optique.</p>
 
-                <h4 class="telecom-theme-color">3.2. Architecture Cellulaire (LTE/4G)</h4>
-                <p>Composants principaux : **UE** (User Equipment), **eNB** (Station de Base), **EPC** (Evolved Packet Core). La puissance est souvent répartie par **Resource Block (RB)**.</p>
+                <h4>3.2. Architecture Cellulaire (LTE/4G)</h4>
+                <p>Composants principaux : <strong>UE</strong> (User Equipment), <strong>eNB</strong> (Station de Base), <strong>EPC</strong> (Evolved Packet Core). La puissance est souvent répartie par <strong>Resource Block (RB)</strong>.</p>
+                <p>L'architecture LTE permet une gestion efficace des ressources radio et une qualité de service adaptative.</p>
                 
-                <h4 class="telecom-theme-color">3.3. Dimensionnement Wi-Fi/Bluetooth</h4>
+                <h4>3.3. Dimensionnement Wi-Fi/Bluetooth</h4>
                 <p>Le dimensionnement Wi-Fi (Projet) se fait en garantissant un niveau de signal minimum (RSSI) à la limite de la zone de couverture (ex: $RSSI_{\min} = -59\text{ dBm}$ pour une bonne qualité). L'affaiblissement permet de déduire la portée réelle.</p>
+                <p>Pour le Bluetooth, on privilégie la faible consommation d'énergie au détriment de la portée.</p>
             </div>
 
-            <h3 style="color: var(--primary-dark); margin-top: 3rem;">📝 Exercices Corrigés Détaillés (5 Exercices Ciblés)</h3>
+            <h3 style="color: var(--primary-dark); margin-top: 3rem; margin-bottom: 1.5rem; font-size: 1.8rem;"><i class="fas fa-pencil-alt"></i> Exercices Corrigés Détaillés (5 Exercices Ciblés)</h3>
 
             <div class="exercice">
-                <div class="exercice-header"><h4>Exercice T.1 - Bilan de Liaison complet (DM Q7)</h4><span class="difficulty difficile">DM Q7</span></div>
+                <div class="exercice-header">
+                    <h4>Exercice T.1 - Bilan de Liaison complet (DM Q7)</h4>
+                    <span class="difficulty dm">DM Q7</span>
+                </div>
                 <p><strong>Énoncé :</strong> Émetteur LTE $P_{e}=20\text{ W}, G_{e}=15\text{ dBi}$. $L_{P}=100\text{ dB}$. 1. Calculer la $\text{PIRE}$ en $\text{dBm}$. 2. $P_{r}$ en $\text{dBm}$.</p>
-                <button class="toggle-solution">Voir la solution</button>
-                <div class="solution active">
-                    <p>1. **Calcul de la PIRE :** $P_{e}(\text{W}) = 20\text{ W} \implies P_{e}(\text{dBm}) = 10 \log_{10}(20000) \approx 43\text{ dBm}$.</p>
-                    <div class="formula">$$\text{PIRE}(\text{dBm}) = P_{e}(\text{dBm}) + G_{e}(\text{dBi}) = 43\text{ dBm} + 15\text{ dBi} = \mathbf{58\text{ dBm}}$$</div>
-                    <p>2. **Calcul de $P_{r}$ :** $P_{r}(\text{dBm}) = \text{PIRE}(\text{dBm}) - L_{P}(\text{dB}) = 58\text{ dBm} - 100\text{ dB} = \mathbf{-42\text{ dBm}}$</p>
+                <button class="toggle-solution"><i class="fas fa-eye"></i> Voir la solution</button>
+                <div class="solution">
+                    <p><strong>Étape 1 : Conversion de la puissance d'émission</strong></p>
+                    <div class="formula">
+                        $$P_{e}(\text{W}) = 20\text{ W} \implies P_{e}(\text{dBm}) = 10 \log_{10}(20000) \approx 43\text{ dBm}$$
+                    </div>
+                    
+                    <p><strong>Étape 2 : Calcul de la PIRE</strong></p>
+                    <div class="formula">
+                        $$\text{PIRE}(\text{dBm}) = P_{e}(\text{dBm}) + G_{e}(\text{dBi}) = 43\text{ dBm} + 15\text{ dBi} = \mathbf{58\text{ dBm}}$$
+                    </div>
+                    
+                    <p><strong>Étape 3 : Calcul de la puissance reçue</strong></p>
+                    <div class="formula">
+                        $$P_{r}(\text{dBm}) = \text{PIRE}(\text{dBm}) - L_{P}(\text{dB}) = 58\text{ dBm} - 100\text{ dB} = \mathbf{-42\text{ dBm}}$$
+                    </div>
+                    
+                    <p><strong>Interprétation :</strong> La puissance reçue est de -42 dBm, ce qui est généralement acceptable pour une liaison LTE.</p>
                 </div>
             </div>
 
             <div class="exercice">
-                <div class="exercice-header"><h4>Exercice T.2 - Calcul du SINR avec 6 Interféreurs</h4><span class="difficulty difficile">DM Q7 (Suite)</span></div>
+                <div class="exercice-header">
+                    <h4>Exercice T.2 - Calcul du SINR avec 6 Interféreurs</h4>
+                    <span class="difficulty dm">DM Q7 (Suite)</span>
+                </div>
                 <p><strong>Énoncé :</strong> (Suite de l'Ex T.1) Bruit négligeable. 6 interféreurs identiques avec $P_{i} = -50\text{ dBm}$ chacun. Calculer le $SINR$ de la liaison en $\text{dB}$.</p>
-                <button class="toggle-solution">Voir la solution</button>
-                <div class="solution active">
-                    <p>1. **Conversion et Somme Interférence :** $P_{i}(\text{mW}) = 10^{-50/10} = 10^{-5}\text{ mW}$. $P_{I, tot} = 6 \times 10^{-5}\text{ mW}$.</p>
-                    <p>2. **Conversion $P_r$ :** $P_{r}(\text{mW}) = 10^{-42/10} \approx 6.31 \times 10^{-5}\text{ mW}$.</p>
+                <button class="toggle-solution"><i class="fas fa-eye"></i> Voir la solution</button>
+                <div class="solution">
+                    <p><strong>Étape 1 : Conversion des puissances en mW</strong></p>
+                    <div class="formula">
+                        $$P_{i}(\text{mW}) = 10^{-50/10} = 10^{-5}\text{ mW}$$
+                        $$P_{I, tot} = 6 \times 10^{-5}\text{ mW} = 6 \times 10^{-5}\text{ mW}$$
+                        $$P_{r}(\text{mW}) = 10^{-42/10} \approx 6.31 \times 10^{-5}\text{ mW}$$
+                    </div>
+                    
+                    <p><strong>Étape 2 : Calcul du SINR linéaire</strong></p>
                     <div class="formula">
                         $$\text{SINR}(\text{linéaire}) = \frac{P_{r}}{P_{I, tot}} = \frac{6.31 \times 10^{-5}}{6 \times 10^{-5}} \approx 1.05$$
+                    </div>
+                    
+                    <p><strong>Étape 3 : Conversion en dB</strong></p>
+                    <div class="formula">
                         $$\text{SINR}(\text{dB}) = 10 \cdot \log_{10}(1.05) \approx \mathbf{0.2\text{ dB}}$$
                     </div>
+                    
+                    <p><strong>Interprétation :</strong> Le SINR est très faible (0.2 dB), ce qui indique une liaison fortement perturbée par les interférences.</p>
                 </div>
             </div>
 
             <div class="exercice">
-                <div class="exercice-header"><h4>Exercice T.3 - Portée Maximale Fibre (Projet)</h4><span class="difficulty moyen">Projet Livrable</span></div>
+                <div class="exercice-header">
+                    <h4>Exercice T.3 - Portée Maximale Fibre (Projet)</h4>
+                    <span class="difficulty projet">Projet Livrable</span>
+                </div>
                 <p><strong>Énoncé :</strong> Fibre Monomode, $\alpha = 0.2\text{ dB/km}$. $P_{e}=0\text{ dBm}$. Sensibilité $S_{r}=-30\text{ dBm}$. Pertes totales $L_{p}=3\text{ dB}$. Calculer la portée maximale $L_{\max}$.</p>
-                <button class="toggle-solution">Voir la solution</button>
-                <div class="solution active">
-                    <p>On utilise la formule de Bilan Optique pour $L_{\max}$ :</p>
+                <button class="toggle-solution"><i class="fas fa-eye"></i> Voir la solution</button>
+                <div class="solution">
+                    <p><strong>Étape 1 : Calcul de la marge disponible</strong></p>
                     <div class="formula">
-                        $$L_{\max} = \frac{P_{e}(\text{dBm}) - S_{r}(\text{dBm}) - L_{\text{p}}}{\alpha} = \frac{0 - (-30) - 3}{0.2} = \frac{27}{0.2} = \mathbf{135\text{ km}}$$
+                        $$\text{Marge} = P_{e}(\text{dBm}) - S_{r}(\text{dBm}) - L_{\text{p}} = 0 - (-30) - 3 = 27\text{ dB}$$
                     </div>
+                    
+                    <p><strong>Étape 2 : Calcul de la portée maximale</strong></p>
+                    <div class="formula">
+                        $$L_{\max} = \frac{\text{Marge}}{\alpha} = \frac{27}{0.2} = \mathbf{135\text{ km}}$$
+                    </div>
+                    
+                    <p><strong>Interprétation :</strong> La fibre peut transporter le signal sur 135 km avant que la puissance ne descende en dessous du seuil de sensibilité.</p>
                 </div>
             </div>
             
             <div class="exercice">
-                <div class="exercice-header"><h4>Exercice T.4 - Dimensionnement Wi-Fi (Éval/APP)</h4><span class="difficulty difficile">APP/Evaluation</span></div>
+                <div class="exercice-header">
+                    <h4>Exercice T.4 - Dimensionnement Wi-Fi (Éval/APP)</h4>
+                    <span class="difficulty app">APP/Evaluation</span>
+                </div>
                 <p><strong>Énoncé :</strong> Un client utilise le Wi-Fi à $2.4\text{ GHz}$. L'affaiblissement est modélisé par $L_{P}(d) = 30 + 35 \log_{10}(d)$ (en $\text{dB}$, $d$ en $\text{km}$). L'émetteur ($PA$) émet à $20\text{ dBm}$. L'objectif $RSSI_{\min}$ est $-59\text{ dBm}$. Calculer la portée maximale $d_{\max}$ en $\text{m}$ (sans gain d'antenne utilisateur).</p>
-                <button class="toggle-solution">Voir la solution</button>
-                <div class="solution active">
-                    <p>La puissance reçue $P_r$ doit être égale à $RSSI_{\min}$ :</p>
-                    $$P_{r}(\text{dBm}) = P_{e}(\text{dBm}) - L_{P}(d)$$
-                    $$-59\text{ dBm} = 20\text{ dBm} - (30 + 35 \log_{10}(d_{\max}))$$
-                    $$35 \log_{10}(d_{\max}) = 20 - 30 - (-59) = 49\text{ dB}$$
-                    $$\log_{10}(d_{\max}) = 49 / 35 \approx 1.4$$
-                    $$d_{\max} = 10^{1.4} \approx 25.12 \text{ km}$$
-                    <p>En mètres : $d_{\max} = 25120\text{ m}$. (Note : La portée est grande pour une propagation Indoor, le modèle utilisé étant simpliste).</p>
+                <button class="toggle-solution"><i class="fas fa-eye"></i> Voir la solution</button>
+                <div class="solution">
+                    <p><strong>Étape 1 : Équation du bilan de liaison</strong></p>
+                    <div class="formula">
+                        $$P_{r}(\text{dBm}) = P_{e}(\text{dBm}) - L_{P}(d)$$
+                        $$-59\text{ dBm} = 20\text{ dBm} - (30 + 35 \log_{10}(d_{\max}))$$
+                    </div>
+                    
+                    <p><strong>Étape 2 : Résolution de l'équation</strong></p>
+                    <div class="formula">
+                        $$35 \log_{10}(d_{\max}) = 20 - 30 - (-59) = 49\text{ dB}$$
+                        $$\log_{10}(d_{\max}) = 49 / 35 \approx 1.4$$
+                        $$d_{\max} = 10^{1.4} \approx 25.12 \text{ km}$$
+                    </div>
+                    
+                    <p><strong>Étape 3 : Conversion en mètres</strong></p>
+                    <div class="formula">
+                        $$d_{\max} = 25120\text{ m}$$
+                    </div>
+                    
+                    <p><strong>Note :</strong> La portée est grande pour une propagation Indoor, le modèle utilisé étant simpliste. En réalité, les obstacles réduisent considérablement cette portée.</p>
                 </div>
             </div>
 
-            <h3 style="color: var(--primary-dark); margin-top: 3rem;">🔥 Tips et Mises en Garde Critiques</h3>
+            <h3 style="color: var(--primary-dark); margin-top: 3rem; margin-bottom: 1.5rem; font-size: 1.8rem;"><i class="fas fa-exclamation-triangle"></i> Tips et Mises en Garde Critiques</h3>
 
-            <div class="example" style="border-left: 3px solid var(--primary-green);">
-                <h4>Erreurs Courantes (DM Q9)</h4>
+            <div class="example" style="border-left: 4px solid #27ae60;">
+                <h4><i class="fas fa-bug"></i> Erreurs Courantes (DM Q9)</h4>
                 <ul>
-                    <li>**dB vs Linéaire :** Toujours convertir les puissances et les interférences en **mW** ou **W (linéaire)** avant de les additionner (dénominateur du SINR).</li>
-                    <li>**dB vs dBi :** $P_{e}(\text{dBm})$ + $G_{e}(\text{dBi})$ $\to$ $\text{PIRE}(\text{dBm})$. Les $\text{dBi}$ et $\text{dB}$ sont additifs/soustractifs.</li>
-                    <li>**Causes des Écarts (DM Q9) :** **Multipath**, **Masques de Terrain/Bâtiments**, **Contrôle de Puissance**.</li>
+                    <li><strong>dB vs Linéaire :</strong> Toujours convertir les puissances et les interférences en <strong>mW</strong> ou <strong>W (linéaire)</strong> avant de les additionner (dénominateur du SINR).</li>
+                    <li><strong>dB vs dBi :</strong> $P_{e}(\text{dBm})$ + $G_{e}(\text{dBi})$ $\to$ $\text{PIRE}(\text{dBm})$. Les $\text{dBi}$ et $\text{dB}$ sont additifs/soustractifs.</li>
+                    <li><strong>Causes des Écarts (DM Q9) :</strong> <strong>Multipath</strong>, <strong>Masques de Terrain/Bâtiments</strong>, <strong>Contrôle de Puissance</strong>.</li>
                 </ul>
             </div>
 
-            <div class="example" style="border-left: 3px solid var(--primary-dark);">
-                <h4>Choix Technologiques (Projet)</h4>
+            <div class="example" style="border-left: 4px solid #e74c3c;">
+                <h4><i class="fas fa-cogs"></i> Choix Technologiques (Projet)</h4>
                 <ul>
-                    <li>**Liaison Longue Distance ($>50\text{ km}$) :** Choisir la **Fibre Monomode** ($\alpha \approx 0.2\text{ dB/km}$).</li>
-                    <li>**Réseau Indoor Capteurs :** **Bluetooth** (faible consommation, faible débit, liaison Objets-Passerelle).</li>
-                    <li>**Réseau Indoor Central :** **Wi-Fi** (débit moyen/élevé, liaison Passerelles-Serveur).</li>
+                    <li><strong>Liaison Longue Distance ($>50\text{ km}$) :</strong> Choisir la <strong>Fibre Monomode</strong> ($\alpha \approx 0.2\text{ dB/km}$).</li>
+                    <li><strong>Réseau Indoor Capteurs :</strong> <strong>Bluetooth</strong> (faible consommation, faible débit, liaison Objets-Passerelle).</li>
+                    <li><strong>Réseau Indoor Central :</strong> <strong>Wi-Fi</strong> (débit moyen/élevé, liaison Passerelles-Serveur).</li>
                 </ul>
             </div>
             
-            <h3 style="color: var(--primary-dark); margin-top: 3rem;">❓ Quiz de Révision Télécom</h3>
+            <h3 style="color: var(--primary-dark); margin-top: 3rem; margin-bottom: 1.5rem; font-size: 1.8rem;"><i class="fas fa-brain"></i> Quiz de Révision Télécom</h3>
+            
             <div class="exercice quiz-box">
-                <div class="exercice-header"><h4 style="color: var(--primary-dark);">QUIZ T.1 - Shannon</h4></div>
+                <div class="exercice-header">
+                    <h4><i class="fas fa-question-circle"></i> QUIZ T.1 - Shannon</h4>
+                </div>
                 <p>Le débit d'une liaison est limité par le SINR. Si vous doublez la bande passante $B$ et que vous laissez le $S/N$ constant, le débit $C$ :</p>
-                <button class="toggle-solution">Voir la réponse</button>
-                <div class="solution active">
-                    <p>Réponse : **Double** (car $C$ est directement proportionnel à $B$).</p>
+                <button class="toggle-solution"><i class="fas fa-lightbulb"></i> Voir la réponse</button>
+                <div class="solution">
+                    <p><strong>Réponse :</strong> <strong>Double</strong> (car $C$ est directement proportionnel à $B$).</p>
+                    <p><strong>Justification :</strong> D'après la formule de Shannon $C = B \cdot \log_2(1 + S/N)$, si on double B, C double également.</p>
                 </div>
             </div>
+            
             <div class="exercice quiz-box">
-                <div class="exercice-header"><h4 style="color: var(--primary-dark);">QUIZ T.2 - Bruit</h4></div>
+                <div class="exercice-header">
+                    <h4><i class="fas fa-question-circle"></i> QUIZ T.2 - Bruit</h4>
+                </div>
                 <p>Si la puissance de bruit thermique dans un canal de $1\text{ MHz}$ est $N_0$, quelle est-elle dans un canal de $10\text{ MHz}$ ?</p>
-                <button class="toggle-solution">Voir la réponse</button>
-                <div class="solution active">
-                    <p>Réponse : Elle augmente de $10 \cdot \log_{10}(10/1) = \mathbf{10\text{ dB}}$.</p>
+                <button class="toggle-solution"><i class="fas fa-lightbulb"></i> Voir la réponse</button>
+                <div class="solution">
+                    <p><strong>Réponse :</strong> Elle augmente de $10 \cdot \log_{10}(10/1) = \mathbf{10\text{ dB}}$.</p>
+                    <p><strong>Justification :</strong> La puissance de bruit thermique est proportionnelle à la bande passante : $P_{bruit} = kTB$.</p>
                 </div>
             </div>
+            
             <div class="exercice quiz-box">
-                <div class="exercice-header"><h4 style="color: var(--primary-dark);">QUIZ T.3 - Bilan</h4></div>
+                <div class="exercice-header">
+                    <h4><i class="fas fa-question-circle"></i> QUIZ T.3 - Bilan</h4>
+                </div>
                 <p>Si vous avez une PIRE de $50\text{ dBm}$ et un affaiblissement $L_{P}$ de $120\text{ dB}$, et $G_r=0\text{ dBi}$, que vaut $P_r$ ?</p>
-                <button class="toggle-solution">Voir la réponse</button>
-                <div class="solution active">
-                    <p>Réponse : $P_r = 50 - 120 = \mathbf{-70\text{ dBm}}$.</p>
+                <button class="toggle-solution"><i class="fas fa-lightbulb"></i> Voir la réponse</button>
+                <div class="solution">
+                    <p><strong>Réponse :</strong> $P_r = 50 - 120 = \mathbf{-70\text{ dBm}}$.</p>
+                    <p><strong>Justification :</strong> D'après la formule du bilan de liaison : $P_r = PIRE - L_P + G_r = 50 - 120 + 0 = -70$ dBm.</p>
                 </div>
             </div>
         </div>
     </section>
+
+    <script>
+        // Gestion des solutions d'exercices
+        document.querySelectorAll('.toggle-solution').forEach(button => {
+            button.addEventListener('click', function() {
+                const solution = this.nextElementSibling;
+                solution.classList.toggle('active');
+                this.innerHTML = solution.classList.contains('active') 
+                    ? '<i class="fas fa-eye-slash"></i> Masquer la solution' 
+                    : '<i class="fas fa-eye"></i> Voir la solution';
+            });
+        });
+
+        // Animation au défilement
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observer les éléments à animer
+        document.querySelectorAll('.exercice, .fiche-revision, .topic-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
