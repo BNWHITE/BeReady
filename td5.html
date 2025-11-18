@@ -4,119 +4,646 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TD5 - Vecteurs Gaussiens & Covariance</title>
-    <link rel="stylesheet" href="style2.css">
-    <script src="script.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
-        /* Styles thématiques TD5 */
-        .td-detail h2 { border-bottom: 3px solid var(--td-color-5); padding-bottom: 10px; }
-        .fiche-revision { border-left-color: var(--td-color-5); }
-        .fiche-revision h4 { color: var(--td-color-5); } 
-        .solution.active { border-left-color: var(--td-color-5); background-color: #e6f7e8; }
-        .quiz-box { border: 1px solid var(--td-color-5); }
-        .quiz-box h4 { color: var(--td-color-5) !important; }
+        :root {
+            /* --- Couleurs Générales --- */
+            --primary-green: #27ae60; /* Couleur principale TD5 */
+            --primary-dark: #2C3E50; /* Couleur du texte et des éléments sombres */
+            --secondary-gray: #f8f9fa; /* Arrière-plan clair */
+            --white: #FFFFFF;
+            --light-green: #eafaf1;
+            --medium-green: #d5f5e3;
+            --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 6px 15px rgba(0, 0, 0, 0.1);
+            --shadow-heavy: 0 10px 30px rgba(0, 0, 0, 0.15);
+            
+            /* --- Couleurs de feedback --- */
+            --bg-solution: #eafaf1; /* Fond très clair pour la solution */
+            --bg-quiz: #f4f6f8;     /* Fond clair pour les zones d'exercices supp. et quiz */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: var(--secondary-gray);
+            color: var(--primary-dark);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+            padding: 0;
+        }
+
+        /* ------------------------------------- */
+        /* --- 1. STRUCTURE ET NAVIGATION --- */
+        /* ------------------------------------- */
+
+        .page {
+            padding: 20px 5%;
+            min-height: 100vh;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .td-detail {
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-heavy);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .td-detail::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary-green), #229954);
+        }
+
+        .td-detail h2 {
+            color: var(--primary-green);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            border-bottom: 3px solid var(--primary-green);
+            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 25px;
+            padding: 12px 20px;
+            background-color: var(--primary-green);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background-color: #229954;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .section-description {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            padding: 15px;
+            background-color: var(--light-green);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-green);
+        }
+
+        .separator {
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--primary-green), transparent);
+            margin: 40px 0;
+        }
+
+        /* ------------------------------------- */
+        /* --- 2. FICHES ET EXERCICES (CLE) --- */
+        /* ------------------------------------- */
+
+        /* Style du bloc de révision */
+        .fiche-revision {
+            border-left: 5px solid var(--primary-green);
+            padding: 25px;
+            margin: 30px 0;
+            background-color: var(--light-green);
+            border-radius: 0 12px 12px 0;
+            box-shadow: var(--shadow-light);
+        }
+
+        .fiche-revision h3 {
+            color: var(--primary-green);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .fiche-revision h4 {
+            margin-top: 1.8rem;
+            color: var(--primary-green);
+            font-size: 1.2rem;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed var(--medium-green);
+        }
+
+        .fiche-revision p {
+            margin-bottom: 15px;
+        }
+
+        /* Style des exercices */
+        .exercice {
+            border: 1px solid #e0e0e0;
+            padding: 25px;
+            margin-top: 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-light);
+            background-color: var(--white);
+            transition: all 0.3s;
+        }
+
+        .exercice:hover {
+            box-shadow: var(--shadow-medium);
+            transform: translateY(-3px);
+        }
+
+        .exercice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .exercice h4 {
+            color: var(--primary-dark);
+            font-size: 1.3rem;
+        }
+
+        .difficulty {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .facile { background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+        .moyen { background-color: #fff3e0; color: #ef6c00; border: 1px solid #ffe0b2; }
+        .difficile { background-color: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+
+        /* Bouton et solution (Animation Smooth) */
+        .toggle-solution {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--primary-green);
+            color: var(--white);
+            border: none;
+            padding: 12px 20px;
+            margin-top: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .toggle-solution:hover {
+            background-color: #229954;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .solution {
+            margin-top: 20px;
+            padding: 0 20px;
+            border-left: 4px solid var(--primary-green);
+            background-color: var(--bg-solution);
+            border-radius: 0 8px 8px 0;
+            
+            /* Propriétés pour l'animation (Initial state) */
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.4s ease-out;
+        }
+
+        /* État actif (géré par JS) */
+        .solution.active {
+            opacity: 1;
+            max-height: 2000px;
+            padding: 20px;
+        }
+
+        .formula {
+            background-color: var(--primary-dark);
+            color: var(--white);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            box-shadow: var(--shadow-light);
+        }
+
+        /* Styles des Tips et des Fiches Supp. */
+        .example {
+            margin-top: 20px;
+            border-left: 4px solid #ff9800;
+            padding: 20px;
+            background-color: #fff8e1;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .example h4 {
+            color: #ff9800;
+            margin-top: 0;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Style de la carte d'exercices supplémentaires */
+        .topic-card {
+            padding: 20px;
+            background-color: var(--bg-quiz);
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid var(--primary-green);
+        }
+
+        .topic-card h4 {
+            color: var(--primary-green);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .topic-card ul {
+            padding-left: 20px;
+        }
+
+        .topic-card li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        /* Style du quiz */
+        .quiz-box {
+            border: 2px solid var(--primary-green);
+            background-color: var(--light-green);
+        }
+
+        .quiz-box h4 {
+            color: var(--primary-green) !important;
+        }
+
+        /* Style pour les listes */
+        ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page {
+                padding: 15px 3%;
+            }
+            
+            .td-detail {
+                padding: 25px;
+            }
+            
+            .td-detail h2 {
+                font-size: 1.8rem;
+            }
+            
+            .exercice-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .formula {
+                font-size: 0.9rem;
+                padding: 15px;
+            }
+        }
+
+        /* Animation pour les éléments qui apparaissent */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .exercice, .fiche-revision, .topic-card {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Style pour les icônes */
+        .icon {
+            margin-right: 8px;
+        }
+        
+        /* Tableau pour les lois de probabilité */
+        .probability-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .probability-table th, .probability-table td {
+            padding: 12px 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        
+        .probability-table th {
+            background-color: var(--primary-green);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .probability-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .probability-table tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        /* Style pour les matrices */
+        .matrix {
+            display: inline-block;
+            margin: 10px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .matrix table {
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+        
+        .matrix td {
+            padding: 8px 12px;
+            text-align: center;
+            border: 1px solid #dee2e6;
+        }
+        
+        .matrix .left-bracket, .matrix .right-bracket {
+            font-size: 1.5rem;
+            padding: 0 5px;
+            vertical-align: middle;
+        }
     </style>
 </head>
 <body>
     <section id="td5" class="page active">
-        <a href="index.html#proba-tds" class="back-btn">← Retour aux TDs</a>
+        <a href="index.html#proba-tds" class="back-btn"><i class="fas fa-arrow-left"></i> Retour aux TDs</a>
+        
         <div class="td-detail">
-            <h2>🟢 TD5 - Vecteurs Gaussiens & Covariance</h2>
-            <p class="section-description">Analyse de la loi normale multivariée, matrice de covariance et non-corrélation.</p>
-            <hr class="separator" style="margin: 20px 0;">
+            <h2><i class="fas fa-chart-line"></i> TD5 - Vecteurs Gaussiens & Covariance</h2>
+            <p class="section-description">Étude approfondie de la loi normale multivariée, matrice de covariance, non-corrélation et propriétés des vecteurs gaussiens. Ce TD vous prépare à analyser des systèmes multivariés et leurs dépendances.</p>
+            
+            <hr class="separator">
 
             <div class="fiche-revision">
-                <h3>💡 Fiche de Révision : Lois et Propriétés Gaussiennes</h3>
+                <h3><i class="fas fa-lightbulb"></i> Fiche de Révision : Lois et Propriétés Gaussiennes</h3>
                 
-                <h4 class="td-theme-color">1. Règle d'Or du Gaussien (Cours 5)</h4>
-                <p>Si $(X,Y)$ est un vecteur Gaussien : **$X, Y$ indépendantes $\iff Cov(X,Y)=0$**.</p>
+                <h4>1. Règle d'Or du Gaussien (Cours 5)</h4>
+                <p>Si $(X,Y)$ est un vecteur Gaussien : <strong>$X, Y$ indépendantes $\iff Cov(X,Y)=0$</strong>.</p>
+                <p><strong>Attention :</strong> Cette équivalence n'est vraie que pour les vecteurs gaussiens. Dans le cas général, la covariance nulle n'implique pas l'indépendance.</p>
                 
-                <h4 class="td-theme-color">2. Matrice de Covariance $V(X,Y)$</h4>
+                <h4>2. Matrice de Covariance $V(X,Y)$</h4>
                 <div class="formula">
                     $$V(X,Y)=\begin{pmatrix} Var(X) & Cov(X,Y) \\ Cov(X,Y) & Var(Y) \end{pmatrix}$$
                 </div>
+                <p>La matrice de covariance est toujours symétrique et semi-définie positive.</p>
                 
-                <h4 class="td-theme-color">3. Variance d'une Combinaison Linéaire</h4>
+                <h4>3. Variance d'une Combinaison Linéaire</h4>
                 <div class="formula">
                     $$Var(aX+bY) = a^2 Var(X) + b^2 Var(Y) + 2ab Cov(X,Y)$$
                 </div>
+                <p>Cette formule se généralise à n variables : $Var(\sum a_i X_i) = \sum a_i^2 Var(X_i) + 2\sum_{i<j} a_i a_j Cov(X_i, X_j)$</p>
                 
                 <div class="example">
-                    <h4>🔥 Tip : Combinaisons linéaires</h4>
+                    <h4><i class="fas fa-fire"></i> Tip : Combinaisons linéaires de vecteurs gaussiens</h4>
                     <p>Si $(X,Y)$ est un vecteur Gaussien, toute combinaison linéaire de $X$ et $Y$ est aussi une V.A. gaussienne.</p>
+                    <p>Plus généralement : si $X \sim N(\mu, \Sigma)$ et $A$ est une matrice, alors $AX \sim N(A\mu, A\Sigma A^T)$.</p>
                 </div>
             </div>
 
-            <h3 style="color: var(--primary-dark); margin-top: 3rem;">📝 Exercices Corrigés Détaillés</h3>
+            <h3 style="color: var(--primary-green); margin-top: 3rem; margin-bottom: 1.5rem; font-size: 1.8rem;"><i class="fas fa-pencil-alt"></i> Exercices Corrigés Détaillés</h3>
 
             <div class="exercice">
-                <div class="exercice-header"><h4>Exercice 5.1 - Variable Centrée Réduite (TD5-1)</h4><span class="difficulty facile">Facile</span></div>
-                <p><strong>Énoncé :</strong> $X \sim N(2, 2^2)$. Calculer $P(0 \le X < 4)$.</p>
-                <button class="toggle-solution">Voir la solution</button>
+                <div class="exercice-header">
+                    <h4>Exercice 5.1 - Variable Centrée Réduite (TD5-1)</h4>
+                    <span class="difficulty facile">Facile</span>
+                </div>
+                <p><strong>Énoncé :</strong> Soit $X \sim N(2, 2^2)$. Calculer $P(0 \le X < 4)$.</p>
+                <button class="toggle-solution"><i class="fas fa-eye"></i> Voir la solution</button>
                 <div class="solution">
-                    <p>On centre et réduit $T = (X-2)/2$.</p>
+                    <p><strong>Étape 1 : Standardisation</strong></p>
+                    <p>On centre et réduit $T = (X-2)/2 \sim N(0,1)$.</p>
                     <div class="formula">
                         $$P(0 \le X < 4) = P\left(\frac{0-2}{2} \le T < \frac{4-2}{2}\right) = P(-1 \le T < 1)$$
-                        $$P(-1 \le T < 1) = P(T<1) - P(T \le -1) = P(T<1) - (1 - P(T \le 1))$$
                     </div>
-                    <p>En utilisant la table $P(T \le 1) \approx 0.8413$ : $P(-1 \le T < 1) = 2 \times P(0 \le T < 1) = 2 \times (0.8413 - 0.5) = \mathbf{0.6826}$ (TD5-1 d)).</p>
+                    
+                    <p><strong>Étape 2 : Utilisation des propriétés de symétrie</strong></p>
+                    <div class="formula">
+                        $$P(-1 \le T < 1) = P(T<1) - P(T \le -1) = P(T<1) - (1 - P(T \le 1))$$
+                        $$P(-1 \le T < 1) = 2P(T<1) - 1 = 2P(0 \le T < 1)$$
+                    </div>
+                    
+                    <p><strong>Étape 3 : Utilisation de la table de la loi normale</strong></p>
+                    <p>En utilisant la table $P(T \le 1) \approx 0.8413$ :</p>
+                    <div class="formula">
+                        $$P(-1 \le T < 1) = 2 \times (0.8413 - 0.5) = 2 \times 0.3413 = \mathbf{0.6826}$$
+                    </div>
+                    
+                    <p><strong>Interprétation :</strong> La probabilité que X soit dans l'intervalle [0,4] est d'environ 68.26%.</p>
                 </div>
             </div>
 
             <div class="exercice">
-                <div class="exercice-header"><h4>Exercice 5.2 - Indépendance et Covariance (TD5-3)</h4><span class="difficulty difficile">Difficile</span></div>
-                <p><strong>Énoncé :</strong> $(X, Y)$ gaussien, $Var(X)=4, Var(Y)=1$. $U=2X+Y$ et $V=X-3Y$ sont **indépendantes**. Déterminer $Cov(X,Y)$.</p>
-                <button class="toggle-solution">Voir la solution</button>
+                <div class="exercice-header">
+                    <h4>Exercice 5.2 - Indépendance et Covariance (TD5-3)</h4>
+                    <span class="difficulty difficile">Difficile</span>
+                </div>
+                <p><strong>Énoncé :</strong> Soit $(X, Y)$ un vecteur gaussien avec $Var(X)=4$, $Var(Y)=1$. On définit $U=2X+Y$ et $V=X-3Y$. On sait que $U$ et $V$ sont <strong>indépendantes</strong>. Déterminer $Cov(X,Y)$.</p>
+                <button class="toggle-solution"><i class="fas fa-eye"></i> Voir la solution</button>
                 <div class="solution">
-                    <p>L'indépendance $\iff Cov(U, V) = 0$. Utilisation de la bilinéarité de $Cov$ :</p>
+                    <p><strong>Étape 1 : Utilisation de la propriété d'indépendance</strong></p>
+                    <p>Pour un vecteur gaussien, l'indépendance est équivalente à la covariance nulle : $Cov(U, V) = 0$.</p>
+                    
+                    <p><strong>Étape 2 : Calcul de $Cov(U, V)$</strong></p>
+                    <p>Utilisation de la bilinéarité de la covariance :</p>
                     <div class="formula">
-                        $$Cov(U, V) = 2 Cov(X, X) + (1 \cdot 1 - 2 \cdot 3) Cov(X, Y) - 3 Cov(Y, Y) = 0$$<br>
-                        $$2 Var(X) - 5 Cov(X, Y) - 3 Var(Y) = 0 \implies 8 - 5 Cov(X, Y) - 3 = 0$$<br>
+                        $$Cov(U, V) = Cov(2X+Y, X-3Y)$$
+                        $$= 2Cov(X, X) - 6Cov(X, Y) + Cov(Y, X) - 3Cov(Y, Y)$$
+                        $$= 2Var(X) - 5Cov(X, Y) - 3Var(Y)$$
+                    </div>
+                    
+                    <p><strong>Étape 3 : Résolution de l'équation</strong></p>
+                    <p>On sait que $Cov(U, V) = 0$, $Var(X)=4$, $Var(Y)=1$ :</p>
+                    <div class="formula">
+                        $$2 \times 4 - 5Cov(X, Y) - 3 \times 1 = 0$$
+                        $$8 - 5Cov(X, Y) - 3 = 0$$
+                        $$5 - 5Cov(X, Y) = 0$$
                         $$Cov(X,Y) = \mathbf{1}$$
                     </div>
+                    
+                    <p><strong>Vérification :</strong> Le coefficient de corrélation est $\rho(X,Y) = \frac{Cov(X,Y)}{\sqrt{Var(X)Var(Y)}} = \frac{1}{\sqrt{4 \times 1}} = 0.5$.</p>
                 </div>
             </div>
 
             <div class="exercice">
-                <div class="exercice-header"><h4>Exercice 5.3 - Matrice de Covariance (TD5-3)</h4><span class="difficulty difficile">Difficile</span></div>
-                <p><strong>Énoncé :</strong> Calculer la matrice de covariance $V$ du vecteur $(X+Y, 2X-Y)$ avec les données de l'Ex. 5.2.</p>
-                <button class="toggle-solution">Voir la solution</button>
+                <div class="exercice-header">
+                    <h4>Exercice 5.3 - Matrice de Covariance (TD5-3)</h4>
+                    <span class="difficulty difficile">Difficile</span>
+                </div>
+                <p><strong>Énoncé :</strong> Calculer la matrice de covariance $V$ du vecteur $(X+Y, 2X-Y)$ avec les données de l'Exercice 5.2 ($Var(X)=4$, $Var(Y)=1$, $Cov(X,Y)=1$).</p>
+                <button class="toggle-solution"><i class="fas fa-eye"></i> Voir la solution</button>
                 <div class="solution">
-                    <p>1. $Var(X+Y) = Var(X)+Var(Y)+2Cov(X,Y) = 4+1+2(1) = 7$.</p>
-                    <p>2. $Var(2X-Y) = 4Var(X)+Var(Y)-4Cov(X,Y) = 16+1-4(1) = 13$.</p>
-                    <p>3. $Cov(X+Y, 2X-Y) = 2Var(X) - Var(Y) + Cov(X,Y) = 2(4) - 1 + 1 = 8$.</p>
-                    <div class="formula">$$V = \begin{pmatrix} 7 & 8 \\ 8 & 13 \end{pmatrix}$$</div>
+                    <p><strong>Étape 1 : Calcul de $Var(X+Y)$</strong></p>
+                    <div class="formula">
+                        $$Var(X+Y) = Var(X) + Var(Y) + 2Cov(X,Y) = 4 + 1 + 2 \times 1 = 7$$
+                    </div>
+                    
+                    <p><strong>Étape 2 : Calcul de $Var(2X-Y)$</strong></p>
+                    <div class="formula">
+                        $$Var(2X-Y) = 4Var(X) + Var(Y) - 4Cov(X,Y) = 16 + 1 - 4 \times 1 = 13$$
+                    </div>
+                    
+                    <p><strong>Étape 3 : Calcul de $Cov(X+Y, 2X-Y)$</strong></p>
+                    <div class="formula">
+                        $$Cov(X+Y, 2X-Y) = 2Cov(X,X) - Cov(X,Y) + 2Cov(Y,X) - Cov(Y,Y)$$
+                        $$= 2Var(X) + Cov(X,Y) - Var(Y) = 2 \times 4 + 1 - 1 = 8$$
+                    </div>
+                    
+                    <p><strong>Étape 4 : Construction de la matrice de covariance</strong></p>
+                    <div class="formula">
+                        $$V = \begin{pmatrix} 7 & 8 \\ 8 & 13 \end{pmatrix}$$
+                    </div>
+                    
+                    <p><strong>Vérification :</strong> La matrice est bien symétrique et définie positive (déterminant = 7×13 - 8×8 = 91 - 64 = 27 > 0).</p>
                 </div>
             </div>
             
             <div class="exercice">
-                <div class="exercice-header"><h4>Exercice 5.4 - Espérance Conditionnelle (TD5-4)</h4><span class="difficulty moyen">Moyen</span></div>
-                <p><strong>Énoncé :</strong> Reprendre le couple (X,Y) du TD4-2. Calculer $E(X|Y \ne 2)$.</p>
-                <button class="toggle-solution">Voir la solution</button>
+                <div class="exercice-header">
+                    <h4>Exercice 5.4 - Espérance Conditionnelle (TD5-4)</h4>
+                    <span class="difficulty moyen">Moyen</span>
+                </div>
+                <p><strong>Énoncé :</strong> Reprendre le couple (X,Y) du TD4-2 (loi jointe donnée). Calculer $E(X|Y \ne 2)$.</p>
+                <button class="toggle-solution"><i class="fas fa-eye"></i> Voir la solution</button>
                 <div class="solution">
-                    <p>$P(Y \ne 2) = 1 - P(Y=2) = 1 - 0.20 = 0.80$.</p>
+                    <p><strong>Étape 1 : Calcul de $P(Y \ne 2)$</strong></p>
                     <div class="formula">
-                        $$P(X=-2|Y \ne 2) = \frac{P(X=-2, Y \ne 2)}{0.8} = \frac{0.2+0.2}{0.8} = 0.5$$<br>
-                        $$E(X|Y \ne 2) = (-2)(0.5) + (0)(0.25) + (1)(0.25) = \mathbf{-0.75}$$
+                        $$P(Y \ne 2) = 1 - P(Y=2) = 1 - 0.20 = 0.80$$
                     </div>
+                    
+                    <p><strong>Étape 2 : Calcul des probabilités conditionnelles</strong></p>
+                    <div class="formula">
+                        $$P(X=-2|Y \ne 2) = \frac{P(X=-2, Y \ne 2)}{0.8} = \frac{0.2+0.2}{0.8} = 0.5$$
+                        $$P(X=0|Y \ne 2) = \frac{P(X=0, Y \ne 2)}{0.8} = \frac{0.1+0.1}{0.8} = 0.25$$
+                        $$P(X=1|Y \ne 2) = \frac{P(X=1, Y \ne 2)}{0.8} = \frac{0.2+0}{0.8} = 0.25$$
+                    </div>
+                    
+                    <p><strong>Étape 3 : Calcul de l'espérance conditionnelle</strong></p>
+                    <div class="formula">
+                        $$E(X|Y \ne 2) = (-2)(0.5) + (0)(0.25) + (1)(0.25) = -1 + 0 + 0.25 = \mathbf{-0.75}$$
+                    </div>
+                    
+                    <p><strong>Interprétation :</strong> Sachant que Y n'est pas égal à 2, l'espérance de X est -0.75.</p>
                 </div>
             </div>
             
-            <h3 style="color: var(--primary-dark); margin-top: 3rem;">❓ Quiz TD5 & Ex. Supplémentaires</h3>
+            <h3 style="color: var(--primary-green); margin-top: 3rem; margin-bottom: 1.5rem; font-size: 1.8rem;"><i class="fas fa-question-circle"></i> Quiz TD5 & Exercices Supplémentaires</h3>
+            
             <div class="topic-card">
-                <h4>Fiche d'Exercices Supplémentaires</h4>
-                <ul style="padding-left: 20px;">
-                    <li>**TD5-2 :** Étudier le vecteur non-gaussien $Y=\epsilon X$ où $X \sim U(-1,1)$ et $\epsilon$ est un signe aléatoire pour prouver la non-réciproque de la Règle d'Or.</li>
+                <h4><i class="fas fa-plus-circle"></i> Fiche d'Exercices Supplémentaires</h4>
+                <ul>
+                    <li><strong>TD5-2 :</strong> Étudier le vecteur non-gaussien $Y=\epsilon X$ où $X \sim U(-1,1)$ et $\epsilon$ est un signe aléatoire pour prouver la non-réciproque de la Règle d'Or.</li>
+                    <li><strong>Vecteurs gaussiens :</strong> Étudier les propriétés de transformation linéaire des vecteurs gaussiens.</li>
+                    <li><strong>Matrice de covariance :</strong> Calculer la matrice de covariance pour des vecteurs de dimension supérieure à 2.</li>
+                    <li><strong>Indépendance et corrélation :</strong> Construire des exemples de variables non corrélées mais dépendantes.</li>
                 </ul>
             </div>
+            
             <div class="exercice quiz-box">
-                <div class="exercice-header"><h4 style="color: var(--td-color-5);">QUIZ TD5 - Corrélation</h4></div>
-                <p>Si $\rho(X,Y)=1/2$, est-ce que $X$ et $Y$ sont indépendantes ?</p>
-                <button class="toggle-solution">Voir la réponse</button>
+                <div class="exercice-header">
+                    <h4><i class="fas fa-brain"></i> QUIZ TD5 - Corrélation et Indépendance</h4>
+                </div>
+                <p><strong>Question 1 :</strong> Si $\rho(X,Y)=1/2$, est-ce que $X$ et $Y$ sont indépendantes ?</p>
+                <p><strong>Question 2 :</strong> Pour un vecteur gaussien $(X,Y)$, que peut-on dire si $Cov(X,Y)=0$ ?</p>
+                <p><strong>Question 3 :</strong> La covariance peut-elle être négative ? Donner une interprétation.</p>
+                <button class="toggle-solution"><i class="fas fa-lightbulb"></i> Voir les réponses</button>
                 <div class="solution">
-                    <p>Réponse : Non. Un coefficient de corrélation non nul ($\ne 0$) indique une dépendance linéaire, donc une dépendance tout court.</p>
+                    <p><strong>Réponse 1 :</strong></p>
+                    <p>Non. Un coefficient de corrélation non nul ($\ne 0$) indique une dépendance linéaire, donc une dépendance tout court. L'indépendance implique une corrélation nulle, mais la réciproque n'est vraie que pour les vecteurs gaussiens.</p>
+                    
+                    <p><strong>Réponse 2 :</strong></p>
+                    <p>Pour un vecteur gaussien, si $Cov(X,Y)=0$, alors $X$ et $Y$ sont indépendantes. C'est la fameuse "règle d'or" des vecteurs gaussiens.</p>
+                    
+                    <p><strong>Réponse 3 :</strong></p>
+                    <p>Oui, la covariance peut être négative. Une covariance négative indique que lorsque X augmente, Y a tendance à diminuer, et vice versa.</p>
+                    
+                    <p><strong>Justification :</strong> Ces propriétés sont fondamentales pour comprendre les relations entre variables aléatoires.</p>
                 </div>
             </div>
         </div>
     </section>
+
+    <script>
+        // Gestion des solutions d'exercices
+        document.querySelectorAll('.toggle-solution').forEach(button => {
+            button.addEventListener('click', function() {
+                const solution = this.nextElementSibling;
+                solution.classList.toggle('active');
+                this.innerHTML = solution.classList.contains('active') 
+                    ? '<i class="fas fa-eye-slash"></i> Masquer la solution' 
+                    : '<i class="fas fa-eye"></i> Voir la solution';
+            });
+        });
+
+        // Animation au défilement
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observer les éléments à animer
+        document.querySelectorAll('.exercice, .fiche-revision, .topic-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
