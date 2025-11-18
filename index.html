@@ -4,374 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ISEP A1 - Révisions Probabilités 2025</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary-purple: #6366f1;
-            --primary-dark: #4338ca;
-            --accent-orange: #f59e0b;
-            --text-dark: #1f2937;
-            --text-light: #6b7280;
-            --bg-light: #f9fafb;
-            --bg-white: #ffffff;
-            --border-color: #e5e7eb;
-            --success-green: #10b981;
-            --warning-red: #ef4444;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--text-dark);
-            background: var(--bg-light);
-        }
-
-        /* Header & Navigation */
-        .header {
-            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-dark) 100%);
-            color: white;
-            padding: 2rem 0;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .header h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .header-subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .exam-date {
-            background: rgba(255,255,255,0.2);
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-weight: 600;
-        }
-
-        .nav-tabs {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-            border-bottom: 2px solid rgba(255,255,255,0.2);
-        }
-
-        .nav-tab {
-            background: transparent;
-            border: none;
-            color: white;
-            padding: 0.8rem 1.5rem;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 500;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .nav-tab:hover {
-            background: rgba(255,255,255,0.1);
-            border-bottom-color: var(--accent-orange);
-        }
-
-        .nav-tab.active {
-            border-bottom-color: white;
-            background: rgba(255,255,255,0.15);
-        }
-
-        /* Main Content */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        .content-section {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .content-section.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Cards */
-        .card {
-            background: var(--bg-white);
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            border-left: 4px solid var(--primary-purple);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--border-color);
-        }
-
-        .card-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--primary-purple), var(--primary-dark));
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 700;
-            font-size: 1.2rem;
-        }
-
-        .card-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-dark);
-        }
-
-        /* Table of Contents */
-        .toc-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .toc-item {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            padding: 1.5rem;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-
-        .toc-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            border-color: var(--accent-orange);
-        }
-
-        .toc-item h3 {
-            color: var(--text-dark);
-            margin-bottom: 0.5rem;
-            font-size: 1.2rem;
-        }
-
-        .toc-item p {
-            color: var(--text-light);
-            font-size: 0.9rem;
-        }
-
-        /* Formula Box */
-        .formula-box {
-            background: #f0f9ff;
-            border-left: 4px solid #3b82f6;
-            padding: 1.5rem;
-            margin: 1rem 0;
-            border-radius: 8px;
-            font-family: 'Courier New', monospace;
-        }
-
-        .formula-title {
-            font-weight: 700;
-            color: #1e40af;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Info Box */
-        .info-box {
-            background: #ecfdf5;
-            border-left: 4px solid var(--success-green);
-            padding: 1rem 1.5rem;
-            margin: 1rem 0;
-            border-radius: 8px;
-        }
-
-        .warning-box {
-            background: #fef2f2;
-            border-left: 4px solid var(--warning-red);
-            padding: 1rem 1.5rem;
-            margin: 1rem 0;
-            border-radius: 8px;
-        }
-
-        .info-title {
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Exercise Section */
-        .exercise {
-            background: var(--bg-white);
-            border: 2px solid var(--border-color);
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .exercise-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .exercise-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--primary-purple);
-        }
-
-        .exercise-badge {
-            background: var(--accent-orange);
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .exercise-content {
-            margin: 1rem 0;
-            line-height: 1.8;
-        }
-
-        .btn-correction {
-            background: var(--primary-purple);
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .btn-correction:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-
-        .correction-box {
-            display: none;
-            background: #f0fdf4;
-            border: 2px solid var(--success-green);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-top: 1rem;
-        }
-
-        .correction-box.visible {
-            display: block;
-            animation: slideDown 0.3s ease;
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; max-height: 0; }
-            to { opacity: 1; max-height: 500px; }
-        }
-
-        /* Timeline */
-        .timeline {
-            position: relative;
-            padding-left: 2rem;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 3px;
-            background: var(--primary-purple);
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 2rem;
-            padding-left: 2rem;
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -2.5rem;
-            top: 0;
-            width: 20px;
-            height: 20px;
-            background: var(--primary-purple);
-            border: 4px solid white;
-            border-radius: 50%;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .timeline-date {
-            font-weight: 700;
-            color: var(--primary-purple);
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .timeline-content {
-            background: var(--bg-white);
-            padding: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.5rem;
-            }
-
-            .nav-tabs {
-                flex-wrap: wrap;
-            }
-
-            .toc-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .container {
-                padding: 1rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
-    <!-- Header -->
     <div class="header">
         <div class="header-content">
             <h1>📊 ISEP A1 - Révisions Probabilités</h1>
@@ -380,49 +16,47 @@
                 <span class="exam-date">📅 29 Novembre 2025</span>
             </div>
             <div class="nav-tabs">
-                <button class="nav-tab active" onclick="showSection('overview')">📚 Vue d'ensemble</button>
-                <button class="nav-tab" onclick="showSection('theory')">📖 Théorie</button>
-                <button class="nav-tab" onclick="showSection('exercises')">✏️ Exercices</button>
-                <button class="nav-tab" onclick="showSection('planning')">📅 Planning</button>
+                <button class="nav-tab active" data-section="overview" onclick="showSection('overview', this)">📚 Vue d'ensemble</button>
+                <button class="nav-tab" data-section="theory" onclick="showSection('theory', this)">📖 Théorie</button>
+                <button class="nav-tab" data-section="exercises" onclick="showSection('exercises', this)">✏️ Exercices</button>
+                <button class="nav-tab" data-section="planning" onclick="showSection('planning', this)">📅 Planning</button>
             </div>
         </div>
     </div>
 
-    <!-- Main Container -->
     <div class="container">
-        <!-- Overview Section -->
         <div id="overview" class="content-section active">
-            <div class="card">
+            <div class="card scroll-reveal">
                 <div class="card-header">
                     <div class="card-icon">ℹ️</div>
                     <h2 class="card-title">Informations générales</h2>
                 </div>
                 
-                <div class="info-box">
+                <div class="info-box scroll-reveal">
                     <div class="info-title">🎯 Objectif</div>
                     <p>Préparer efficacement l'examen de Probabilités et Télécommunications prévu le <strong>29 novembre 2025</strong> en couvrant tous les chapitres essentiels avec exercices corrigés.</p>
                 </div>
 
-                <div class="warning-box">
+                <div class="warning-box scroll-reveal">
                     <div class="info-title">⚠️ Points critiques</div>
                     <p>Maîtriser les lois de probabilités (Binomiale, Poisson, Normale), les probabilités conditionnelles, et les vecteurs gaussiens.</p>
                 </div>
 
-                <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--primary-purple);">📋 Chapitres couverts</h3>
+                <h3 class="section-subtitle" style="margin-top: 2rem;">📋 Chapitres couverts</h3>
                 <div class="toc-grid">
-                    <div class="toc-item" onclick="showSection('theory')">
+                    <div class="toc-item scroll-reveal" data-section-target="theory">
                         <h3>Chapitre 1-2</h3>
                         <p>Notions d'événements, probabilités conditionnelles & indépendance</p>
                     </div>
-                    <div class="toc-item" onclick="showSection('theory')">
+                    <div class="toc-item scroll-reveal" data-section-target="theory">
                         <h3>Chapitre 3</h3>
                         <p>Variables aléatoires réelles (discrètes & continues)</p>
                     </div>
-                    <div class="toc-item" onclick="showSection('theory')">
+                    <div class="toc-item scroll-reveal" data-section-target="theory">
                         <h3>Chapitre 4-5</h3>
                         <p>Espérance, variance, moments & fonction caractéristique</p>
                     </div>
-                    <div class="toc-item" onclick="showSection('theory')">
+                    <div class="toc-item scroll-reveal" data-section-target="theory">
                         <h3>Chapitre 6-7</h3>
                         <p>Variables bidimensionnelles & vecteurs gaussiens</p>
                     </div>
@@ -430,435 +64,193 @@
             </div>
         </div>
 
-        <!-- Theory Section -->
         <div id="theory" class="content-section">
-            <div class="card">
+            <div class="card scroll-reveal">
                 <div class="card-header">
                     <div class="card-icon">📖</div>
                     <h2 class="card-title">Lois de Probabilités Majeures</h2>
                 </div>
 
-                <h3 style="color: var(--primary-purple); margin-bottom: 1rem;">🎲 Lois Discrètes</h3>
+                <h3 class="section-subtitle">🎲 Lois Discrètes</h3>
                 
-                <div class="formula-box">
-                    <div class="formula-title">Loi Binomiale B(n, p)</div>
-                    <p><strong>Formule :</strong> P(X = k) = C(n,k) × p^k × (1-p)^(n-k)</p>
-                    <p><strong>Espérance :</strong> E(X) = n×p</p>
-                    <p><strong>Variance :</strong> V(X) = n×p×(1-p)</p>
+                <div class="formula-box scroll-reveal">
+                    <div class="formula-title">Loi Binomiale $\mathcal{B}(n, p)$</div>
+                    <p><strong>Formule :</strong> $P(X = k) = C_{n}^{k} p^{k} (1-p)^{n-k}$</p>
+                    <p><strong>Espérance :</strong> $E(X) = np$</p>
+                    <p><strong>Variance :</strong> $V(X) = np(1-p)$</p>
                 </div>
 
-                <div class="info-box">
+                <div class="info-box scroll-reveal">
                     <div class="info-title">💡 Quand utiliser ?</div>
-                    <p>Nombre de succès dans <strong>n épreuves indépendantes</strong> avec probabilité p constante (ex: lancers de dé, pièces de monnaie).</p>
+                    <p>Nombre de succès dans <strong>n épreuves indépendantes</strong> avec probabilité $p$ constante.</p>
                 </div>
 
-                <div class="formula-box">
-                    <div class="formula-title">Loi de Poisson P(λ)</div>
-                    <p><strong>Formule :</strong> P(X = k) = (λ^k × e^(-λ)) / k!</p>
-                    <p><strong>Espérance :</strong> E(X) = λ</p>
-                    <p><strong>Variance :</strong> V(X) = λ</p>
+                <div class="formula-box scroll-reveal">
+                    <div class="formula-title">Loi de Poisson $\mathcal{P}(\lambda)$</div>
+                    <p><strong>Formule :</strong> $P(X = k) = \frac{\lambda^{k}e^{-\lambda}}{k!}$</p>
+                    <p><strong>Espérance :</strong> $E(X) = \lambda$</p>
+                    <p><strong>Variance :</strong> $V(X) = \lambda$</p>
                 </div>
 
-                <div class="info-box">
+                <div class="info-box scroll-reveal">
                     <div class="info-title">💡 Quand utiliser ?</div>
-                    <p>Modélise le nombre d'<strong>événements rares</strong> sur un intervalle (temps/espace). Approximation de Binomiale si n grand et p petit.</p>
+                    <p>Modélise le nombre d'<strong>événements rares</strong> sur un intervalle. Approximation de Binomiale si $n$ grand et $p$ petit ($np < 10$).</p>
                 </div>
 
-                <h3 style="color: var(--primary-purple); margin: 2rem 0 1rem;">📈 Lois Continues</h3>
+                <h3 class="section-subtitle" style="margin-top: 2rem;">📈 Lois Continues</h3>
 
-                <div class="formula-box">
-                    <div class="formula-title">Loi Normale N(μ, σ²)</div>
-                    <p><strong>Densité :</strong> f(x) = (1/(σ√(2π))) × exp(-(x-μ)²/(2σ²))</p>
-                    <p><strong>Espérance :</strong> E(X) = μ</p>
-                    <p><strong>Variance :</strong> V(X) = σ²</p>
+                <div class="formula-box scroll-reveal">
+                    <div class="formula-title">Loi Normale $\mathcal{N}(\mu, \sigma^2)$</div>
+                    <p><strong>Densité :</strong> $f(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$</p>
+                    <p><strong>Espérance :</strong> $E(X) = \mu$</p>
+                    <p><strong>Variance :</strong> $V(X) = \sigma^2$</p>
                 </div>
 
-                <div class="info-box">
+                <div class="info-box scroll-reveal">
                     <div class="info-title">💡 Standardisation</div>
-                    <p>Pour X ~ N(μ, σ²), on pose <strong>Z = (X - μ) / σ</strong> alors Z ~ N(0,1)</p>
+                    <p>Pour $X \sim \mathcal{N}(\mu, \sigma^2)$, on pose $\mathbf{Z = \frac{X - \mu}{\sigma}}$ alors $Z \sim \mathcal{N}(0,1)$</p>
                     <p>Utiliser la table de la loi normale centrée réduite pour calculer les probabilités.</p>
-                </div>
-
-                <div class="warning-box">
-                    <div class="info-title">⚡ Règle d'or ISEP</div>
-                    <p>Pour trouver un seuil x tel que P(X ≤ x) = α, utiliser la table inverse : chercher α dans le corps de la table, puis remonter à z, et calculer x = μ + z×σ</p>
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card scroll-reveal">
                 <div class="card-header">
                     <div class="card-icon">🔗</div>
                     <h2 class="card-title">Probabilités Conditionnelles & Indépendance</h2>
                 </div>
 
-                <div class="formula-box">
+                <div class="formula-box scroll-reveal">
                     <div class="formula-title">Formule de Bayes</div>
-                    <p>P(A|B) = P(B|A) × P(A) / P(B)</p>
+                    <p>$$P(A|B) = \frac{P(B|A) \times P(A)}{P(B)}$$</p>
                 </div>
 
-                <div class="formula-box">
-                    <div class="formula-title">Probabilités Totales</div>
-                    <p>P(B) = Σ P(B|A_i) × P(A_i) pour une partition {A_i}</p>
+                <div class="formula-box scroll-reveal">
+                    <div class="formula-title">Formule des Probabilités Totales</div>
+                    <p>$$P(B) = \sum_{i} P(B|A_{i}) \times P(A_{i})$$ (où $\{A_i\}$ est une partition)</p>
                 </div>
 
-                <div class="info-box">
+                <div class="warning-box scroll-reveal">
                     <div class="info-title">📌 Indépendance</div>
-                    <p>A et B sont indépendants ⟺ P(A∩B) = P(A)×P(B)</p>
-                    <p>⟺ P(A|B) = P(A) (quand P(B) > 0)</p>
+                    <p>$A$ et $B$ sont indépendants $\iff P(A\cap B) = P(A)\times P(B)$</p>
+                    <p>Cette propriété simplifie souvent les calculs dans les exercices ISEP (ex: $\overline{R}$ et $\overline{S}$ sont indépendants si $R$ et $S$ le sont).</p>
                 </div>
             </div>
         </div>
 
-        <!-- Exercises Section -->
         <div id="exercises" class="content-section">
-            <div class="card">
+            <div class="card scroll-reveal">
                 <div class="card-header">
                     <div class="card-icon">✏️</div>
                     <h2 class="card-title">Banque d'Exercices Corrigés</h2>
                 </div>
 
-                <h3 style="color: var(--primary-purple); margin-bottom: 1rem;">🔰 Exercices Fondamentaux</h3>
+                <h3 class="section-subtitle">🔰 Exercices Fondamentaux</h3>
 
-                <div class="exercise">
+                <div class="exercise scroll-reveal">
                     <div class="exercise-header">
-                        <div class="exercise-title">TD1-4 : Filtrage Téléphonique</div>
-                        <div class="exercise-badge">Bayes</div>
+                        <div class="exercise-title">TD1-4 : Filtrage Téléphonique (Bayes)</div>
+                        <div class="exercise-badge">Bayes / Probas Totales</div>
                     </div>
                     <div class="exercise-content">
-                        <p><strong>Énoncé :</strong> 60% des appels proviennent de l'extérieur, 40% sont internes. Parmi les externes, 80% ne sont pas transmis ; parmi les internes, 30% ne sont pas transmis.</p>
-                        <p><strong>Question :</strong> Sachant qu'un appel n'a pas été transmis, quelle est la probabilité qu'il provenait de l'extérieur ?</p>
+                        <p><strong>Énoncé :</strong> 60% des appels proviennent de l'extérieur ($E$), 40% sont internes ($\overline{E}$). $P(R|E)=0.8$, $P(R|\overline{E})=0.3$. Calculer $P(E|R)$.</p>
                     </div>
-                    <button class="btn-correction" onclick="toggleCorrection('ex1')">Afficher la correction</button>
+                    <button class="btn-correction" data-target="ex1">Afficher la correction</button>
                     <div id="ex1" class="correction-box">
                         <h4 style="color: var(--success-green); margin-bottom: 0.5rem;">✅ Correction détaillée</h4>
-                        <p><strong>1. Définir les événements :</strong></p>
-                        <ul style="margin-left: 1.5rem;">
-                            <li>E : "l'appel provient de l'extérieur", P(E) = 0.6</li>
-                            <li>R : "l'appel n'est pas transmis"</li>
-                        </ul>
-                        <p><strong>2. Données :</strong> P(R|E) = 0.8, P(R|E̅) = 0.3</p>
-                        <p><strong>3. Probabilités totales :</strong></p>
-                        <p>P(R) = P(R|E)×P(E) + P(R|E̅)×P(E̅) = 0.8×0.6 + 0.3×0.4 = 0.48 + 0.12 = 0.6</p>
-                        <p><strong>4. Formule de Bayes :</strong></p>
-                        <p>P(E|R) = P(R|E)×P(E) / P(R) = (0.8 × 0.6) / 0.6 = <strong>0.8</strong></p>
+                        <p>1. $P(R)$ (Probas Totales) : $P(R) = P(R|E)P(E) + P(R|\overline{E})P(\overline{E}) = 0.8\times0.6 + 0.3\times0.4 = 0.48 + 0.12 = \mathbf{0.6}$</p>
+                        <p>2. $P(E|R)$ (Bayes) : $P(E|R) = \frac{P(E \cap R)}{P(R)} = \frac{P(R|E)P(E)}{P(R)} = \frac{0.48}{0.6} = \mathbf{0.8}$</p>
                     </div>
                 </div>
 
-                <div class="exercise">
+                <div class="exercise scroll-reveal">
                     <div class="exercise-header">
                         <div class="exercise-title">Examen 2018 - Ex. 2 : Admissibilité ISEP</div>
                         <div class="exercise-badge">Loi Normale</div>
                     </div>
                     <div class="exercise-content">
-                        <p><strong>Énoncé :</strong> Les notes au concours suivent N(32.8, 8.5²). 30% des candidats sont "non admissibles", 10% sont "grand admissibles" (dispensés d'oral).</p>
-                        <p><strong>Question :</strong> Entre quelles limites doit se situer la note d'un candidat pour passer l'oral ?</p>
+                        <p><strong>Énoncé :</strong> Les notes $X \sim \mathcal{N}(32.8, 8.5^2)$. Déterminer l'intervalle $[x_{min}, x_{max}]$ pour passer l'oral (30% non admissibles, 10% grands admissibles).</p>
                     </div>
-                    <button class="btn-correction" onclick="toggleCorrection('ex2')">Afficher la correction</button>
+                    <button class="btn-correction" data-target="ex2">Afficher la correction</button>
                     <div id="ex2" class="correction-box">
                         <h4 style="color: var(--success-green); margin-bottom: 0.5rem;">✅ Correction détaillée</h4>
-                        <p><strong>1. Standardisation :</strong> X ~ N(32.8, 8.5²), donc Z = (X - 32.8)/8.5 ~ N(0,1)</p>
-                        <p><strong>2. Seuil bas (30% non admissibles) :</strong></p>
-                        <p>P(X ≤ x₁) = 0.3 ⟹ P(Z ≤ z₁) = 0.3</p>
-                        <p>Dans la table : P(Z ≤ -0.52) ≈ 0.3 ⟹ z₁ ≈ -0.52</p>
-                        <p>x₁ = 32.8 + (-0.52)×8.5 ≈ <strong>28.38</strong></p>
-                        <p><strong>3. Seuil haut (10% grand admissibles) :</strong></p>
-                        <p>P(X ≥ x₂) = 0.1 ⟹ P(X ≤ x₂) = 0.9 ⟹ P(Z ≤ z₂) = 0.9</p>
-                        <p>Dans la table : z₂ ≈ 1.28</p>
-                        <p>x₂ = 32.8 + 1.28×8.5 ≈ <strong>43.68</strong></p>
-                        <p><strong>Réponse :</strong> Pour passer l'oral, la note doit être entre <strong>28.38 et 43.68</strong></p>
+                        <p>1. $x_{min}$ ($P(X \le x_{min})=0.3$) : $z_{min} \approx -0.52$. $x_{min} = 32.8 + (-0.52)\times8.5 \approx \mathbf{28.38}$</p>
+                        <p>2. $x_{max}$ ($P(X \ge x_{max})=0.1$) : $z_{max} \approx 1.28$. $x_{max} = 32.8 + 1.28\times8.5 \approx \mathbf{43.68}$</p>
+                        <p>L'intervalle est $[\mathbf{28.38}, \mathbf{43.68}]$.</p>
                     </div>
                 </div>
 
-                <h3 style="color: var(--primary-purple); margin: 2rem 0 1rem;">🎯 Exercices Avancés</h3>
+                <h3 class="section-subtitle" style="margin-top: 2rem;">🎯 Exercices Avancés</h3>
 
-                <div class="exercise">
+                <div class="exercise scroll-reveal">
                     <div class="exercise-header">
                         <div class="exercise-title">Examen 2018 - Ex. 5 : Loi Conditionnelle Poisson</div>
-                        <div class="exercise-badge">Avancé</div>
+                        <div class="exercise-badge">Loi de Poisson / Binomiale</div>
                     </div>
                     <div class="exercise-content">
-                        <p><strong>Énoncé :</strong> Au péage, X (Paris→Lyon) ~ Poisson(λ) et Y (Lyon→Paris) ~ Poisson(μ), indépendantes. Z = X + Y.</p>
-                        <p><strong>Questions :</strong></p>
-                        <ol style="margin-left: 1.5rem;">
-                            <li>Quelle est la loi de Z ?</li>
-                            <li>Calculer P(X=k | Z=n)</li>
-                            <li>Quelle loi reconnaît-on ?</li>
-                        </ol>
+                        <p><strong>Énoncé :</strong> X ~ $\mathcal{P}(\lambda)$ et Y ~ $\mathcal{P}(\mu)$ indépendantes. $Z=X+Y$. Calculer $P(X=k | Z=n)$.</p>
                     </div>
-                    <button class="btn-correction" onclick="toggleCorrection('ex3')">Afficher la correction</button>
+                    <button class="btn-correction" data-target="ex3">Afficher la correction</button>
                     <div id="ex3" class="correction-box">
                         <h4 style="color: var(--success-green); margin-bottom: 0.5rem;">✅ Correction détaillée</h4>
-                        <p><strong>1. Loi de Z :</strong></p>
-                        <p>X et Y indépendantes ⟹ Z = X + Y ~ <strong>Poisson(λ + μ)</strong></p>
-                        <p>E(Z) = λ + μ, V(Z) = λ + μ</p>
-                        <p><strong>2. Probabilité conditionnelle :</strong></p>
-                        <p>P(X=k | Z=n) = P(X=k, Z=n) / P(Z=n) = P(X=k, Y=n-k) / P(Z=n)</p>
-                        <p>= [e^(-λ)λ^k/k! × e^(-μ)μ^(n-k)/(n-k)!] / [e^(-(λ+μ))(λ+μ)^n/n!]</p>
-                        <p>= [n! / (k!(n-k)!)] × [λ^k × μ^(n-k)] / [(λ+μ)^n]</p>
-                        <p>= C(n,k) × [λ/(λ+μ)]^k × [μ/(λ+μ)]^(n-k)</p>
-                        <p><strong>3. Loi reconnue :</strong></p>
-                        <p>C'est une <strong>loi Binomiale B(n, p)</strong> avec p = λ/(λ+μ) !</p>
-                        <p>Interprétation : sachant que n véhicules sont passés, chacun a une probabilité p d'aller vers Lyon.</p>
+                        <p>1. $Z \sim \mathcal{P}(\lambda+\mu)$</p>
+                        <p>2. $P(X=k | Z=n) = \frac{P(X=k, Y=n-k)}{P(Z=n)}$</p>
+                        <p>3. Résultat : $P(X=k | Z=n) = C_{n}^{k} \left(\frac{\lambda}{\lambda+\mu}\right)^k \left(\frac{\mu}{\lambda+\mu}\right)^{n-k}$</p>
+                        <p>4. Loi reconnue : C'est une <strong>loi Binomiale $\mathcal{B}(n, p)$</strong> avec $p = \frac{\lambda}{\lambda+\mu}$.</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Planning Section -->
         <div id="planning" class="content-section">
-            <div class="card">
+            <div class="card scroll-reveal">
                 <div class="card-header">
                     <div class="card-icon">📅</div>
                     <h2 class="card-title">Programme de Révision - Jusqu'au 29 Novembre</h2>
                 </div>
 
-                <div class="info-box">
+                <div class="info-box scroll-reveal">
                     <div class="info-title">🎯 Stratégie</div>
-                    <p>Organisation en <strong>4 blocs thématiques</strong> avec alternance théorie/pratique (3h/jour recommandé)</p>
+                    <p>Organisation en **4 blocs thématiques** avec alternance théorie/pratique (3h/jour recommandé).</p>
                 </div>
 
                 <div class="timeline">
-                    <div class="timeline-item">
+                    <div class="timeline-item scroll-reveal">
                         <div class="timeline-date">📆 19-22 Novembre</div>
                         <div class="timeline-content">
-                            <h4 style="color: var(--primary-purple); margin-bottom: 0.5rem;">Fondamentaux & Variables Discrètes</h4>
-                            <p><strong>Théorie :</strong> Chapitres 1, 2, 3 (VAR discrètes)</p>
-                            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
-                                <li>Événements, probabilités conditionnelles, indépendance</li>
-                                <li>Lois Bernoulli, Binomiale, Poisson</li>
-                                <li>Formules de Bayes et probabilités totales</li>
-                            </ul>
-                            <p style="margin-top: 0.5rem;"><strong>Pratique :</strong> TD1-1, TD1-4, TD2-1, Examen 2018 Ex.1</p>
+                            <h4 class="timeline-title">Fondamentaux & Variables Discrètes</h4>
+                            <p><strong>Théorie :</strong> Ch. 1, 2, 3 (Discrètes). Bayes, Probas Totales, Bernoulli, Binomiale, Poisson.</p>
+                            <p><strong>Pratique :</strong> TD1-1, TD1-4, Examen 2018 Ex.1</p>
                         </div>
                     </div>
 
-                    <div class="timeline-item">
+                    <div class="timeline-item scroll-reveal">
                         <div class="timeline-date">📆 23-25 Novembre</div>
                         <div class="timeline-content">
-                            <h4 style="color: var(--primary-purple); margin-bottom: 0.5rem;">Variables Continues & Transformations</h4>
-                            <p><strong>Théorie :</strong> Chapitres 3 (VAR continues), 4, 5</p>
-                            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
-                                <li>Loi Normale, Uniforme, Exponentielle</li>
-                                <li>Espérance, variance, moments</li>
-                                <li>Fonction de répartition et densité</li>
-                                <li>Transformation de variables aléatoires</li>
-                            </ul>
-                            <p style="margin-top: 0.5rem;"><strong>Pratique :</strong> TD2-4, TD2-5, TD3-4, Examen 2018 Ex.2, TD4-1</p>
+                            <h4 class="timeline-title">Variables Continues & Transformations</h4>
+                            <p><strong>Théorie :</strong> Ch. 3 (Continues), 4, 5. Normale, Uniforme, Exponentielle. $E(X)$, $V(X)$, Transformation de VAR.</p>
+                            <p><strong>Pratique :</strong> TD3-4, Examen 2018 Ex.2</p>
                         </div>
                     </div>
 
-                    <div class="timeline-item">
+                    <div class="timeline-item scroll-reveal">
                         <div class="timeline-date">📆 26-27 Novembre</div>
                         <div class="timeline-content">
-                            <h4 style="color: var(--primary-purple); margin-bottom: 0.5rem;">Multi-dimensionnel & Vecteurs Gaussiens</h4>
-                            <p><strong>Théorie :</strong> Chapitres 6, 7</p>
-                            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
-                                <li>Variables bidimensionnelles (loi jointe, marginales)</li>
-                                <li>Covariance, corrélation, indépendance</li>
-                                <li>Vecteurs gaussiens et combinaisons linéaires</li>
-                                <li>Lois conditionnelles</li>
-                            </ul>
-                            <p style="margin-top: 0.5rem;"><strong>Pratique :</strong> TD4-2, TD5-4, Examen 2018 Ex.4, Examen 2021 Ex.1-2</p>
+                            <h4 class="timeline-title">Multi-dimensionnel & Vecteurs Gaussiens</h4>
+                            <p><strong>Théorie :</strong> Ch. 6, 7. Lois Jointes/Marginales, Covariance, Indépendance, Lois conditionnelles, Vecteurs Gaussiens.</p>
+                            <p><strong>Pratique :</strong> TD4-2, TD5-4, Examen 2021 Ex.1-2</p>
                         </div>
                     </div>
 
-                    <div class="timeline-item">
+                    <div class="timeline-item scroll-reveal">
                         <div class="timeline-date">📆 28 Novembre</div>
                         <div class="timeline-content">
-                            <h4 style="color: var(--primary-purple); margin-bottom: 0.5rem;">Révision Intensive & Examen Blanc</h4>
-                            <p><strong>Matin :</strong> Révision rapide de toutes les formules clés</p>
-                            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
-                                <li>Fiches récapitulatives des lois</li>
-                                <li>Formules essentielles (Bayes, Tchebychev)</li>
-                                <li>Méthodes de résolution type ISEP</li>
-                            </ul>
-                            <p style="margin-top: 0.5rem;"><strong>Après-midi :</strong> Examen blanc complet (2h30)</p>
-                            <p>Faire l'Examen 2021 ou 2022 en conditions réelles</p>
+                            <h4 class="timeline-title">Révision Intensive & Examen Blanc</h4>
+                            <p>Révision de TOUTES les formules. Examen blanc complet (Examen 2021 ou 2022) en 2h30.</p>
                         </div>
                     </div>
-                </div>
-
-                <div class="warning-box" style="margin-top: 2rem;">
-                    <div class="info-title">⚡ Conseils pour le jour J</div>
-                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
-                        <li>Avoir la table de la loi normale et les formules des lois discrètes</li>
-                        <li>Bien lire les énoncés : identifier la loi adaptée</li>
-                        <li>Justifier chaque étape de calcul</li>
-                        <li>Gérer son temps : 30min/exercice en moyenne</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon">📝</div>
-                    <h2 class="card-title">Fiches Récapitulatives</h2>
-                </div>
-
-                <h3 style="color: var(--primary-purple); margin-bottom: 1rem;">🎲 Tableau Comparatif des Lois Discrètes</h3>
-                
-                <table style="width: 100%; border-collapse: collapse; margin: 1rem 0;">
-                    <thead>
-                        <tr style="background: var(--primary-purple); color: white;">
-                            <th style="padding: 1rem; text-align: left; border: 1px solid white;">Loi</th>
-                            <th style="padding: 1rem; text-align: left; border: 1px solid white;">P(X=k)</th>
-                            <th style="padding: 1rem; text-align: left; border: 1px solid white;">E(X)</th>
-                            <th style="padding: 1rem; text-align: left; border: 1px solid white;">V(X)</th>
-                            <th style="padding: 1rem; text-align: left; border: 1px solid white;">Usage ISEP</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr style="background: #f9fafb;">
-                            <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>Bernoulli B(p)</strong></td>
-                            <td style="padding: 1rem; border: 1px solid var(--border-color);">p^k (1-p)^(1-k)</td>
-                            <td style="padding: 1rem; border: 1px solid var(--border-color);">p</td>
-                            <td style="padding: 1rem; border: 1px solid var(--border-color);">p(1-p)</td>
-                            <td style="padding: 1rem; border: 1px solid var(--border-color);">Succès/échec unique</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>Binomiale B(n,p)</strong></td>
-                            <td style="padding: 1rem; border: 1px solid var(--border-color);">C(n,k) p^k (1-p)^(n-k)</td>
-                            <td style="padding: 1rem; border: 1px solid var(--border-color);">np</td>
-                            <td style="padding: 1rem; border: 1px solid var(--border-color);">np(1-p)</td>
-                            <td style="padding: 1rem; border: 1px solid var(--border-color);">n essais indépendants</td>
-                        </tr>
-                        <tr style="background: #f9fafb;">
-                            <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>Poisson P(λ)</strong></td>
-                            <td style="padding: 1rem; border: 1px solid var(--border-color);">(λ^k e^(-λ))/k!</td>
-                            <td style="padding: 1rem; border: 1px solid var(--border-color);">λ</td>
-                            <td style="padding: 1rem; border: 1px solid var(--border-color);">λ</td>
-                            <td style="padding: 1rem; border: 1px solid var(--border-color);">Événements rares</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <h3 style="color: var(--primary-purple); margin: 2rem 0 1rem;">📊 Tableau des Lois Continues</h3>
-                
-                <table style="width: 100%; border-collapse: collapse; margin: 1rem 0;">
-                    <thead>
-                        <tr style="background: var(--primary-purple); color: white;">
-                            <th style="padding: 1rem; text-align: left; border: 1px solid white;">Loi</th>
-                            <th style="padding: 1rem; text-align: left; border: 1px solid white;">Densité f(x)</th>
-                            <th style="padding: 1rem; text-align: left; border: 1px solid white;">E(X)</th>
-                            <th style="padding: 1rem; text-align: left; border: 1px solid white;">V(X)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr style="background: #f9fafb;">
-                            <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>Uniforme U[a,b]</strong></td>
-                            <td style="padding: 1rem; border: 1px solid var(--border-color);">1/(b-a) si x∈[a,b]</td>
-                            <td style="padding: 1rem; border: 1px solid var(--border-color);">(a+b)/2</td>
-                            <td style="padding: 1rem; border: 1px solid var(--border-color);">(b-a)²/12</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>Exponentielle E(λ)</strong></td>
-                            <td style="padding: 1rem; border: 1px solid var(--border-color);">λe^(-λx) si x≥0</td>
-                            <td style="padding: 1rem; border: 1px solid var(--border-color);">1/λ</td>
-                            <td style="padding: 1rem; border: 1px solid var(--border-color);">1/λ²</td>
-                        </tr>
-                        <tr style="background: #f9fafb;">
-                            <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>Normale N(μ,σ²)</strong></td>
-                            <td style="padding: 1rem; border: 1px solid var(--border-color);">(1/(σ√2π))e^(-(x-μ)²/2σ²)</td>
-                            <td style="padding: 1rem; border: 1px solid var(--border-color);">μ</td>
-                            <td style="padding: 1rem; border: 1px solid var(--border-color);">σ²</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon">🎯</div>
-                    <h2 class="card-title">Méthodologie ISEP - Résolution Type</h2>
-                </div>
-
-                <div class="formula-box">
-                    <div class="formula-title">🔍 Étape 1 : Identifier la situation</div>
-                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
-                        <li><strong>Discret ou continu ?</strong> Valeurs dénombrables → discret, intervalle → continu</li>
-                        <li><strong>Épreuves répétées ?</strong> → Binomiale probablement</li>
-                        <li><strong>Événements rares ?</strong> → Poisson</li>
-                        <li><strong>Mention de "moyenne" et "écart-type" ?</strong> → Normale</li>
-                    </ul>
-                </div>
-
-                <div class="formula-box">
-                    <div class="formula-title">📐 Étape 2 : Standardiser si nécessaire</div>
-                    <p>Pour X ~ N(μ, σ²), <strong>toujours</strong> passer par Z = (X-μ)/σ ~ N(0,1)</p>
-                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
-                        <li>P(X ≤ a) = P(Z ≤ (a-μ)/σ) → Utiliser la table</li>
-                        <li>P(X ≥ a) = 1 - P(X < a) = 1 - P(Z ≤ (a-μ)/σ)</li>
-                        <li>P(a ≤ X ≤ b) = P(Z ≤ (b-μ)/σ) - P(Z ≤ (a-μ)/σ)</li>
-                    </ul>
-                </div>
-
-                <div class="formula-box">
-                    <div class="formula-title">🔗 Étape 3 : Utiliser les bonnes formules</div>
-                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
-                        <li><strong>Bayes :</strong> Si on demande P(A|B) et qu'on connaît P(B|A)</li>
-                        <li><strong>Probabilités totales :</strong> Si B dépend de plusieurs cas A_i</li>
-                        <li><strong>Indépendance :</strong> P(A∩B) = P(A)×P(B) pour simplifier</li>
-                    </ul>
-                </div>
-
-                <div class="info-box">
-                    <div class="info-title">💡 Astuces ISEP</div>
-                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
-                        <li><strong>Table symétrique :</strong> P(Z ≤ -a) = 1 - P(Z ≤ a) pour a > 0</li>
-                        <li><strong>Approximation :</strong> B(n,p) ≈ P(np) si n grand et p petit (np < 10)</li>
-                        <li><strong>Combinaisons :</strong> C(n,k) = n!/(k!(n-k)!)</li>
-                        <li><strong>Vecteurs gaussiens :</strong> Toute combinaison linéaire reste gaussienne</li>
-                    </ul>
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        function showSection(sectionId) {
-            // Hide all sections
-            const sections = document.querySelectorAll('.content-section');
-            sections.forEach(section => section.classList.remove('active'));
-            
-            // Show selected section
-            document.getElementById(sectionId).classList.add('active');
-            
-            // Update nav tabs
-            const tabs = document.querySelectorAll('.nav-tab');
-            tabs.forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            // Scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function toggleCorrection(id) {
-            const correctionBox = document.getElementById(id);
-            correctionBox.classList.toggle('visible');
-            
-            // Change button text
-            const button = event.target;
-            if (correctionBox.classList.contains('visible')) {
-                button.textContent = 'Masquer la correction';
-                button.style.background = 'var(--text-light)';
-            } else {
-                button.textContent = 'Afficher la correction';
-                button.style.background = 'var(--primary-purple)';
-            }
-        }
-
-        // Add smooth scroll for TOC items
-        document.addEventListener('DOMContentLoaded', function() {
-            const tocItems = document.querySelectorAll('.toc-item');
-            tocItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    this.style.transform = 'scale(0.98)';
-                    setTimeout(() => {
-                        this.style.transform = '';
-                    }, 200);
-                });
-            });
-        });
-    </script>
 </body>
 </html>
