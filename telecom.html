@@ -3,131 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Révision Télécom - Focus ISEP</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Révision Télécom - Fiche Complète</title>
+    <link rel="stylesheet" href="style2.css">
+    <script src="script.js"></script>
+    <style>
+        /* Surcharge des styles pour la page Télécom (Thème Dark) */
+        .telecom-detail h2 { border-bottom: 3px solid var(--primary-dark); padding-bottom: 10px; }
+        .telecom-rev .fiche-revision { border-left-color: var(--primary-dark); }
+        .telecom-rev h4 { color: var(--primary-dark); }
+        .solution.active { border-left-color: var(--primary-dark); background-color: #f0f0f0; }
+        .quiz-box { border: 1px solid var(--primary-dark); }
+        .quiz-box h4 { color: var(--primary-dark) !important; }
+        .telecom-theme-color { color: var(--primary-dark); }
+    </style>
 </head>
 <body>
-    <section id="telecom-page" class="page active">
+    <section id="telecom-page" class="page active telecom-rev">
         <a href="index.html#telecom-rev" class="back-btn">← Retour à l'Accueil</a>
         
-        <div class="td-detail">
-            <h2 style="color: var(--primary-green);">📡 Fiche de Révision Complète - Télécommunications (Projets & DM)</h2>
-            <p>Synthèse des concepts clés de l'architecture réseau, des bilans de liaison (Radio/Filaire) et du dimensionnement (Wi-Fi, Bluetooth, LTE, Fibre).</p>
+        <div class="td-detail telecom-detail">
+            <h2>🛰️ Fiche de Révision Complète - Télécommunications</h2>
+            <p class="section-description">Synthèse des concepts critiques pour les Évaluations, le DM et les Projets. Concentrez-vous sur le calcul en $\text{dBm}/\text{W}$ et la distinction $S/N$ vs $SINR$.</p>
             
-            <hr style="margin: 30px 0;">
+            <hr class="separator" style="margin: 20px 0;">
 
             <div class="fiche-revision">
-                <h3>1. Rappels Théoriques Fondamentaux</h3>
+                <h3>1. Capacité, Débit et Bruit (Théorie de l'Information)</h3>
                 
-                <h4 style="color: var(--orange); margin-top: 1rem;">1.1. Théorème de Shannon-Hartley</h4>
-                <p>Débit maximal ($C$) en fonction de la bande passante ($B$) et du rapport Signal/Bruit ($S/N$ en linéaire).</p>
+                <h4 class="telecom-theme-color">1.1. Théorème de Shannon-Hartley (Capacité Max.)</h4>
+                <p>Débit maximal ($C$) en fonction de la bande passante ($B$) et du rapport Signal/Bruit ($S/N$ en **linéaire**).</p>
                 <div class="formula">
                     $$C = B \cdot \log_2 \left(1 + \frac{S}{N}\right) \quad \text{(bits/s)}$$
                 </div>
-                <div class="example">
-                    <h4>💡 Tip : Calcul du $S/N$ requis</h4>
-                    <p>Pour un débit cible $C_{cible}$, le $S/N$ (en linéaire) est : $S/N = 2^{(C_{cible}/B)} - 1$. Attention : la formule de Shannon ne prend pas en compte les interférences.</p>
-                </div>
                 
-                <h4 style="color: var(--orange); margin-top: 1rem;">1.2. Puissance de Bruit Thermique ($P_{bruit}$)</h4>
-                <p>Puissance minimale présente dans tout système. ($k$: cte de Boltzmann, $T$: T° en Kelvin, $B$: Bande passante).</p>
+                <h4 class="telecom-theme-color">1.2. Puissance de Bruit Thermique ($P_{bruit}$)</h4>
+                <p>Le bruit est fonction de la température $T=290\text{ K}$ et de la bande passante $B$.</p>
                 <div class="formula">
                     $$P_{bruit}(\text{W}) = k \cdot T \cdot B \quad \text{ou} \quad P_{bruit}(\text{dBm}) = -174 \text{ dBm} + 10 \cdot \log_{10}(B)$$
                 </div>
+                <div class="example">
+                    <h4>🔥 Tip : Calcul du SNR requis</h4>
+                    <p>Pour un débit cible $C_{cible}$, le $S/N$ (en linéaire) est : $S/N = 2^{(C_{cible}/B)} - 1$.</p>
+                </div>
             </div>
             
-            <div class="fiche-revision" style="border-left-color: var(--blue);">
+            <div class="fiche-revision">
                 <h3>2. Bilan de Liaison, PIRE et SINR</h3>
                 
-                <h4 style="color: var(--blue); margin-top: 1rem;">2.1. PIRE (Puissance Isotrope Rayonnée Équivalente)</h4>
-                <p>Puissance effective émise. $P_{e}$ est la puissance de l'émetteur, $G_{e}$ est le gain de l'antenne d'émission.</p>
-                <div class="formula">
-                    $$\text{PIRE}(\text{dBm}) = P_{e}(\text{dBm}) + G_{e}(\text{dBi})$$
-                </div>
+                <h4 class="telecom-theme-color">2.1. Puissance Isotrope Rayonnée Équivalente (PIRE)</h4>
+                <p>$$ \text{PIRE}(\text{dBm}) = P_{e}(\text{dBm}) + G_{e}(\text{dBi}) - L_{\text{câbles}} $$</p>
                 
-                <h4 style="color: var(--blue); margin-top: 1rem;">2.2. Puissance Reçue ($P_{r}$)</h4>
-                <p>Formule du bilan de liaison : $L_{P}$ est l'affaiblissement de propagation (ex: Friis, Okumura-Hata).</p>
+                <h4 class="telecom-theme-color">2.2. Puissance Reçue (Bilan Général)</h4>
+                <p>$$P_{r}(\text{dBm}) = \text{PIRE}(\text{dBm}) + G_{r}(\text{dBi}) - L_{P}(\text{dB}) - L_{\text{autres}}$$</p>
+                
+                <h4 class="telecom-theme-color">2.3. Affaiblissements de Propagation</h4>
+                <ul>
+                    <li>**Espace Libre (Friis) :** $L_{P}(\text{dB}) = 20 \log_{10}(f) + 20 \log_{10}(d) + 20 \log_{10}(4\pi/c)$.</li>
+                    <li>**Modèle Simplifié Indoor/Urban :** $L_{P}(d) = L_0 + \alpha \cdot 10 \log_{10}(d)$.</li>
+                    <li>**Okumura-Hata :** Modèle plus complexe pour la propagation macro-cellulaire.</li>
+                </ul>
+
+                <h4 class="telecom-theme-color">2.4. SINR (En présence d'interférences $I$)</h4>
                 <div class="formula">
-                    $$P_{r}(\text{dBm}) = \text{PIRE}(\text{dBm}) + G_{r}(\text{dBi}) - L_{P}(\text{dB}) - \sum L_{\text{Pertes}}$$
+                    $$\text{SINR}(\text{linéaire}) = \frac{P_{r}}{P_{bruit} + \sum P_{\text{interférences}}} \quad \text{et} \quad \text{SINR}(\text{dB}) = 10 \cdot \log_{10}(\text{SINR}_{\text{lin}})$$
                 </div>
+            </div>
 
-                <h4 style="color: var(--blue); margin-top: 1rem;">2.3. SINR (Signal to Interference plus Noise Ratio)</h4>
-                <p>Rapport critique en présence d'interférences ($I$). Doit être calculé en **linéaire** avant conversion en dB.</p>
+            <div class="fiche-revision">
+                <h3>3. Technologies et Dimensionnement (Wi-Fi, Fibre, LTE)</h3>
+                
+                <h4 class="telecom-theme-color">3.1. Fibre Optique (Liaisons Longue Distance)</h4>
+                <p>La **Fibre Monomode** est essentielle pour les $>50\text{ km}$ car son affaiblissement ($\alpha \approx 0.2\text{ dB/km}$) est très faible. Le calcul de portée maximale est crucial.</p>
                 <div class="formula">
-                    $$\text{SINR}(\text{linéaire}) = \frac{P_{r}}{P_{bruit} + P_{\text{interférences}}}$$
+                    $$L_{\max} (\text{km}) = \frac{\text{Marge}(\text{dB})}{\alpha (\text{dB/km})} \quad \text{où Marge} = P_{e} - S_{r} - L_{\text{autres}}$$
                 </div>
+
+                <h4 class="telecom-theme-color">3.2. Architecture Cellulaire (LTE/4G)</h4>
+                <p>Composants principaux : **UE** (User Equipment), **eNB** (Station de Base), **EPC** (Evolved Packet Core). La puissance est souvent répartie par **Resource Block (RB)**.</p>
+                
+                <h4 class="telecom-theme-color">3.3. Dimensionnement Wi-Fi/Bluetooth</h4>
+                <p>Le dimensionnement Wi-Fi (Projet) se fait en garantissant un niveau de signal minimum (RSSI) à la limite de la zone de couverture (ex: $RSSI_{\min} = -59\text{ dBm}$ pour une bonne qualité). L'affaiblissement permet de déduire la portée réelle.</p>
             </div>
 
-            <h3 style="color: var(--primary-green); margin-top: 3rem;">📝 Exercices Corrigés Détaillés (Types DM / Projet)</h3>
+            <h3 style="color: var(--primary-dark); margin-top: 3rem;">📝 Exercices Corrigés Détaillés (5 Exercices Ciblés)</h3>
 
             <div class="exercice">
-                <div class="exercice-header">
-                    <h4>Exercice 1 - Bilan de Liaison (LTE) & PIRE</h4>
-                    <span class="difficulty difficile">DM Q7 & Project</span>
-                </div>
-                <p><strong>Énoncé :</strong> Émetteur LTE (Station de Base) de puissance $P_{e}=20\text{ W}$, antenne de gain $G_{e}=15\text{ dBi}$. L'affaiblissement entre émetteur et utilisateur est $L_{P}=100\text{ dB}$. Calculer la **PIRE** en dBm et la **Puissance Reçue** ($P_{r}$) en dBm.</p>
+                <div class="exercice-header"><h4>Exercice T.1 - Bilan de Liaison complet (DM Q7)</h4><span class="difficulty difficile">DM Q7</span></div>
+                <p><strong>Énoncé :</strong> Émetteur LTE $P_{e}=20\text{ W}, G_{e}=15\text{ dBi}$. $L_{P}=100\text{ dB}$. 1. Calculer la $\text{PIRE}$ en $\text{dBm}$. 2. $P_{r}$ en $\text{dBm}$.</p>
                 <button class="toggle-solution">Voir la solution</button>
-                <div class="solution">
-                    <p>1. **Calcul de la PIRE :** $P_{e}(\text{dBm}) \approx 43\text{ dBm}$. $\text{PIRE}(\text{dBm}) = 43\text{ dBm} + 15\text{ dBi} = \mathbf{58\text{ dBm}}$</p>
-                    <p>2. **Calcul de $P_{r}$ :** $P_{r}(\text{dBm}) = 58\text{ dBm} - 100\text{ dB} = \mathbf{-42\text{ dBm}}$</p>
-                </div>
-            </div>
-
-            <div class="exercice">
-                <div class="exercice-header">
-                    <h4>Exercice 2 - SINR et Interférences (DM Q7)</h4>
-                    <span class="difficulty difficile">Interférences Multiples</span>
-                </div>
-                <p><strong>Énoncé :</strong> (Suite de l'Ex 1) $P_{r} = -42\text{ dBm}$. Le bruit thermique est négligeable. L'utilisateur reçoit l'interférence de 6 interféreurs, chacun avec $P_{i} = -50\text{ dBm}$. Calculer le **SINR** de la liaison en dB.</p>
-                <button class="toggle-solution">Voir la solution</button>
-                <div class="solution">
-                    <p>1. **Puissance totale Interférence ($P_{int, tot}$) :** $P_{i} = -50\text{ dBm} \implies 10^{-5}\text{ mW}$. $P_{int, tot} = 6 \times 10^{-5}\text{ mW} \approx -42.2\text{ dBm}$.</p>
-                    <p>2. **Puissance reçue signal ($P_{r}$) :** $P_{r} \approx 6.31 \times 10^{-5}\text{ mW}$.</p>
-                    <p>3. **Calcul SINR :** $SINR(\text{linéaire}) \approx \frac{6.31 \times 10^{-5}}{6 \times 10^{-5}} \approx 1.05$.</p>
-                    <p>4. **Conversion en dB :** $SINR(\text{dB}) = 10 \cdot \log_{10}(1.05) \approx \mathbf{0.2\text{ dB}}$</p>
+                <div class="solution active">
+                    <p>1. **Calcul de la PIRE :** $P_{e}(\text{W}) = 20\text{ W} \implies P_{e}(\text{dBm}) = 10 \log_{10}(20000) \approx 43\text{ dBm}$.</p>
+                    <div class="formula">$$\text{PIRE}(\text{dBm}) = P_{e}(\text{dBm}) + G_{e}(\text{dBi}) = 43\text{ dBm} + 15\text{ dBi} = \mathbf{58\text{ dBm}}$$</div>
+                    <p>2. **Calcul de $P_{r}$ :** $P_{r}(\text{dBm}) = \text{PIRE}(\text{dBm}) - L_{P}(\text{dB}) = 58\text{ dBm} - 100\text{ dB} = \mathbf{-42\text{ dBm}}$</p>
                 </div>
             </div>
 
             <div class="exercice">
-                <div class="exercice-header">
-                    <h4>Exercice 3 - Portée Maximale (Fibre)</h4>
-                    <span class="difficulty moyen">Project Livrable</span>
-                </div>
-                <p><strong>Énoncé :</strong> Fibre monomode. $P_{e}=0\text{ dBm}$. Sensibilité $S_{r}=-30\text{ dBm}$. Affaiblissement $\alpha = 0.2\text{ dB/km}$. Pertes $3\text{ dB}$. Quelle est la portée maximale $L$ (en km) sans répéteur ?</p>
+                <div class="exercice-header"><h4>Exercice T.2 - Calcul du SINR avec 6 Interféreurs</h4><span class="difficulty difficile">DM Q7 (Suite)</span></div>
+                <p><strong>Énoncé :</strong> (Suite de l'Ex T.1) Bruit négligeable. 6 interféreurs identiques avec $P_{i} = -50\text{ dBm}$ chacun. Calculer le $SINR$ de la liaison en $\text{dB}$.</p>
                 <button class="toggle-solution">Voir la solution</button>
-                <div class="solution">
-                    <p>On utilise la formule pour la distance maximale : $L_{\max} = \frac{P_{e}(\text{dBm}) - S_{r}(\text{dBm}) - \sum L_{\text{Pertes}}}{\alpha}$</p>
+                <div class="solution active">
+                    <p>1. **Conversion et Somme Interférence :** $P_{i}(\text{mW}) = 10^{-50/10} = 10^{-5}\text{ mW}$. $P_{I, tot} = 6 \times 10^{-5}\text{ mW}$.</p>
+                    <p>2. **Conversion $P_r$ :** $P_{r}(\text{mW}) = 10^{-42/10} \approx 6.31 \times 10^{-5}\text{ mW}$.</p>
                     <div class="formula">
-                        $L_{\max} = \frac{0 - (-30) - 3}{0.2} = \frac{27}{0.2} = \mathbf{135\text{ km}}$
+                        $$\text{SINR}(\text{linéaire}) = \frac{P_{r}}{P_{I, tot}} = \frac{6.31 \times 10^{-5}}{6 \times 10^{-5}} \approx 1.05$$
+                        $$\text{SINR}(\text{dB}) = 10 \cdot \log_{10}(1.05) \approx \mathbf{0.2\text{ dB}}$$
                     </div>
                 </div>
             </div>
 
-            <h3 style="color: var(--blue); margin-top: 3rem;">🔥 Tips & Mises en Garde pour l'Examen</h3>
+            <div class="exercice">
+                <div class="exercice-header"><h4>Exercice T.3 - Portée Maximale Fibre (Projet)</h4><span class="difficulty moyen">Projet Livrable</span></div>
+                <p><strong>Énoncé :</strong> Fibre Monomode, $\alpha = 0.2\text{ dB/km}$. $P_{e}=0\text{ dBm}$. Sensibilité $S_{r}=-30\text{ dBm}$. Pertes totales $L_{p}=3\text{ dB}$. Calculer la portée maximale $L_{\max}$.</p>
+                <button class="toggle-solution">Voir la solution</button>
+                <div class="solution active">
+                    <p>On utilise la formule de Bilan Optique pour $L_{\max}$ :</p>
+                    <div class="formula">
+                        $$L_{\max} = \frac{P_{e}(\text{dBm}) - S_{r}(\text{dBm}) - L_{\text{p}}}{\alpha} = \frac{0 - (-30) - 3}{0.2} = \frac{27}{0.2} = \mathbf{135\text{ km}}$$
+                    </div>
+                </div>
+            </div>
+            
+            <div class="exercice">
+                <div class="exercice-header"><h4>Exercice T.4 - Dimensionnement Wi-Fi (Éval/APP)</h4><span class="difficulty difficile">APP/Evaluation</span></div>
+                <p><strong>Énoncé :</strong> Un client utilise le Wi-Fi à $2.4\text{ GHz}$. L'affaiblissement est modélisé par $L_{P}(d) = 30 + 35 \log_{10}(d)$ (en $\text{dB}$, $d$ en $\text{km}$). L'émetteur ($PA$) émet à $20\text{ dBm}$. L'objectif $RSSI_{\min}$ est $-59\text{ dBm}$. Calculer la portée maximale $d_{\max}$ en $\text{m}$ (sans gain d'antenne utilisateur).</p>
+                <button class="toggle-solution">Voir la solution</button>
+                <div class="solution active">
+                    <p>La puissance reçue $P_r$ doit être égale à $RSSI_{\min}$ :</p>
+                    $$P_{r}(\text{dBm}) = P_{e}(\text{dBm}) - L_{P}(d)$$
+                    $$-59\text{ dBm} = 20\text{ dBm} - (30 + 35 \log_{10}(d_{\max}))$$
+                    $$35 \log_{10}(d_{\max}) = 20 - 30 - (-59) = 49\text{ dB}$$
+                    $$\log_{10}(d_{\max}) = 49 / 35 \approx 1.4$$
+                    $$d_{\max} = 10^{1.4} \approx 25.12 \text{ km}$$
+                    <p>En mètres : $d_{\max} = 25120\text{ m}$. (Note : La portée est grande pour une propagation Indoor, le modèle utilisé étant simpliste).</p>
+                </div>
+            </div>
 
-            <div class="example" style="border-left: 3px solid var(--orange);">
-                <h4>Bilan Énergétique (DM Q9)</h4>
-                <p>Les différences entre calculs théoriques et mesures terrain sont causées par :</p>
+            <h3 style="color: var(--primary-dark); margin-top: 3rem;">🔥 Tips et Mises en Garde Critiques</h3>
+
+            <div class="example" style="border-left: 3px solid var(--primary-green);">
+                <h4>Erreurs Courantes (DM Q9)</h4>
                 <ul>
-                    <li>**Les masques de terrain :** Murs, objets (atténuation variable et imprévue).</li>
-                    <li>**Le Multipath (Trajets multiples) :** Le signal arrive avec des déphasages qui provoquent des évanouissements (fading).</li>
-                    <li>**Le Contrôle de Puissance :** Les équipements ajustent dynamiquement leur puissance d'émission.</li>
+                    <li>**dB vs Linéaire :** Toujours convertir les puissances et les interférences en **mW** ou **W (linéaire)** avant de les additionner (dénominateur du SINR).</li>
+                    <li>**dB vs dBi :** $P_{e}(\text{dBm})$ + $G_{e}(\text{dBi})$ $\to$ $\text{PIRE}(\text{dBm})$. Les $\text{dBi}$ et $\text{dB}$ sont additifs/soustractifs.</li>
+                    <li>**Causes des Écarts (DM Q9) :** **Multipath**, **Masques de Terrain/Bâtiments**, **Contrôle de Puissance**.</li>
                 </ul>
             </div>
 
-            <h3 style="color: var(--primary-green); margin-top: 3rem;">❓ Quiz de Révision Télécom</h3>
-            <div class="exercice">
-                <p>1. Quelle est l'unité du **SINR** lorsqu'il est utilisé dans la formule de Shannon ?</p>
+            <div class="example" style="border-left: 3px solid var(--primary-dark);">
+                <h4>Choix Technologiques (Projet)</h4>
+                <ul>
+                    <li>**Liaison Longue Distance ($>50\text{ km}$) :** Choisir la **Fibre Monomode** ($\alpha \approx 0.2\text{ dB/km}$).</li>
+                    <li>**Réseau Indoor Capteurs :** **Bluetooth** (faible consommation, faible débit, liaison Objets-Passerelle).</li>
+                    <li>**Réseau Indoor Central :** **Wi-Fi** (débit moyen/élevé, liaison Passerelles-Serveur).</li>
+                </ul>
+            </div>
+            
+            <h3 style="color: var(--primary-dark); margin-top: 3rem;">❓ Quiz de Révision Télécom</h3>
+            <div class="exercice quiz-box">
+                <div class="exercice-header"><h4 style="color: var(--primary-dark);">QUIZ T.1 - Shannon</h4></div>
+                <p>Le débit d'une liaison est limité par le SINR. Si vous doublez la bande passante $B$ et que vous laissez le $S/N$ constant, le débit $C$ :</p>
                 <button class="toggle-solution">Voir la réponse</button>
-                <div class="solution">
-                    <p>**Réponse :** Le **linéaire** (rapport sans unité).</p>
+                <div class="solution active">
+                    <p>Réponse : **Double** (car $C$ est directement proportionnel à $B$).</p>
                 </div>
             </div>
-            <div class="exercice">
-                <p>2. Pourquoi la Fibre Monomode est-elle privilégiée pour des liaisons de $>50\text{ km}$ ?</p>
+            <div class="exercice quiz-box">
+                <div class="exercice-header"><h4 style="color: var(--primary-dark);">QUIZ T.2 - Bruit</h4></div>
+                <p>Si la puissance de bruit thermique dans un canal de $1\text{ MHz}$ est $N_0$, quelle est-elle dans un canal de $10\text{ MHz}$ ?</p>
                 <button class="toggle-solution">Voir la réponse</button>
-                <div class="solution">
-                    <p>**Réponse :** Pour son **très faible affaiblissement ($\alpha \approx 0.2\text{ dB/km}$)**, permettant d'éviter l'usage de répéteurs sur de grandes distances.</p>
+                <div class="solution active">
+                    <p>Réponse : Elle augmente de $10 \cdot \log_{10}(10/1) = \mathbf{10\text{ dB}}$.</p>
+                </div>
+            </div>
+            <div class="exercice quiz-box">
+                <div class="exercice-header"><h4 style="color: var(--primary-dark);">QUIZ T.3 - Bilan</h4></div>
+                <p>Si vous avez une PIRE de $50\text{ dBm}$ et un affaiblissement $L_{P}$ de $120\text{ dB}$, et $G_r=0\text{ dBi}$, que vaut $P_r$ ?</p>
+                <button class="toggle-solution">Voir la réponse</button>
+                <div class="solution active">
+                    <p>Réponse : $P_r = 50 - 120 = \mathbf{-70\text{ dBm}}$.</p>
                 </div>
             </div>
         </div>
