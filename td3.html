@@ -1,143 +1,101 @@
-<section id="td3" class="page">
-    <a href="#" class="back-btn" data-page="proba">← Retour aux TDs</a>
-    
-    <div class="td-detail">
-        <h2>TD3 - Variables Aléatoires Continues</h2>
-        
-        <div class="fiche-revision">
-            <h3>📋 Fiche de Révision : Lois et Théorèmes Continues</h3>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TD3 - Variables Aléatoires Continues</title>
+    <link rel="stylesheet" href="style2.css">
+    <script src="script.js"></script>
+    <style>
+        /* Styles thématiques TD3 */
+        .td-detail h2 { border-bottom: 3px solid var(--td-color-3); padding-bottom: 10px; }
+        .fiche-revision { border-left-color: var(--td-color-3); }
+        .fiche-revision h4 { color: var(--td-color-3); } 
+        .solution.active { border-left-color: var(--td-color-3); background-color: #fff4e5; }
+        .quiz-box { border: 1px solid var(--td-color-3); }
+        .quiz-box h4 { color: var(--td-color-3) !important; }
+    </style>
+</head>
+<body>
+    <section id="td3" class="page active">
+        <a href="index.html#proba-tds" class="back-btn">← Retour aux TDs</a>
+        <div class="td-detail">
+            <h2>🟠 TD3 - Variables Aléatoires Continues</h2>
+            <p class="section-description">Densité, fonction de répartition, Loi Normale, Exponentielle et Inégalité de Tchebychev.</p>
+            <hr class="separator" style="margin: 20px 0;">
+
+            <div class="fiche-revision">
+                <h3>💡 Fiche de Révision : Lois Continues</h3>
+                
+                <h4 class="td-theme-color">1. Densité et FdR</h4>
+                <p>$$P(a \le X \le b) = F_X(b) - F_X(a) = \int_{a}^{b} f_X(x) dx$$</p>
+                
+                <h4 class="td-theme-color">2. Loi Normale $N(\mu, \sigma^2)$</h4>
+                <p>$$Z = \frac{X-\mu}{\sigma} \sim N(0, 1)$$</p>
+                
+                <h4 class="td-theme-color">3. Loi Exponentielle $E(\lambda)$</h4>
+                <p>$$F(t) = P(T \le t) = 1 - e^{-\lambda t} \quad ; \quad E(T)=1/\lambda$$</p>
+                
+                <div class="example">
+                    <h4>🔥 Tip : Tchebychev (Majorant Universel)</h4>
+                    <p>$$P(|X-\mu| \ge \epsilon) \le \frac{V(X)}{\epsilon^2}$$</p>
+                </div>
+            </div>
+
+            <h3 style="color: var(--primary-dark); margin-top: 3rem;">📝 Exercices Corrigés Détaillés</h3>
+
+            <div class="exercice">
+                <div class="exercice-header"><h4>Exercice 3.1 - Note Seuil (Loi Normale) (TD2-4)</h4><span class="difficulty difficile">Difficile</span></div>
+                <p><strong>Énoncé :</strong> Notes $X \sim N(13, 3^2)$. Déterminer la note $x$ pour être dans le top 10% ($P(X \ge x) = 0.10$).</p>
+                <button class="toggle-solution">Voir la solution</button>
+                <div class="solution">
+                    <p>On cherche $z$ tel que $P(Z \le z) = 0.90$, soit $G(z) = 0.40$. Les tables donnent $z \approx 1.28$.</p>
+                    <div class="formula">$$x = \mu + z\sigma = 13 + 1.28 \times 3 = \mathbf{16.84}$$</div>
+                </div>
+            </div>
+
+            <div class="exercice">
+                <div class="exercice-header"><h4>Exercice 3.2 - Détermination de Densité (TD3-4)</h4><span class="difficulty moyen">Moyen</span></div>
+                <p><strong>Énoncé :</strong> $f_X(x) = ax$ pour $x \in [0, 2]$, et 0 ailleurs. 1. Déterminer $a$. 2. Calculer $E(X)$.</p>
+                <button class="toggle-solution">Voir la solution</button>
+                <div class="solution">
+                    <p>1. **Constante $a$ :** Condition de normalisation $\int_{0}^{2} ax dx = 1$.</p>
+                    <div class="formula">$$a \left[ \frac{x^2}{2} \right]_0^2 = a \cdot 2 = 1 \implies \mathbf{a = 1/2}$$</div>
+                    <p>2. **Espérance $E(X)$ :** $E(X) = \int_{0}^{2} x f_X(x) dx = \int_{0}^{2} \frac{1}{2} x^2 dx$.</p>
+                    <div class="formula">$$E(X) = \frac{1}{2} \left[ \frac{x^3}{3} \right]_0^2 = \frac{1}{2} \cdot \frac{8}{3} = \mathbf{4/3}$$</div>
+                </div>
+            </div>
+
+            <div class="exercice">
+                <div class="exercice-header"><h4>Exercice 3.3 - Garantie (Loi Exponentielle) (TD3-6)</h4><span class="difficulty difficile">Difficile</span></div>
+                <p><strong>Énoncé :</strong> Durée de vie $T \sim E(\lambda)$. Le fabricant garantit que $P(T \le 1 \text{ an}) \le 0.01$. Calculer la durée de vie moyenne minimale $E(T)_{min}$.</p>
+                <button class="toggle-solution">Voir la solution</button>
+                <div class="solution">
+                    <p>$$P(T \le 1) = 1 - e^{-\lambda} \le 0.01 \implies e^{-\lambda} \ge 0.99$$</p>
+                    <div class="formula">
+                        $$-\lambda \ge \ln(0.99) \implies \lambda \le -\ln(0.99) \approx 0.01005$$<br>
+                        $$E(T)_{min} = \frac{1}{\lambda_{max}} = \frac{1}{0.01005} \approx \mathbf{99.5 \text{ ans}}$$
+                    </div>
+                </div>
+            </div>
             
-            <h4 style="color: var(--orange); margin-top: 1.5rem;">1. Fonction de Répartition et Densité</h4>
-            <p>Pour une V.A. continue $X$ de densité $f_X(x)$ :</p>
-            <div class="formula">
-                F_X(x) = P(X ≤ x) = ∫[-∞,x] f_X(t)dt<br>
-                f_X(x) = F'_X(x)
+            <h3 style="color: var(--primary-dark); margin-top: 3rem;">❓ Quiz TD3 & Ex. Supplémentaires</h3>
+            <div class="topic-card">
+                <h4>Fiche d'Exercices Supplémentaires</h4>
+                <ul style="padding-left: 20px;">
+                    <li>**TD3-5 :** Calcul complet de $E(X)$ et $V(X)$ pour la Loi Uniforme $U(a,b)$.</li>
+                    <li>**Exam 2018 Ex. 2 :** Transformation de V.A. ($Y=g(X)$) : trouver la densité $f_Y(y)$.</li>
+                </ul>
             </div>
-            <p>Propriété clé : $P(a \le X \le b) = F_X(b) - F_X(a)$.</p>
-            
-            <h4 style="color: var(--orange); margin-top: 1.5rem;">2. Loi Normale $N(\mu, \sigma^2)$</h4>
-            <p>Loi de référence. La V.A. centrée réduite $Z$ permet d'utiliser les tables :</p>
-            <div class="formula">
-                Z = (X-μ)/σ ; Z ~ N(0,1)
-            </div>
-            
-            <h4 style="color: var(--orange); margin-top: 1.5rem;">3. Inégalité de Tchebychev</h4>
-            <p>Fournit un majorant pour la probabilité qu'une V.A. s'écarte de sa moyenne, quelle que soit sa loi (avec $V(X)$ et $\mu$ finis) :</p>
-            <div class="formula">
-                P(|X-μ| ≥ ε) ≤ V(X)/ε²
-            </div>
-            
-            <div class="example">
-                <h4>💡 Propriété sans Mémoire (Loi Exponentielle)</h4>
-                <p>La loi exponentielle est la seule loi continue à être "sans mémoire". Si $T$ est la durée de vie d'un composant, savoir qu'il a déjà duré $s$ années n'influence pas sa probabilité de durer $t$ années supplémentaires :</p>
-                <div class="formula">P(T > s+t | T > s) = P(T > t)</div>
-            </div>
-        </div>
-
-        <h3 style="color: var(--orange); margin-top: 3rem; margin-bottom: 1.5rem;">📝 Exercices Corrigés</h3>
-
-        <div class="exercice">
-            <div class="exercice-header">
-                <h4>Exercice 3.1 - Notes d'Examen et Mention (TD2-4)</h4>
-                <span class="difficulty moyen">Moyen</span>
-            </div>
-            <p>**Énoncé :** Notes $X \sim N(13, 3^2)$. On donne $P(0 \le Z \le 1.28) \approx 0.40$. Déterminer la note $x$ à partir de laquelle on obtient la mention très bien (Top 10% des élèves, i.e., $P(X \ge x) = 0.10$).</p>
-            <button class="toggle-solution">Voir la solution</button>
-            <div class="solution">
-                <p>**Solution (Inverse de la Loi Normale) :**</p>
-                <p>On cherche $x$ tel que $P(X \ge x) = 0.10$. On centre et réduit $Z = (X-13)/3$.</p>
-                <div class="formula">
-                    P(X ≥ x) = P(Z ≥ z) = 0.10<br>
-                    P(Z ≤ z) = 1 - 0.10 = 0.90<br>
-                    P(Z ≤ z) = P(Z ≤ 0) + P(0 ≤ Z ≤ z) = 0.5 + G(z) = 0.90
-                </div>
-                <p>Donc $G(z) = 0.40$. D'après les données, $z \approx 1.28$.</p>
-                <p>On résout pour $x$ : $1.28 = \frac{x-13}{3} \implies x = 13 + 3 \times 1.28 = \mathbf{16.84}$</p>
-            </div>
-        </div>
-        
-        <div class="exercice">
-            <div class="exercice-header">
-                <h4>Exercice 3.2 - Durée de Vie (Loi Exponentielle) (TD3-6)</h4>
-                <span class="difficulty difficile">Difficile</span>
-            </div>
-            <p>**Énoncé :** La durée de vie $T$ d'un composant est $E(\lambda)$. Si $P(T \le 2 \text{ ans}) = 0.20$, calculer la durée de vie moyenne $E(T)$ et la probabilité qu'il dure au moins 5 ans ($P(T \ge 5)$).</p>
-            <button class="toggle-solution">Voir la solution</button>
-            <div class="solution">
-                <p>**Solution :**</p>
-                <p>1. **Calcul de $\lambda$ :** $P(T \le t) = 1 - e^{-\lambda t}$.</p>
-                <div class="formula">
-                    P(T ≤ 2) = 1 - e⁻²λ = 0.20<br>
-                    e⁻²λ = 0.80<br>
-                    -2λ = ln(0.80) ≈ -0.223<br>
-                    λ ≈ 0.1115
-                </div>
-                <p>Durée de vie moyenne $E(T) = 1/\lambda = 1/0.1115 \approx \mathbf{8.97 \text{ ans}}$.</p>
-                <p>2. **Calcul de $P(T \ge 5)$ :** $P(T \ge t) = e^{-\lambda t}$.</p>
-                <div class="formula">
-                    P(T ≥ 5) = e⁻⁵λ ≈ e⁻⁵(0.1115) ≈ e⁻⁰.⁵⁵⁷⁵ ≈ **0.5726 (57.26%)**
+            <div class="exercice quiz-box">
+                <div class="exercice-header"><h4 style="color: var(--td-color-3);">QUIZ TD3 - Propriétés</h4></div>
+                <p>Pour une V.A. continue $X$, que vaut toujours $P(X=x)$ ?</p>
+                <button class="toggle-solution">Voir la réponse</button>
+                <div class="solution">
+                    <p>Réponse : $\mathbf{0}$. Pour une V.A. continue, la probabilité d'une valeur exacte est nulle (seules les plages d'intégration comptent).</p>
                 </div>
             </div>
         </div>
-
-        <div class="exercice">
-            <div class="exercice-header">
-                <h4>Exercice 3.3 - Application de Tchebychev (TD3-7)</h4>
-                <span class="difficulty moyen">Moyen</span>
-            </div>
-            <p>**Énoncé :** Soit $X$ une V.A. de moyenne $\mu=10$ et de variance $V(X)=1$. Utiliser l'inégalité de Tchebychev pour majorer la probabilité que $X$ s'écarte de 10 de plus de 3 unités ($P(|X-10| > 3)$).</p>
-            <button class="toggle-solution">Voir la solution</button>
-            <div class="solution">
-                <p>**Solution :**</p>
-                <p>On applique l'inégalité de Tchebychev avec $\epsilon=3$ et $V(X)=1$.</p>
-                <div class="formula">
-                    P(|X-μ| ≥ ε) ≤ V(X)/ε²<br>
-                    P(|X-10| > 3) ≤ 1 / 3² = 1/9 ≈ **0.111**
-                </div>
-                <p style="margin-top: 1rem; color: var(--blue);">**Conclusion :** La probabilité que $X$ soit en dehors de l'intervalle $[7, 13]$ est d'au plus 11.1%.</p>
-            </div>
-        </div>
-
-        <div class="exercice">
-            <div class="exercice-header">
-                <h4>Exercice 3.4 - Détermination des Constantes (TD3-4)</h4>
-                <span class="difficulty difficile">Difficile</span>
-            </div>
-            <p>**Énoncé :** Soit $f_X(x) = ax$ pour $x \in [0, 2]$, et 0 ailleurs. Déterminer la constante $a$ pour que $f_X(x)$ soit une densité de probabilité.</p>
-            <button class="toggle-solution">Voir la solution</button>
-            <div class="solution">
-                <p>**Solution :**</p>
-                <p>La condition de normalisation $\int_{-\infty}^{+\infty} f_X(x) dx = 1$ doit être satisfaite.</p>
-                <div class="formula">
-                    ∫[0,2] ax dx = 1<br>
-                    a [x²/2]₀² = 1<br>
-                    a (2²/2 - 0) = 1<br>
-                    2a = 1 $\implies a = \mathbf{1/2}$
-                </div>
-            </div>
-        </div>
-
-        <h3 style="color: var(--pink); margin-top: 3rem; margin-bottom: 1.5rem;">📚 Fiche d'Exercices Supplémentaires</h3>
-        <ul class="topic-card" style="cursor: default;">
-            <li>**TD3-5 :** Calculer l'espérance et la variance d'une V.A. de loi uniforme $U(a,b)$.</li>
-            <li>**TD3-4 c) :** Calculer l'Espérance $E(X)$ et la Variance $V(X)$ pour la densité $f_X(x) = \frac{1}{2}x$ sur $[0, 2]$.</li>
-            <li>**TD3-6 :** Problème de l'absence de mémoire sur deux composants en série/parallèle.</li>
-        </ul>
-
-        <h3 style="color: var(--orange); margin-top: 3rem; margin-bottom: 1.5rem;">❓ Quiz Révision TD3</h3>
-        <div class="exercice">
-            <p>1. Pour une V.A. continue $X$, que représente la dérivée de $F_X(x)$ ?</p>
-            <button class="toggle-solution">Voir la réponse</button>
-            <div class="solution">
-                <p>**Réponse :** La **densité de probabilité** $f_X(x)$.</p>
-            </div>
-        </div>
-        <div class="exercice">
-            <p>2. Pour une loi Normale $N(\mu, \sigma^2)$, quel pourcentage des données se trouve dans l'intervalle $[\mu - \sigma, \mu + \sigma]$ ?</p>
-            <button class="toggle-solution">Voir la réponse</button>
-            <div class="solution">
-                <p>**Réponse :** Environ **68.2%** (Règle empirique 68-95-99.7).</p>
-            </div>
-        </div>
-    </div>
-</section>
+    </section>
+</body>
+</html>
