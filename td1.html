@@ -4,129 +4,611 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TD1 - Probabilités Conditionnelles & Indépendance</title>
-    <link rel="stylesheet" href="style2.css">
-    <script src="script.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
-        /* Styles thématiques TD1 */
-        .td-detail h2 { border-bottom: 3px solid var(--td-color-1); padding-bottom: 10px; }
-        .fiche-revision { border-left-color: var(--td-color-1); }
-        .fiche-revision h4 { color: var(--td-color-1); } 
-        .solution.active { border-left-color: var(--td-color-1); background-color: #f7f3fb; }
-        .quiz-box { border: 1px solid var(--td-color-1); }
-        .quiz-box h4 { color: var(--td-color-1) !important; }
+        :root {
+            /* --- Couleurs Générales --- */
+            --primary-purple: #9b59b6; /* Couleur principale TD1 */
+            --primary-dark: #2C3E50; /* Couleur du texte et des éléments sombres */
+            --secondary-gray: #f8f9fa; /* Arrière-plan clair */
+            --white: #FFFFFF;
+            --light-purple: #f3e5f5;
+            --medium-purple: #e1bee7;
+            --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 6px 15px rgba(0, 0, 0, 0.1);
+            --shadow-heavy: 0 10px 30px rgba(0, 0, 0, 0.15);
+            
+            /* --- Couleurs de feedback --- */
+            --bg-solution: #f9f5ff; /* Fond très clair pour la solution */
+            --bg-quiz: #f4f6f8;     /* Fond clair pour les zones d'exercices supp. et quiz */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: var(--secondary-gray);
+            color: var(--primary-dark);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+            padding: 0;
+        }
+
+        /* ------------------------------------- */
+        /* --- 1. STRUCTURE ET NAVIGATION --- */
+        /* ------------------------------------- */
+
+        .page {
+            padding: 20px 5%;
+            min-height: 100vh;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .td-detail {
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-heavy);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .td-detail::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary-purple), #6a1b9a);
+        }
+
+        .td-detail h2 {
+            color: var(--primary-purple);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            border-bottom: 3px solid var(--primary-purple);
+            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 25px;
+            padding: 12px 20px;
+            background-color: var(--primary-purple);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background-color: #8e44ad;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .section-description {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            padding: 15px;
+            background-color: var(--light-purple);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-purple);
+        }
+
+        .separator {
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--primary-purple), transparent);
+            margin: 40px 0;
+        }
+
+        /* ------------------------------------- */
+        /* --- 2. FICHES ET EXERCICES (CLE) --- */
+        /* ------------------------------------- */
+
+        /* Style du bloc de révision */
+        .fiche-revision {
+            border-left: 5px solid var(--primary-purple);
+            padding: 25px;
+            margin: 30px 0;
+            background-color: var(--light-purple);
+            border-radius: 0 12px 12px 0;
+            box-shadow: var(--shadow-light);
+        }
+
+        .fiche-revision h3 {
+            color: var(--primary-purple);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .fiche-revision h4 {
+            margin-top: 1.8rem;
+            color: var(--primary-purple);
+            font-size: 1.2rem;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed var(--medium-purple);
+        }
+
+        .fiche-revision p {
+            margin-bottom: 15px;
+        }
+
+        /* Style des exercices */
+        .exercice {
+            border: 1px solid #e0e0e0;
+            padding: 25px;
+            margin-top: 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-light);
+            background-color: var(--white);
+            transition: all 0.3s;
+        }
+
+        .exercice:hover {
+            box-shadow: var(--shadow-medium);
+            transform: translateY(-3px);
+        }
+
+        .exercice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .exercice h4 {
+            color: var(--primary-dark);
+            font-size: 1.3rem;
+        }
+
+        .difficulty {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .facile { background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+        .moyen { background-color: #fff3e0; color: #ef6c00; border: 1px solid #ffe0b2; }
+        .difficile { background-color: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+
+        /* Bouton et solution (Animation Smooth) */
+        .toggle-solution {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--primary-purple);
+            color: var(--white);
+            border: none;
+            padding: 12px 20px;
+            margin-top: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .toggle-solution:hover {
+            background-color: #8e44ad;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .solution {
+            margin-top: 20px;
+            padding: 0 20px;
+            border-left: 4px solid var(--primary-purple);
+            background-color: var(--bg-solution);
+            border-radius: 0 8px 8px 0;
+            
+            /* Propriétés pour l'animation (Initial state) */
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.4s ease-out;
+        }
+
+        /* État actif (géré par JS) */
+        .solution.active {
+            opacity: 1;
+            max-height: 2000px;
+            padding: 20px;
+        }
+
+        .formula {
+            background-color: var(--primary-dark);
+            color: var(--white);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            box-shadow: var(--shadow-light);
+        }
+
+        /* Styles des Tips et des Fiches Supp. */
+        .example {
+            margin-top: 20px;
+            border-left: 4px solid #ff9800;
+            padding: 20px;
+            background-color: #fff8e1;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .example h4 {
+            color: #ff9800;
+            margin-top: 0;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Style de la carte d'exercices supplémentaires */
+        .topic-card {
+            padding: 20px;
+            background-color: var(--bg-quiz);
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid var(--primary-purple);
+        }
+
+        .topic-card h4 {
+            color: var(--primary-purple);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .topic-card ul {
+            padding-left: 20px;
+        }
+
+        .topic-card li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        /* Style du quiz */
+        .quiz-box {
+            border: 2px solid var(--primary-purple);
+            background-color: var(--light-purple);
+        }
+
+        .quiz-box h4 {
+            color: var(--primary-purple) !important;
+        }
+
+        /* Style pour les listes */
+        ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page {
+                padding: 15px 3%;
+            }
+            
+            .td-detail {
+                padding: 25px;
+            }
+            
+            .td-detail h2 {
+                font-size: 1.8rem;
+            }
+            
+            .exercice-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .formula {
+                font-size: 0.9rem;
+                padding: 15px;
+            }
+        }
+
+        /* Animation pour les éléments qui apparaissent */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .exercice, .fiche-revision, .topic-card {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Style pour les icônes */
+        .icon {
+            margin-right: 8px;
+        }
     </style>
 </head>
 <body>
     <section id="td1" class="page active">
-        <a href="index.html#proba-tds" class="back-btn">← Retour aux TDs</a>
+        <a href="#" class="back-btn"><i class="fas fa-arrow-left"></i> Retour aux TDs</a>
+        
         <div class="td-detail">
-            <h2>📚 TD1 - Probabilités Conditionnelles & Indépendance</h2>
-            <p class="section-description">Maîtrisez les fondements : axiomes, dénombrement, probabilités totales et théorème de Bayes.</p>
-            <hr class="separator" style="margin: 20px 0;">
+            <h2><i class="fas fa-book-open"></i> TD1 - Probabilités Conditionnelles & Indépendance</h2>
+            <p class="section-description">Maîtrisez les fondements des probabilités : axiomes, dénombrement, probabilités totales et théorème de Bayes. Ce TD vous prépare à résoudre des problèmes complexes grâce à une approche méthodique et des exercices progressifs.</p>
+            
+            <hr class="separator">
 
             <div class="fiche-revision">
-                <h3>💡 Fiche de Révision : Axiomes et Formules Fondamentales</h3>
+                <h3><i class="fas fa-lightbulb"></i> Fiche de Révision : Axiomes et Formules Fondamentales</h3>
                 
-                <h4 class="td-theme-color">1. Axiomes des Probabilités</h4>
-                <p>1. $P(A) \ge 0$. 2. $P(\Omega) = 1$. 3. Pour événements disjoints : $P(\bigcup A_i) = \sum P(A_i)$.</p>
+                <h4>1. Axiomes des Probabilités (Kolmogorov)</h4>
+                <p>Les probabilités sont régies par trois axiomes fondamentaux :</p>
+                <ul>
+                    <li><strong>Positivité :</strong> Pour tout événement A, P(A) ≥ 0</li>
+                    <li><strong>Certitude :</strong> P(Ω) = 1 (probabilité de l'univers)</li>
+                    <li><strong>Additivité :</strong> Pour des événements disjoints A₁, A₂, ..., P(∪Aᵢ) = ΣP(Aᵢ)</li>
+                </ul>
                 
-                <h4 class="td-theme-color">2. Probabilités Conditionnelles et Formule des Probabilités Totales (FPT)</h4>
+                <h4>2. Probabilités Conditionnelles et Formule des Probabilités Totales (FPT)</h4>
+                <p>La probabilité conditionnelle mesure la probabilité d'un événement sachant qu'un autre s'est produit :</p>
                 <div class="formula">
-                    $$P(A|B) = \frac{P(A \cap B)}{P(B)} \quad ; \quad P(A) = \sum_{i} P(A|B_i) \cdot P(B_i) \quad \text{(si } B_i \text{ partition)}$$
+                    $$P(A|B) = \frac{P(A \cap B)}{P(B)} \quad \text{(si } P(B) > 0\text{)}$$
+                </div>
+                <p>La formule des probabilités totales permet de calculer P(A) en le décomposant selon une partition de l'univers :</p>
+                <div class="formula">
+                    $$P(A) = \sum_{i=1}^{n} P(A|B_i) \cdot P(B_i) \quad \text{(si les } B_i \text{ forment une partition de } \Omega\text{)}$$
                 </div>
                 
-                <h4 class="td-theme-color">3. Théorème de Bayes</h4>
-                <p>Permet d'inverser les causes : $P(\text{cause}|\text{effet})$.</p>
+                <h4>3. Théorème de Bayes</h4>
+                <p>Permet d'inverser les probabilités conditionnelles, particulièrement utile pour réviser des probabilités à posteriori :</p>
                 <div class="formula">
-                    $$P(B_i|A) = \frac{P(A|B_i) \cdot P(B_i)}{P(A)}$$
+                    $$P(B_i|A) = \frac{P(A|B_i) \cdot P(B_i)}{P(A)} = \frac{P(A|B_i) \cdot P(B_i)}{\sum_{j=1}^{n} P(A|B_j) \cdot P(B_j)}$$
                 </div>
                 
-                <h4 class="td-theme-color">4. Indépendance</h4>
-                <div class="formula">$$A \text{ et } B \text{ sont indépendants} \iff P(A \cap B) = P(A)P(B)$$</div>
+                <h4>4. Indépendance d'événements</h4>
+                <p>Deux événements A et B sont indépendants si la réalisation de l'un n'affecte pas la probabilité de l'autre :</p>
+                <div class="formula">$$A \text{ et } B \text{ sont indépendants} \iff P(A \cap B) = P(A) \cdot P(B)$$</div>
+                <p>Ce qui équivaut également à P(A|B) = P(A) (si P(B) > 0) ou P(B|A) = P(B) (si P(A) > 0).</p>
                 
                 <div class="example">
-                    <h4>🔥 Tip : Dénombrement</h4>
-                    <p><strong>Permutations :</strong> Ordre compte, tous les éléments ($n!$). <strong>Arrangements :</strong> Ordre compte, $k$ éléments parmi $n$ ($A_n^k$). <strong>Combinaisons :</strong> Ordre ne compte pas ($C_n^k$).</p>
+                    <h4><i class="fas fa-fire"></i> Conseil Méthodologique : Dénombrement</h4>
+                    <p><strong>Permutations :</strong> L'ordre compte, on utilise tous les éléments (n!). <strong>Arrangements :</strong> L'ordre compte, on choisit k éléments parmi n (Aₙᵏ = n!/(n-k)!). <strong>Combinaisons :</strong> L'ordre ne compte pas (Cₙᵏ = n!/(k!(n-k)!) = (ⁿₖ)).</p>
+                    <p><strong>Astuce :</strong> Pour déterminer si l'ordre compte, demandez-vous si échanger deux éléments donne un résultat différent.</p>
                 </div>
             </div>
 
-            <h3 style="color: var(--primary-dark); margin-top: 3rem;">📝 Exercices Corrigés Détaillés (5 Exercices)</h3>
+            <h3 style="color: var(--primary-purple); margin-top: 3rem; margin-bottom: 1.5rem; font-size: 1.8rem;"><i class="fas fa-pencil-alt"></i> Exercices Corrigés Détaillés</h3>
 
             <div class="exercice">
-                <div class="exercice-header"><h4>Exercice 1.1 - Question de Cours (TD1-2)</h4><span class="difficulty facile">Facile</span></div>
-                <p><strong>Énoncé :</strong> Démontrer que si $A$ et $B$ sont indépendants, alors $\overline{A}$ et $B$ le sont aussi.</p>
-                <button class="toggle-solution">Voir la solution</button>
-                <div class="solution">
-                    <p>D'après la formule des probabilités totales, $P(B) = P(B \cap A) + P(B \cap \overline{A})$.</p>
-                    <div class="formula">
-                        $$P(B\cap\overline{A}) = P(B) - P(B\cap A) = P(B) - P(B)P(A) \quad (\text{Car } A, B \text{ indép.})$$<br>
-                        $$P(B\cap\overline{A}) = P(B) (1 - P(A)) = P(B)P(\overline{A})$$
-                    </div>
-                    <p>Ceci prouve l'indépendance de $\overline{A}$ et $B$.</p>
+                <div class="exercice-header">
+                    <h4>Exercice 1.1 - Question de Cours (TD1-2)</h4>
+                    <span class="difficulty facile">Facile</span>
                 </div>
-            </div>
-
-            <div class="exercice">
-                <div class="exercice-header"><h4>Exercice 1.2 - Application FPT/Bayes (TD1-6)</h4><span class="difficulty difficile">Difficile</span></div>
-                <p><strong>Énoncé :</strong> 3 étagères $H, M, B$ ($P(H)=0.3, P(M)=0.5, P(B)=0.2$). $P(\text{Roman}|H)=0.25, P(\text{Roman}|M)=0.4, P(\text{Roman}|B)=0.8$.</p>
-                <p>1. Calculer $P(\text{Roman})$. 2. Sachant que le livre est un Roman, calculer la probabilité qu'il vienne de l'étagère Haute ($P(H|\text{Roman})$).</p>
-                <button class="toggle-solution">Voir la solution</button>
+                <p><strong>Énoncé :</strong> Démontrer que si A et B sont des événements indépendants, alors A et le complémentaire de B (noté B̄) sont également indépendants.</p>
+                <button class="toggle-solution"><i class="fas fa-eye"></i> Voir la solution</button>
                 <div class="solution">
-                    <p>1. **Probabilités Totales ($P(R)$) :**</p>
+                    <p><strong>Démonstration :</strong></p>
+                    <p>Nous savons que A et B sont indépendants, donc P(A ∩ B) = P(A) × P(B).</p>
+                    <p>D'après la formule des probabilités totales appliquée à B et B̄ :</p>
                     <div class="formula">
-                        $$P(R) = P(R|H)P(H) + P(R|M)P(M) + P(R|B)P(B)$$<br>
-                        $$P(R) = (0.25 \times 0.3) + (0.4 \times 0.5) + (0.8 \times 0.2) = 0.075 + 0.20 + 0.16 = \mathbf{0.435}$$
+                        $$P(A) = P(A \cap B) + P(A \cap \overline{B})$$
                     </div>
-                    <p>2. **Théorème de Bayes ($P(H|R)$) :**</p>
+                    <p>En substituant P(A ∩ B) par P(A)P(B) (car A et B sont indépendants) :</p>
                     <div class="formula">
-                        $$P(H|R) = \frac{P(R|H)P(H)}{P(R)} = \frac{0.075}{0.435} \approx \mathbf{0.1724}$$
+                        $$P(A) = P(A)P(B) + P(A \cap \overline{B})$$
                     </div>
+                    <p>En réarrangeant les termes :</p>
+                    <div class="formula">
+                        $$P(A \cap \overline{B}) = P(A) - P(A)P(B) = P(A)(1 - P(B)) = P(A)P(\overline{B})$$
+                    </div>
+                    <p>Ce qui prouve que A et B̄ sont indépendants. La démonstration est similaire pour montrer que Ā et B sont indépendants.</p>
                 </div>
             </div>
 
             <div class="exercice">
-                <div class="exercice-header"><h4>Exercice 1.3 - Dénombrement Multi-étapes (TD1-2)</h4><span class="difficulty moyen">Moyen</span></div>
-                <p><strong>Énoncé :</strong> 1. Nombre d'ordres pour 5 pneus sur 4 roues ? 2. Nombre de mains de 5 cartes dans un jeu de 32 ?</p>
-                <button class="toggle-solution">Voir la solution</button>
+                <div class="exercice-header">
+                    <h4>Exercice 1.2 - Application FPT/Bayes (TD1-6)</h4>
+                    <span class="difficulty difficile">Difficile</span>
+                </div>
+                <p><strong>Énoncé :</strong> Une bibliothèque possède trois étagères : Haute (H), Moyenne (M) et Basse (B). Les probabilités qu'un livre soit sur chaque étagère sont : P(H) = 0,3, P(M) = 0,5, P(B) = 0,2. Les probabilités qu'un livre soit un roman sachant son étagère sont : P(Roman|H) = 0,25, P(Roman|M) = 0,4, P(Roman|B) = 0,8.</p>
+                <p>1. Calculer la probabilité qu'un livre choisi au hasard soit un roman (P(Roman)).</p>
+                <p>2. Sachant qu'un livre est un roman, calculer la probabilité qu'il provienne de l'étagère Haute (P(H|Roman)).</p>
+                <button class="toggle-solution"><i class="fas fa-eye"></i> Voir la solution</button>
                 <div class="solution">
-                    <p>1. L'ordre compte, on choisit 4 pneus parmi 5. C'est un **Arrangement** :</p>
-                    <div class="formula">$$A_5^4 = \frac{5!}{(5-4)!} = 5 \times 4 \times 3 \times 2 = \mathbf{120}$$</div>
-                    <p>2. L'ordre ne compte pas, on choisit 5 cartes parmi 32. C'est une **Combinaison** :</p>
-                    <div class="formula">$$C_{32}^5 = \frac{32 \times 31 \times 30 \times 29 \times 28}{5 \times 4 \times 3 \times 2 \times 1} = \mathbf{201 376}$$</div>
+                    <p><strong>1. Calcul de P(Roman) avec la formule des probabilités totales :</strong></p>
+                    <div class="formula">
+                        $$P(Roman) = P(Roman|H)P(H) + P(Roman|M)P(M) + P(Roman|B)P(B)$$
+                        $$P(Roman) = (0,25 \times 0,3) + (0,4 \times 0,5) + (0,8 \times 0,2)$$
+                        $$P(Roman) = 0,075 + 0,20 + 0,16 = \mathbf{0,435}$$
+                    </div>
+                    <p><strong>2. Calcul de P(H|Roman) avec le théorème de Bayes :</strong></p>
+                    <div class="formula">
+                        $$P(H|Roman) = \frac{P(Roman|H)P(H)}{P(Roman)} = \frac{0,075}{0,435} \approx \mathbf{0,1724}$$
+                    </div>
+                    <p><strong>Interprétation :</strong> Environ 17,24% des romans se trouvent sur l'étagère Haute.</p>
                 </div>
             </div>
 
             <div class="exercice">
-                <div class="exercice-header"><h4>Exercice 1.4 - Urnes sans Remise (TD1-5)</h4><span class="difficulty difficile">Difficile</span></div>
-                <p><strong>Énoncé :</strong> Une urne contient 5 $R$ et 3 $V$. On tire 2 boules sans remise. Calculer la probabilité que la 2ème boule soit Rouge ($R_2$).</p>
-                <button class="toggle-solution">Voir la solution</button>
+                <div class="exercice-header">
+                    <h4>Exercice 1.3 - Dénombrement Multi-étapes (TD1-2)</h4>
+                    <span class="difficulty moyen">Moyen</span>
+                </div>
+                <p><strong>Énoncé :</strong></p>
+                <p>1. Combien y a-t-il de façons différentes de placer 5 pneus interchangeables sur 4 roues d'une voiture (en supposant qu'un pneu de rechange reste non utilisé) ?</p>
+                <p>2. Combien de mains différentes de 5 cartes peut-on former avec un jeu de 32 cartes ?</p>
+                <button class="toggle-solution"><i class="fas fa-eye"></i> Voir la solution</button>
                 <div class="solution">
-                    <p>On utilise la FPT avec la partition $\{R_1, V_1\}$ (1ère boule Rouge ou Verte).</p>
+                    <p><strong>1. Placement des pneus :</strong></p>
+                    <p>L'ordre compte (chaque roue est distincte) et on choisit 4 pneus parmi 5. C'est un arrangement de 4 éléments parmi 5 :</p>
                     <div class="formula">
-                        $$P(R_2) = P(R_2|R_1)P(R_1) + P(R_2|V_1)P(V_1)$$<br>
-                        $$P(R_2) = \left(\frac{4}{7} \times \frac{5}{8}\right) + \left(\frac{5}{7} \times \frac{3}{8}\right) = \frac{20}{56} + \frac{15}{56} = \frac{35}{56} = \mathbf{5/8}$$
+                        $$A_5^4 = \frac{5!}{(5-4)!} = 5 \times 4 \times 3 \times 2 = \mathbf{120}$$
                     </div>
-                    <p>Le résultat final est égal à la probabilité de tirer une Rouge au premier coup : **$P(R_2) = P(R_1)$**.</p>
+                    <p><strong>2. Mains de poker :</strong></p>
+                    <p>L'ordre ne compte pas (une main de cartes est un ensemble). C'est une combinaison de 5 éléments parmi 32 :</p>
+                    <div class="formula">
+                        $$C_{32}^5 = \frac{32!}{5!(32-5)!} = \frac{32 \times 31 \times 30 \times 29 \times 28}{5 \times 4 \times 3 \times 2 \times 1} = \mathbf{201 376}$$
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercice">
+                <div class="exercice-header">
+                    <h4>Exercice 1.4 - Urnes sans Remise (TD1-5)</h4>
+                    <span class="difficulty difficile">Difficile</span>
+                </div>
+                <p><strong>Énoncé :</strong> Une urne contient 5 boules rouges (R) et 3 boules vertes (V). On tire successivement 2 boules sans remise. Calculer la probabilité que la deuxième boule tirée soit rouge.</p>
+                <button class="toggle-solution"><i class="fas fa-eye"></i> Voir la solution</button>
+                <div class="solution">
+                    <p><strong>Méthode :</strong> On utilise la formule des probabilités totales avec la partition {R₁, V₁} (première boule Rouge ou Verte).</p>
+                    <div class="formula">
+                        $$P(R_2) = P(R_2|R_1)P(R_1) + P(R_2|V_1)P(V_1)$$
+                    </div>
+                    <p>Calculons chaque terme :</p>
+                    <div class="formula">
+                        $$P(R_1) = \frac{5}{8}, \quad P(V_1) = \frac{3}{8}$$
+                        $$P(R_2|R_1) = \frac{4}{7} \quad \text{(il reste 4 rouges sur 7 boules)}$$
+                        $$P(R_2|V_1) = \frac{5}{7} \quad \text{(il reste 5 rouges sur 7 boules)}$$
+                    </div>
+                    <p>En substituant :</p>
+                    <div class="formula">
+                        $$P(R_2) = \left(\frac{4}{7} \times \frac{5}{8}\right) + \left(\frac{5}{7} \times \frac{3}{8}\right) = \frac{20}{56} + \frac{15}{56} = \frac{35}{56} = \mathbf{\frac{5}{8}}$$
+                    </div>
+                    <p><strong>Observation importante :</strong> On remarque que P(R₂) = P(R₁) = 5/8. Ce résultat est général : dans un tirage sans remise, la probabilité d'obtenir un élément d'un type donné est la même à chaque tirage.</p>
+                </div>
+            </div>
+
+            <div class="exercice">
+                <div class="exercice-header">
+                    <h4>Exercice 1.5 - Test Médical et Bayes (Nouveau)</h4>
+                    <span class="difficulty moyen">Moyen</span>
+                </div>
+                <p><strong>Énoncé :</strong> Un test de dépistage d'une maladie a les caractéristiques suivantes :</p>
+                <ul>
+                    <li>Sensibilité (probabilité d'être positif si malade) : 95%</li>
+                    <li>Spécificité (probabilité d'être négatif si sain) : 90%</li>
+                    <li>Prévalence de la maladie dans la population : 1%</li>
+                </ul>
+                <p>Calculer la probabilité qu'une personne soit réellement malade si son test est positif.</p>
+                <button class="toggle-solution"><i class="fas fa-eye"></i> Voir la solution</button>
+                <div class="solution">
+                    <p><strong>Méthode :</strong> On utilise le théorème de Bayes.</p>
+                    <p>Définissons les événements :</p>
+                    <ul>
+                        <li>M : "la personne est malade"</li>
+                        <li>T⁺ : "le test est positif"</li>
+                    </ul>
+                    <p>Données :</p>
+                    <div class="formula">
+                        $$P(M) = 0,01, \quad P(T^+|M) = 0,95, \quad P(T^+|\overline{M}) = 1 - 0,90 = 0,10$$
+                    </div>
+                    <p>Calculons d'abord P(T⁺) avec la formule des probabilités totales :</p>
+                    <div class="formula">
+                        $$P(T^+) = P(T^+|M)P(M) + P(T^+|\overline{M})P(\overline{M})$$
+                        $$P(T^+) = (0,95 \times 0,01) + (0,10 \times 0,99) = 0,0095 + 0,099 = 0,1085$$
+                    </div>
+                    <p>Appliquons maintenant le théorème de Bayes :</p>
+                    <div class="formula">
+                        $$P(M|T^+) = \frac{P(T^+|M)P(M)}{P(T^+)} = \frac{0,0095}{0,1085} \approx \mathbf{0,0876} \quad (8,76\%)$$
+                    </div>
+                    <p><strong>Interprétation :</strong> Malgré un test positif, la probabilité d'être réellement malade n'est que de 8,76%. Ce résultat contre-intuitif s'explique par la faible prévalence de la maladie.</p>
                 </div>
             </div>
             
-            <h3 style="color: var(--primary-dark); margin-top: 3rem;">❓ Quiz TD1 & Ex. Supplémentaires</h3>
+            <h3 style="color: var(--primary-purple); margin-top: 3rem; margin-bottom: 1.5rem; font-size: 1.8rem;"><i class="fas fa-question-circle"></i> Quiz TD1 & Exercices Supplémentaires</h3>
+            
             <div class="topic-card">
-                <h4>Fiche d'Exercices Supplémentaires</h4>
-                <ul style="padding-left: 20px;">
-                    <li>**TD1-3 :** Conditionnement sur des événements sportifs (Cheval A gagne).</li>
-                    <li>** Ex. 1 :** Probabilité pour Jack d'être élu maire à Paris ou Blois (FPT + Bayes).</li>
+                <h4><i class="fas fa-plus-circle"></i> Fiche d'Exercices Supplémentaires</h4>
+                <ul>
+                    <li><strong>TD1-3 :</strong> Conditionnement sur des événements sportifs (probabilité qu'un cheval gagne une course selon différentes conditions).</li>
+                    <li><strong>TD1-4 :</strong> Filtrage téléphonique dans une entreprise (probabilités conditionnelles avec appels internes/externes).</li>
+                    <li><strong>Ex. Jack :</strong> Probabilité pour Jack d'être élu maire à Paris ou Blois (application FPT + Bayes avec événements indépendants).</li>
+                    <li><strong>Ex. Pièces :</strong> Transfert de pièces entre poches et probabilité de tirer une pièce de 1€ (application combinatoire + FPT).</li>
                 </ul>
             </div>
+            
             <div class="exercice quiz-box">
-                <div class="exercice-header"><h4 style="color: var(--td-color-1);">QUIZ TD1 - Indépendance</h4></div>
-                <p>Si A et B sont disjoints et $P(A)>0$, sont-ils indépendants ?</p>
-                <button class="toggle-solution">Voir la réponse</button>
+                <div class="exercice-header">
+                    <h4><i class="fas fa-brain"></i> QUIZ TD1 - Indépendance et Probabilités Conditionnelles</h4>
+                </div>
+                <p><strong>Question :</strong> Si A et B sont des événements disjoints (incompatibles) avec P(A) > 0 et P(B) > 0, peuvent-ils être indépendants ? Justifiez votre réponse.</p>
+                <button class="toggle-solution"><i class="fas fa-lightbulb"></i> Voir la réponse</button>
                 <div class="solution">
-                    <p>Réponse : **Non**. Si $P(A \cap B)=0$ (disjoints) et $P(A)P(B) \ne 0$, alors $P(A \cap B) \ne P(A)P(B)$. Ils sont donc dépendants.</p>
+                    <p><strong>Réponse :</strong> Non, des événements disjoints avec des probabilités non nulles ne peuvent pas être indépendants.</p>
+                    <p><strong>Justification :</strong></p>
+                    <p>Si A et B sont disjoints, alors P(A ∩ B) = 0.</p>
+                    <p>Si A et B étaient indépendants, on aurait P(A ∩ B) = P(A) × P(B).</p>
+                    <p>Comme P(A) > 0 et P(B) > 0, alors P(A) × P(B) > 0.</p>
+                    <p>On aurait donc 0 = P(A ∩ B) = P(A) × P(B) > 0, ce qui est impossible.</p>
+                    <p>Ainsi, des événements disjoints avec des probabilités strictement positives sont nécessairement dépendants.</p>
                 </div>
             </div>
         </div>
     </section>
+
+    <script>
+        // Gestion des solutions d'exercices
+        document.querySelectorAll('.toggle-solution').forEach(button => {
+            button.addEventListener('click', function() {
+                const solution = this.nextElementSibling;
+                solution.classList.toggle('active');
+                this.innerHTML = solution.classList.contains('active') 
+                    ? '<i class="fas fa-eye-slash"></i> Masquer la solution' 
+                    : '<i class="fas fa-eye"></i> Voir la solution';
+            });
+        });
+
+        // Animation au défilement
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observer les éléments à animer
+        document.querySelectorAll('.exercice, .fiche-revision, .topic-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
