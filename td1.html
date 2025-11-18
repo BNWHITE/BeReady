@@ -1,163 +1,132 @@
-<section id="td1" class="page">
-    <a href="#" class="back-btn" data-page="proba">← Retour aux TDs</a>
-    
-    <div class="td-detail">
-        <h2>TD1 - Probabilités Conditionnelles & Indépendance</h2>
-        
-        <div class="fiche-revision">
-            <h3>📋 Fiche de Révision : Événements & Formules Fondamentales</h3>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TD1 - Probabilités Conditionnelles & Indépendance</title>
+    <link rel="stylesheet" href="style2.css">
+    <script src="script.js"></script>
+    <style>
+        /* Styles thématiques TD1 */
+        .td-detail h2 { border-bottom: 3px solid var(--td-color-1); padding-bottom: 10px; }
+        .fiche-revision { border-left-color: var(--td-color-1); }
+        .fiche-revision h4 { color: var(--td-color-1); } 
+        .solution.active { border-left-color: var(--td-color-1); background-color: #f7f3fb; }
+        .quiz-box { border: 1px solid var(--td-color-1); }
+        .quiz-box h4 { color: var(--td-color-1) !important; }
+    </style>
+</head>
+<body>
+    <section id="td1" class="page active">
+        <a href="index.html#proba-tds" class="back-btn">← Retour aux TDs</a>
+        <div class="td-detail">
+            <h2>📚 TD1 - Probabilités Conditionnelles & Indépendance</h2>
+            <p class="section-description">Maîtrisez les fondements : axiomes, dénombrement, probabilités totales et théorème de Bayes.</p>
+            <hr class="separator" style="margin: 20px 0;">
+
+            <div class="fiche-revision">
+                <h3>💡 Fiche de Révision : Axiomes et Formules Fondamentales</h3>
+                
+                <h4 class="td-theme-color">1. Axiomes des Probabilités</h4>
+                <p>1. $P(A) \ge 0$. 2. $P(\Omega) = 1$. 3. Pour événements disjoints : $P(\bigcup A_i) = \sum P(A_i)$.</p>
+                
+                <h4 class="td-theme-color">2. Probabilités Conditionnelles et Formule des Probabilités Totales (FPT)</h4>
+                <div class="formula">
+                    $$P(A|B) = \frac{P(A \cap B)}{P(B)} \quad ; \quad P(A) = \sum_{i} P(A|B_i) \cdot P(B_i) \quad \text{(si } B_i \text{ partition)}$$
+                </div>
+                
+                <h4 class="td-theme-color">3. Théorème de Bayes</h4>
+                <p>Permet d'inverser les causes : $P(\text{cause}|\text{effet})$.</p>
+                <div class="formula">
+                    $$P(B_i|A) = \frac{P(A|B_i) \cdot P(B_i)}{P(A)}$$
+                </div>
+                
+                <h4 class="td-theme-color">4. Indépendance</h4>
+                <div class="formula">$$A \text{ et } B \text{ sont indépendants} \iff P(A \cap B) = P(A)P(B)$$</div>
+                
+                <div class="example">
+                    <h4>🔥 Tip : Dénombrement</h4>
+                    <p><strong>Permutations :</strong> Ordre compte, tous les éléments ($n!$). <strong>Arrangements :</strong> Ordre compte, $k$ éléments parmi $n$ ($A_n^k$). <strong>Combinaisons :</strong> Ordre ne compte pas ($C_n^k$).</p>
+                </div>
+            </div>
+
+            <h3 style="color: var(--primary-dark); margin-top: 3rem;">📝 Exercices Corrigés Détaillés (5 Exercices)</h3>
+
+            <div class="exercice">
+                <div class="exercice-header"><h4>Exercice 1.1 - Question de Cours (TD1-2)</h4><span class="difficulty facile">Facile</span></div>
+                <p><strong>Énoncé :</strong> Démontrer que si $A$ et $B$ sont indépendants, alors $\overline{A}$ et $B$ le sont aussi.</p>
+                <button class="toggle-solution">Voir la solution</button>
+                <div class="solution">
+                    <p>D'après la formule des probabilités totales, $P(B) = P(B \cap A) + P(B \cap \overline{A})$.</p>
+                    <div class="formula">
+                        $$P(B\cap\overline{A}) = P(B) - P(B\cap A) = P(B) - P(B)P(A) \quad (\text{Car } A, B \text{ indép.})$$<br>
+                        $$P(B\cap\overline{A}) = P(B) (1 - P(A)) = P(B)P(\overline{A})$$
+                    </div>
+                    <p>Ceci prouve l'indépendance de $\overline{A}$ et $B$.</p>
+                </div>
+            </div>
+
+            <div class="exercice">
+                <div class="exercice-header"><h4>Exercice 1.2 - Application FPT/Bayes (TD1-6)</h4><span class="difficulty difficile">Difficile</span></div>
+                <p><strong>Énoncé :</strong> 3 étagères $H, M, B$ ($P(H)=0.3, P(M)=0.5, P(B)=0.2$). $P(\text{Roman}|H)=0.25, P(\text{Roman}|M)=0.4, P(\text{Roman}|B)=0.8$.</p>
+                <p>1. Calculer $P(\text{Roman})$. 2. Sachant que le livre est un Roman, calculer la probabilité qu'il vienne de l'étagère Haute ($P(H|\text{Roman})$).</p>
+                <button class="toggle-solution">Voir la solution</button>
+                <div class="solution">
+                    <p>1. **Probabilités Totales ($P(R)$) :**</p>
+                    <div class="formula">
+                        $$P(R) = P(R|H)P(H) + P(R|M)P(M) + P(R|B)P(B)$$<br>
+                        $$P(R) = (0.25 \times 0.3) + (0.4 \times 0.5) + (0.8 \times 0.2) = 0.075 + 0.20 + 0.16 = \mathbf{0.435}$$
+                    </div>
+                    <p>2. **Théorème de Bayes ($P(H|R)$) :**</p>
+                    <div class="formula">
+                        $$P(H|R) = \frac{P(R|H)P(H)}{P(R)} = \frac{0.075}{0.435} \approx \mathbf{0.1724}$$
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercice">
+                <div class="exercice-header"><h4>Exercice 1.3 - Dénombrement Multi-étapes (TD1-2)</h4><span class="difficulty moyen">Moyen</span></div>
+                <p><strong>Énoncé :</strong> 1. Nombre d'ordres pour 5 pneus sur 4 roues ? 2. Nombre de mains de 5 cartes dans un jeu de 32 ?</p>
+                <button class="toggle-solution">Voir la solution</button>
+                <div class="solution">
+                    <p>1. L'ordre compte, on choisit 4 pneus parmi 5. C'est un **Arrangement** :</p>
+                    <div class="formula">$$A_5^4 = \frac{5!}{(5-4)!} = 5 \times 4 \times 3 \times 2 = \mathbf{120}$$</div>
+                    <p>2. L'ordre ne compte pas, on choisit 5 cartes parmi 32. C'est une **Combinaison** :</p>
+                    <div class="formula">$$C_{32}^5 = \frac{32 \times 31 \times 30 \times 29 \times 28}{5 \times 4 \times 3 \times 2 \times 1} = \mathbf{201 376}$$</div>
+                </div>
+            </div>
+
+            <div class="exercice">
+                <div class="exercice-header"><h4>Exercice 1.4 - Urnes sans Remise (TD1-5)</h4><span class="difficulty difficile">Difficile</span></div>
+                <p><strong>Énoncé :</strong> Une urne contient 5 $R$ et 3 $V$. On tire 2 boules sans remise. Calculer la probabilité que la 2ème boule soit Rouge ($R_2$).</p>
+                <button class="toggle-solution">Voir la solution</button>
+                <div class="solution">
+                    <p>On utilise la FPT avec la partition $\{R_1, V_1\}$ (1ère boule Rouge ou Verte).</p>
+                    <div class="formula">
+                        $$P(R_2) = P(R_2|R_1)P(R_1) + P(R_2|V_1)P(V_1)$$<br>
+                        $$P(R_2) = \left(\frac{4}{7} \times \frac{5}{8}\right) + \left(\frac{5}{7} \times \frac{3}{8}\right) = \frac{20}{56} + \frac{15}{56} = \frac{35}{56} = \mathbf{5/8}$$
+                    </div>
+                    <p>Le résultat final est égal à la probabilité de tirer une Rouge au premier coup : **$P(R_2) = P(R_1)$**.</p>
+                </div>
+            </div>
             
-            <h4 style="color: var(--purple); margin-top: 1.5rem;">1. Probabilité Conditionnelle</h4>
-            <p>La probabilité de A sachant B (B réalisé) est définie par :</p>
-            <div class="formula">P(A|B) = P(A∩B) / P(B), si P(B) > 0</div>
-            
-            <h4 style="color: var(--purple); margin-top: 1.5rem;">2. Théorème des Probabilités Totales</h4>
-            <p>Si $B_1, B_2, \dots, B_n$ forment une partition de l'univers $\Omega$ (mutuellement disjoints et leur union est $\Omega$) :</p>
-            <div class="formula">P(A) = Σᵢ P(A|Bᵢ) × P(Bᵢ)</div>
-            
-            <h4 style="color: var(--purple); margin-top: 1.5rem;">3. Théorème de Bayes (Probabilités des causes)</h4>
-            <p>Permet de calculer la probabilité d'une cause ($B_i$) sachant l'effet ($A$) :</p>
-            <div class="formula">P(Bᵢ|A) = [P(A|Bᵢ) × P(Bᵢ)] / [P(A)]</div>
-            
-            <h4 style="color: var(--purple); margin-top: 1.5rem;">4. Indépendance d'Événements</h4>
-            <p>A et B sont indépendants si la réalisation de l'un n'affecte pas l'autre, ce qui se traduit par :</p>
-            <div class="formula">P(A∩B) = P(A) × P(B) ⇔ P(A|B) = P(A)</div>
-
-            <div class="example">
-                <h4>💡 Tip : Règle de l'Indépendance</h4>
-                <p>Si A et B sont indépendants, alors les couples $(\overline{A}, B)$, $(A, \overline{B})$ et $(\overline{A}, \overline{B})$ sont également indépendants. **C'est une question de cours fréquente !**</p>
+            <h3 style="color: var(--primary-dark); margin-top: 3rem;">❓ Quiz TD1 & Ex. Supplémentaires</h3>
+            <div class="topic-card">
+                <h4>Fiche d'Exercices Supplémentaires</h4>
+                <ul style="padding-left: 20px;">
+                    <li>**TD1-3 :** Conditionnement sur des événements sportifs (Cheval A gagne).</li>
+                    <li>** Ex. 1 :** Probabilité pour Jack d'être élu maire à Paris ou Blois (FPT + Bayes).</li>
+                </ul>
             </div>
-        </div>
-
-        <h3 style="color: var(--purple); margin-top: 3rem; margin-bottom: 1.5rem;">📝 Exercices Corrigés</h3>
-
-        <div class="exercice">
-            <div class="exercice-header">
-                <h4>Exercice 1.1 - Question de Cours : Indépendance</h4>
-                <span class="difficulty facile">Facile</span>
-            </div>
-            <p><strong>Énoncé :</strong> Soient A et B deux événements indépendants. Démontrer que $\overline{A}$ et B sont également indépendants.</p>
-            <button class="toggle-solution">Voir la solution</button>
-            <div class="solution">
-                <p><strong>Solution (TD1-2 a) - Corrigé) :</strong></p>
-                <div class="formula">
-                    P(B) = P(B∩A) + P(B∩$\overline{A}$) (Formule des Probabilités Totales)<br>
-                    P(B∩$\overline{A}$) = P(B) - P(B∩A)<br>
-                    P(B∩$\overline{A}$) = P(B) - P(B)P(A) (Car A et B sont indépendants)<br>
-                    P(B∩$\overline{A}$) = P(B) [1 - P(A)] = P(B)P($\overline{A}$)
-                </div>
-                <p style="margin-top: 1rem;">**Conclusion :** Ceci montre que les événements $\overline{A}$ et $B$ sont **indépendants**.</p>
-            </div>
-        </div>
-
-        <div class="exercice">
-            <div class="exercice-header">
-                <h4>Exercice 1.2 - Application : Retard de Stéphane</h4>
-                <span class="difficulty moyen">Moyen</span>
-            </div>
-            <p><strong>Énoncé :</strong> Événements indépendants $R$ (Réveil, $P(R)=0.1$) et $S$ (Scooter, $P(S)=0.05$). Stéphane est à l'heure si ni $R$ ni $S$ ne se produit.</p>
-            <p>1. Calculer $P(\overline{R} \cap S)$ (Entend réveil mais panne scooter).</p>
-            <p>2. Calculer $P(\text{à l'heure})$.</p>
-            <button class="toggle-solution">Voir la solution</button>
-            <div class="solution">
-                <p><strong>Solution (TD1-1) :</strong></p>
-                <p>1. $P(\overline{R} \cap S) = P(\overline{R})P(S)$ (Indépendance)</p>
-                <div class="formula">
-                    P($\overline{R}$) = 1 - 0.1 = 0.9<br>
-                    P($\overline{R} \cap S$) = 0.9 × 0.05 = **0.045**
-                </div>
-                <p>2. Stéphane est à l'heure si $\overline{R} \cap \overline{S}$.</p>
-                <div class="formula">
-                    P($\overline{S}$) = 1 - 0.05 = 0.95<br>
-                    P($\text{à l'heure}$) = P($\overline{R} \cap \overline{S}$) = 0.9 × 0.95 = **0.855**
+            <div class="exercice quiz-box">
+                <div class="exercice-header"><h4 style="color: var(--td-color-1);">QUIZ TD1 - Indépendance</h4></div>
+                <p>Si A et B sont disjoints et $P(A)>0$, sont-ils indépendants ?</p>
+                <button class="toggle-solution">Voir la réponse</button>
+                <div class="solution">
+                    <p>Réponse : **Non**. Si $P(A \cap B)=0$ (disjoints) et $P(A)P(B) \ne 0$, alors $P(A \cap B) \ne P(A)P(B)$. Ils sont donc dépendants.</p>
                 </div>
             </div>
         </div>
-
-        <div class="exercice">
-            <div class="exercice-header">
-                <h4>Exercice 1.3 - Formule de Bayes (Test de Dépistage)</h4>
-                <span class="difficulty difficile">Difficile</span>
-            </div>
-            <p>**Énoncé :** La prévalence d'une maladie $M$ est 1% ($P(M)=0.01$). Un test $T^+$ a une sensibilité de 95% ($P(T^+|M)=0.95$) et une spécificité de 90% ($P(T^-|\overline{M})=0.90$). Si un test est positif, quelle est la probabilité d'être malade ($P(M|T^+)$)?</p>
-            <button class="toggle-solution">Voir la solution</button>
-            <div class="solution">
-                <p>**Solution (Exercice Classique de Bayes) :**</p>
-                <p>**1. Calcul de la probabilité d'un test positif $P(T^+)$ (Probabilités Totales) :**</p>
-                <div class="formula">
-                    P(T⁺|$\overline{M}$) = 1 - P(T⁻|$\overline{M}$) = 1 - 0.90 = 0.10<br>
-                    P(T⁺) = P(T⁺|M)P(M) + P(T⁺|$\overline{M}$)P($\overline{M}$)<br>
-                    P($\overline{M}$) = 1 - 0.01 = 0.99<br>
-                    P(T⁺) = (0.95 × 0.01) + (0.10 × 0.99) = 0.0095 + 0.099 = **0.1085**
-                </div>
-                <p>**2. Application de la formule de Bayes :**</p>
-                <div class="formula">
-                    P(M|T⁺) = P(T⁺|M)P(M) / P(T⁺)<br>
-                    P(M|T⁺) = 0.0095 / 0.1085 ≈ **0.0876 (8.76%)**
-                </div>
-                <p style="margin-top: 1rem; color: #C53030;">**⚠️ Conclusion :** Malgré un test positif, la probabilité d'être malade reste faible (moins de 9%) en raison de la très faible prévalence initiale.</p>
-            </div>
-        </div>
-
-        <div class="exercice">
-            <div class="exercice-header">
-                <h4>Exercice 1.4 - Dénombrement et Combinaisons</h4>
-                <span class="difficulty facile">Facile</span>
-            </div>
-            <p>**Énoncé :** On veut former un comité de 4 étudiants choisis parmi 15. Combien de comités différents peut-on former ?</p>
-            <button class="toggle-solution">Voir la solution</button>
-            <div class="solution">
-                <p>**Solution :**</p>
-                <p>L'ordre n'est pas important, il s'agit d'une **combinaison** $C_{n}^{k}$ :</p>
-                <div class="formula">
-                    $C_{15}^{4} = \frac{15!}{4!(15-4)!} = \frac{15 \times 14 \times 13 \times 12}{4 \times 3 \times 2 \times 1} = \mathbf{1365}$
-                </div>
-                <p style="margin-top: 1rem;">On peut former 1365 comités différents.</p>
-            </div>
-        </div>
-        
-        <div class="exercice">
-            <div class="exercice-header">
-                <h4>Exercice 1.5 - Urne et Tirages sans Remise (TD1-5)</h4>
-                <span class="difficulty difficile">Difficile</span>
-            </div>
-            <p>**Énoncé :** Une urne contient 5 boules rouges ($R$) et 3 vertes ($\overline{R}$). On tire 2 boules sans remise. Calculer la probabilité que la 2ème boule soit rouge ($R_2$).</p>
-            <button class="toggle-solution">Voir la solution</button>
-            <div class="solution">
-                <p>**Solution :**</p>
-                <p>On utilise la formule des probabilités totales avec la partition $\{R_1, \overline{R}_1\}$ :</p>
-                <div class="formula">
-                    P($R_2$) = P($R_2$|$R_1$)P($R_1$) + P($R_2$|$\overline{R}_1$)P($\overline{R}_1$)<br><br>
-                    P($R_1$) = 5/8<br>
-                    P($\overline{R}_1$) = 3/8<br>
-                    P($R_2$|$R_1$) = 4/7 (Reste 4 rouges sur 7 boules)<br>
-                    P($R_2$|$\overline{R}_1$) = 5/7 (Reste 5 rouges sur 7 boules)<br><br>
-                    P($R_2$) = (4/7) × (5/8) + (5/7) × (3/8) = 20/56 + 15/56 = 35/56 = **5/8**
-                </div>
-                <p style="margin-top: 1rem; color: var(--blue);">**💡 Remarque :** La probabilité de tirer une boule rouge est la même au second tirage qu'au premier (5/8), ce qui est un résultat général pour les tirages sans remise.</p>
-            </div>
-        </div>
-
-        <h3 style="color: var(--pink); margin-top: 3rem; margin-bottom: 1.5rem;">📚 Fiche d'Exercices Supplémentaires</h3>
-        <ul class="topic-card" style="cursor: default;">
-            <li>**TD1-3 :** Problème du cheval A contre B (utilisation de $P(A|B)$).</li>
-            <li>**TD1-6 :** Problème du livre de Mathématiques/Roman sur 3 étagères (Application complète de la formule des probabilités totales et Bayes).</li>
-        </ul>
-
-        <h3 style="color: var(--orange); margin-top: 3rem; margin-bottom: 1.5rem;">❓ Quiz Révision TD1</h3>
-        <div class="exercice">
-            <p>1. Si $P(A)=0.3$, $P(B)=0.6$, et $A$ et $B$ sont indépendants, que vaut $P(A \cup B)$ ?</p>
-            <button class="toggle-solution">Voir la réponse</button>
-            <div class="solution">
-                <div class="formula">P(A∪B) = P(A) + P(B) - P(A)P(B) = 0.3 + 0.6 - (0.3 × 0.6) = 0.9 - 0.18 = **0.72**</div>
-            </div>
-        </div>
-        <div class="exercice">
-            <p>2. Dans une classe de 20 filles et 10 garçons, combien de groupes de 2 filles et 1 garçon peut-on former ?</p>
-            <button class="toggle-solution">Voir la réponse</button>
-            <div class="solution">
-                <div class="formula">$C_{20}^{2} \times C_{10}^{1} = 190 \times 10 = \mathbf{1900}$</div>
-            </div>
-        </div>
-    </div>
-</section>
+    </section>
+</body>
+</html>
