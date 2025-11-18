@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Révision Télécom - Focus ISEP</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <section id="telecom-page" class="page active">
+        <a href="index.html#telecom-rev" class="back-btn">← Retour à l'Accueil</a>
+        
+        <div class="td-detail">
+            <h2 style="color: var(--primary-green);">📡 Fiche de Révision - Télécommunications (Projets & DM)</h2>
+            <p>Synthèse des concepts clés de l'architecture réseau, des bilans de liaison (Radio/Filaire) et du dimensionnement (Wi-Fi, Bluetooth, LTE, Fibre).</p>
+            
+            <hr style="margin: 30px 0;">
+
+            <div class="fiche-revision">
+                <h3>1. Principes Fondamentaux et Capacités</h3>
+                
+                <h4>1.1. Théorème de Shannon-Hartley</h4>
+                <p>Détermine le débit maximal théorique ($C$) d'un canal de communication en fonction de sa bande passante ($B$) et du rapport signal sur bruit ($SNR$).</p>
+                <div class="formula">
+                    $$C = B \times \log_2 \left(1 + \frac{S}{N}\right) \quad \text{(bits/s)}$$
+                </div>
+                <p><strong>Calcul du SNR requis :</strong> Pour un débit cible $C_{cible}$, le $SNR$ (en linéaire) est : $S/N = 2^{(C_{cible}/B)} - 1$.</p>
+                
+                <h4>1.2. Puissance de Bruit Thermique ($P_{bruit}$)</h4>
+                <p>La puissance du bruit dans un canal est donnée par la formule :</p>
+                <div class="formula">
+                    $$P_{bruit} = k \cdot T \cdot B \quad \text{(Watts)}$$
+                </div>
+                <p>Où : $k$ (Constante de Boltzmann $\approx 1.38 \times 10^{-23} \text{ J/K}$), $T$ (Température en Kelvin, souvent $290\text{ K}$ pour la température ambiante), $B$ (Bande passante en Hertz).</p>
+                <div class="formula">
+                    $$P_{bruit}(\text{dBm}) = 10 \log_{10}(k T B) + 30$$
+                </div>
+            </div>
+            
+            <div class="fiche-revision" style="border-left-color: var(--orange);">
+                <h3>2. Bilans de Liaison et Puissances</h3>
+                
+                <h4>2.1. Puissance Isotrope Rayonnée Équivalente (PIRE)</h4>
+                <p>Représente la puissance effective émise par l'antenne.</p>
+                <div class="formula">
+                    $$\text{PIRE} (\text{W}) = P_{e} \cdot G_{e} \quad \text{ou} \quad \text{PIRE}(\text{dBm}) = P_{e}(\text{dBm}) + G_{e}(\text{dBi})$$
+                </div>
+                <p>Où : $P_{e}$ est la Puissance de l'émetteur, $G_{e}$ est le Gain de l'antenne d'émission.</p>
+                
+                <h4>2.2. Calcul de Puissance Reçue ($P_{r}$) - Liaison Radio</h4>
+                <p>La puissance reçue ($P_{r}$) est donnée par la formule du bilan de liaison :</p>
+                <div class="formula">
+                    $$P_{r}(\text{dBm}) = \text{PIRE}(\text{dBm}) + G_{r}(\text{dBi}) - L_{P}(\text{dB}) - L_{e}(\text{dB}) - L_{r}(\text{dB})$$
+                </div>
+                <p>Où : $L_{P}$ est l'affaiblissement de propagation (ex: Friis, Okumura-Hata) et $L_{e}/L_{r}$ sont les pertes dans les équipements.</p>
+                
+                <h4>2.3. SINR (Signal to Interference plus Noise Ratio)</h4>
+                <p>Indispensable dans un environnement multi-cellulaire/multi-AP (Wi-Fi, LTE) où les **interférences ($I$)** sont présentes.</p>
+                <div class="formula">
+                    $$\text{SINR}(\text{linéaire}) = \frac{P_{r}}{P_{bruit} + P_{interférences}}$$
+                </div>
+            </div>
+            
+            <div class="fiche-revision" style="border-left-color: var(--blue);">
+                <h3>3. Technologies Courtes et Longues Portées</h3>
+                
+                <h4>3.1. Bluetooth & Wi-Fi (IoT Indoor / Local)</h4>
+                <p>Le **Bluetooth** est typiquement utilisé pour la liaison **Objet-Passerelle** (faible débit/conso). Le **Wi-Fi** est utilisé pour la liaison **Passerelles-Serveur Central** (débit moyen/élevé). Le dimensionnement nécessite le calcul du nombre de points d'accès (PA) pour couvrir la surface cible, en assurant un niveau de signal reçu (RSSI) suffisant (ex: $-59 \text{ dBm}$).</p>
+                
+                <h4>3.2. Fibre Optique (Liaisons Inter-Sites)</h4>
+                <p>Idéale pour les **longues distances** ($\text{ex: } 50 \text{ km}$). La **Fibre Monomode** est privilégiée pour son très faible affaiblissement ($\alpha \approx 0.2 \text{ dB/km}$) et sa capacité à éviter la régénération sur de grandes portées.</p>
+                <div class="formula">
+                    $$P_{r, optique} (\text{dBm}) = P_{e} (\text{dBm}) - \sum \text{Pertes} - \alpha \cdot L$$
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="script.js"></script>
+</body>
+</html>
