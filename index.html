@@ -3,82 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proba Focus - Révision ISEP</title>
+    <title>Focus Révisions ISEP - Proba & Télécom</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <section id="home" class="page active">
         <header class="main-header">
-            <div class="logo">PROBA FOCUS</div>
+            <div class="logo">FOCUS ISEP</div>
             <nav>
-                <a href="#" class="nav-link active">Accueil</a>
-                <a href="#" class="nav-link" data-page="proba">TDs</a>
-                <a href="#" class="nav-link">À propos</a>
+                <a href="#home" class="nav-link active">Accueil</a>
+                <a href="#proba-tds" class="nav-link">TDs Proba</a>
+                <a href="#telecom-rev" class="nav-link">Révision Télécom</a>
             </nav>
         </header>
 
         <div class="hero-section">
             <div class="hero-content">
                 <span class="tagline">OPTIMISEZ VOTRE RÉVISION</span>
-                <h1>Maîtriser les Probabilités avec Précision</h1>
-                <p>Accédez à des fiches de révision structurées, des exercices corrigés pas à pas, et des quiz par chapitre pour une préparation ciblée et efficace.</p>
-                <button class="cta-button" data-page="proba">Commencer les TDs →</button>
+                <h1>Maîtriser les Probabilités et les Réseaux avec Précision</h1>
+                <p>Accédez à des fiches de révision structurées, des exercices corrigés pas à pas, et un résumé complet des concepts clés en Télécommunications pour une préparation ciblée et efficace.</p>
+                <a href="#proba-tds" class="cta-button">Commencer les TDs Proba →</a>
             </div>
             
             <div class="hero-image-placeholder">
-                            </div>
+                [Image of a student studying advanced technical formulas and network diagrams in a clean, modern digital learning environment.]
+            </div>
         </div>
 
         <div class="stats-bar">
             <div class="stat-item">
                 <p class="stat-number">5</p>
-                <p class="stat-label">TDs Détaillés</p>
+                <p class="stat-label">TDs de Proba</p>
             </div>
             <div class="stat-item">
-                <p class="stat-number">25+</p>
-                <p class="stat-label">Exercices Corrigés</p>
+                <p class="stat-number">4+</p>
+                <p class="stat-label">Modules Télécom</p>
             </div>
             <div class="stat-item">
-                <p class="stat-number">5</p>
-                <p class="stat-label">Quiz Thématiques</p>
+                <p class="stat-number">100%</p>
+                <p class="stat-label">Contenu Cible</p>
             </div>
         </div>
-    </section>
+        
+        <hr class="separator">
 
-    <section id="proba" class="page">
-        <a href="#" class="back-btn" data-page="home">← Accueil</a>
-        <h2 class="page-title">Modules de Travaux Dirigés (TD)</h2>
-        <div class="td-grid">
-            <div class="td-card" data-td="td1">
-                <h3>TD1</h3>
-                <p>Probabilités Conditionnelles & Indépendance</p>
+        <section id="proba-tds" class="sub-section">
+            <h2 class="section-title">Modules de Travaux Dirigés (TD) - Probabilités</h2>
+            <p class="section-description">Cliquez sur un module pour accéder à la fiche de révision complète et aux exercices corrigés.</p>
+            <div class="td-grid">
+                <a href="td1.html" class="td-card">
+                    <h3>TD1</h3>
+                    <p>Probabilités Conditionnelles & Indépendance</p>
+                </a>
+                <a href="td2.html" class="td-card">
+                    <h3>TD2</h3>
+                    <p>Variables Aléatoires Discrètes : Binomiale, Poisson...</p>
+                </a>
+                <a href="td3.html" class="td-card">
+                    <h3>TD3</h3>
+                    <p>Variables Aléatoires Continues & Loi Normale</p>
+                </a>
+                <a href="td4.html" class="td-card">
+                    <h3>TD4</h3>
+                    <p>Couples de Variables Aléatoires : Loi Jointe & Marginales</p>
+                </a>
+                <a href="td5.html" class="td-card">
+                    <h3>TD5</h3>
+                    <p>Vecteurs Gaussiens & Covariance</p>
+                </a>
+                <div class="td-card locked-card">
+                    <h3>TD6</h3>
+                    <p>Estimation et Théorèmes Limites (À venir)</p>
+                </div>
             </div>
-            <div class="td-card" data-td="td2">
-                <h3>TD2</h3>
-                <p>Variables Aléatoires Discrètes : Binomiale, Poisson...</p>
-            </div>
-            <div class="td-card" data-td="td3">
-                <h3>TD3</h3>
-                <p>Variables Aléatoires Continues & Loi Normale</p>
-            </div>
-            <div class="td-card" data-td="td4">
-                <h3>TD4</h3>
-                <p>Couples de Variables Aléatoires : Loi Jointe & Marginales</p>
-            </div>
-            <div class="td-card" data-td="td5">
-                <h3>TD5</h3>
-                <p>Vecteurs Gaussiens & Propriétés de Covariance</p>
-            </div>
-            <div class="td-card" data-td="td6" style="opacity: 0.5; cursor: not-allowed;">
-                <h3>TD6</h3>
-                <p>Estimation et Théorèmes Limites (Futur)</p>
-            </div>
-        </div>
+        </section>
+
+        <hr class="separator">
+
+        <section id="telecom-rev" class="sub-section">
+            <h2 class="section-title">Révision Complète - Télécommunications</h2>
+            <p class="section-description">Toutes les notions essentielles des projets et DM (Bluetooth, Wi-Fi, Fibre, LTE, Bilans de Liaison, Théorème de Shannon).</p>
+            <a href="telecom.html" class="cta-button secondary-cta">Accéder à la Fiche Télécom →</a>
+        </section>
+        
+        <footer class="main-footer">
+            <p>&copy; 2025 Focus ISEP Révisions. Tous droits réservés.</p>
+        </footer>
     </section>
-    
-    <div id="td-content-container">
-        </div>
 
     <script src="script.js"></script>
 </body>
