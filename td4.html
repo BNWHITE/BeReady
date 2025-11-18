@@ -4,53 +4,479 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TD4 - Couples de Variables Aléatoires</title>
-    <link rel="stylesheet" href="style2.css">
-    <script src="script.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
-        /* Styles thématiques TD4 */
-        .td-detail h2 { border-bottom: 3px solid var(--td-color-4); padding-bottom: 10px; }
-        .fiche-revision { border-left-color: var(--td-color-4); }
-        .fiche-revision h4 { color: var(--td-color-4); } 
-        .solution.active { border-left-color: var(--td-color-4); background-color: #e5f2fb; }
-        .quiz-box { border: 1px solid var(--td-color-4); }
-        .quiz-box h4 { color: var(--td-color-4) !important; }
+        :root {
+            /* --- Couleurs Générales --- */
+            --primary-blue: #3498db; /* Couleur principale TD4 */
+            --primary-dark: #2C3E50; /* Couleur du texte et des éléments sombres */
+            --secondary-gray: #f8f9fa; /* Arrière-plan clair */
+            --white: #FFFFFF;
+            --light-blue: #ebf5fb;
+            --medium-blue: #d6eaf8;
+            --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 6px 15px rgba(0, 0, 0, 0.1);
+            --shadow-heavy: 0 10px 30px rgba(0, 0, 0, 0.15);
+            
+            /* --- Couleurs de feedback --- */
+            --bg-solution: #f0f8ff; /* Fond très clair pour la solution */
+            --bg-quiz: #f4f6f8;     /* Fond clair pour les zones d'exercices supp. et quiz */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: var(--secondary-gray);
+            color: var(--primary-dark);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+            padding: 0;
+        }
+
+        /* ------------------------------------- */
+        /* --- 1. STRUCTURE ET NAVIGATION --- */
+        /* ------------------------------------- */
+
+        .page {
+            padding: 20px 5%;
+            min-height: 100vh;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .td-detail {
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-heavy);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .td-detail::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary-blue), #2980b9);
+        }
+
+        .td-detail h2 {
+            color: var(--primary-blue);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            border-bottom: 3px solid var(--primary-blue);
+            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 25px;
+            padding: 12px 20px;
+            background-color: var(--primary-blue);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .section-description {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            padding: 15px;
+            background-color: var(--light-blue);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        .separator {
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--primary-blue), transparent);
+            margin: 40px 0;
+        }
+
+        /* ------------------------------------- */
+        /* --- 2. FICHES ET EXERCICES (CLE) --- */
+        /* ------------------------------------- */
+
+        /* Style du bloc de révision */
+        .fiche-revision {
+            border-left: 5px solid var(--primary-blue);
+            padding: 25px;
+            margin: 30px 0;
+            background-color: var(--light-blue);
+            border-radius: 0 12px 12px 0;
+            box-shadow: var(--shadow-light);
+        }
+
+        .fiche-revision h3 {
+            color: var(--primary-blue);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .fiche-revision h4 {
+            margin-top: 1.8rem;
+            color: var(--primary-blue);
+            font-size: 1.2rem;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed var(--medium-blue);
+        }
+
+        .fiche-revision p {
+            margin-bottom: 15px;
+        }
+
+        /* Style des exercices */
+        .exercice {
+            border: 1px solid #e0e0e0;
+            padding: 25px;
+            margin-top: 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-light);
+            background-color: var(--white);
+            transition: all 0.3s;
+        }
+
+        .exercice:hover {
+            box-shadow: var(--shadow-medium);
+            transform: translateY(-3px);
+        }
+
+        .exercice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .exercice h4 {
+            color: var(--primary-dark);
+            font-size: 1.3rem;
+        }
+
+        .difficulty {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .facile { background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+        .moyen { background-color: #fff3e0; color: #ef6c00; border: 1px solid #ffe0b2; }
+        .difficile { background-color: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+
+        /* Bouton et solution (Animation Smooth) */
+        .toggle-solution {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            padding: 12px 20px;
+            margin-top: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .toggle-solution:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .solution {
+            margin-top: 20px;
+            padding: 0 20px;
+            border-left: 4px solid var(--primary-blue);
+            background-color: var(--bg-solution);
+            border-radius: 0 8px 8px 0;
+            
+            /* Propriétés pour l'animation (Initial state) */
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.4s ease-out;
+        }
+
+        /* État actif (géré par JS) */
+        .solution.active {
+            opacity: 1;
+            max-height: 2000px;
+            padding: 20px;
+        }
+
+        .formula {
+            background-color: var(--primary-dark);
+            color: var(--white);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            box-shadow: var(--shadow-light);
+        }
+
+        /* Styles des Tips et des Fiches Supp. */
+        .example {
+            margin-top: 20px;
+            border-left: 4px solid #ff9800;
+            padding: 20px;
+            background-color: #fff8e1;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .example h4 {
+            color: #ff9800;
+            margin-top: 0;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Style de la carte d'exercices supplémentaires */
+        .topic-card {
+            padding: 20px;
+            background-color: var(--bg-quiz);
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        .topic-card h4 {
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .topic-card ul {
+            padding-left: 20px;
+        }
+
+        .topic-card li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        /* Style du quiz */
+        .quiz-box {
+            border: 2px solid var(--primary-blue);
+            background-color: var(--light-blue);
+        }
+
+        .quiz-box h4 {
+            color: var(--primary-blue) !important;
+        }
+
+        /* Style pour les listes */
+        ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page {
+                padding: 15px 3%;
+            }
+            
+            .td-detail {
+                padding: 25px;
+            }
+            
+            .td-detail h2 {
+                font-size: 1.8rem;
+            }
+            
+            .exercice-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .formula {
+                font-size: 0.9rem;
+                padding: 15px;
+            }
+        }
+
+        /* Animation pour les éléments qui apparaissent */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .exercice, .fiche-revision, .topic-card {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Style pour les icônes */
+        .icon {
+            margin-right: 8px;
+        }
+        
+        /* Tableau pour les lois de probabilité */
+        .probability-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .probability-table th, .probability-table td {
+            padding: 12px 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        
+        .probability-table th {
+            background-color: var(--primary-blue);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .probability-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .probability-table tr:hover {
+            background-color: #f1f1f1;
+        }
     </style>
 </head>
 <body>
     <section id="td4" class="page active">
-        <a href="index.html#proba-tds" class="back-btn">← Retour aux TDs</a>
+        <a href="index.html#proba-tds" class="back-btn"><i class="fas fa-arrow-left"></i> Retour aux TDs</a>
+        
         <div class="td-detail">
-            <h2>🔵 TD4 - Couples de Variables Aléatoires</h2>
-            <p class="section-description">Lois jointes, marginales, conditionnelles, covariance, et loi de la somme.</p>
-            <hr class="separator" style="margin: 20px 0;">
+            <h2><i class="fas fa-project-diagram"></i> TD4 - Couples de Variables Aléatoires</h2>
+            <p class="section-description">Étude approfondie des lois jointes, marginales, conditionnelles, covariance et loi de la somme. Ce TD vous prépare à analyser des situations impliquant plusieurs variables aléatoires et leurs relations.</p>
+            
+            <hr class="separator">
 
             <div class="fiche-revision">
-                <h3>💡 Fiche de Révision : Lois Bi-Dimensionnelles</h3>
+                <h3><i class="fas fa-lightbulb"></i> Fiche de Révision : Lois Bi-Dimensionnelles</h3>
                 
-                <h4 class="td-theme-color">1. Lois Marginales</h4>
-                <p>Discrète : $P(X=x_i) = \sum_j P_{i,j}$. Continue : $f_X(x) = \int f_{X,Y}(x,y) dy$.</p>
+                <h4>1. Lois Marginales</h4>
+                <p><strong>Discrète :</strong> $P(X=x_i) = \sum_j P_{i,j}$</p>
+                <p><strong>Continue :</strong> $f_X(x) = \int f_{X,Y}(x,y) dy$</p>
                 
-                <h4 class="td-theme-color">2. Lois Conditionnelles</h4>
-                <div class="formula">$$P(X=x_i|Y=y_j) = \frac{P_{i,j}}{P(Y=y_j)}$$</div>
+                <h4>2. Lois Conditionnelles</h4>
+                <div class="formula">
+                    $$P(X=x_i|Y=y_j) = \frac{P_{i,j}}{P(Y=y_j)}$$
+                </div>
                 
-                <h4 class="td-theme-color">3. Covariance et Corrélation</h4>
-                <div class="formula">$$Cov(X,Y) = E(XY) - E(X)E(Y) \quad ; \quad \rho(X,Y) = \frac{Cov(X,Y)}{\sigma_X \sigma_Y}$$</div>
+                <h4>3. Covariance et Corrélation</h4>
+                <div class="formula">
+                    $$Cov(X,Y) = E(XY) - E(X)E(Y) \quad ; \quad \rho(X,Y) = \frac{Cov(X,Y)}{\sigma_X \sigma_Y}$$
+                </div>
                 
                 <div class="example">
-                    <h4>🔥 Tip : Test d'Indépendance</h4>
+                    <h4><i class="fas fa-fire"></i> Tip : Test d'Indépendance</h4>
                     <p>Si X et Y sont indépendantes, $Cov(X,Y)=0$. Mais l'inverse est faux (sauf si Gaussien). Vérifiez toujours $P_{i,j} = P(X=x_i)P(Y=y_j)$.</p>
                 </div>
             </div>
 
-            <h3 style="color: var(--primary-dark); margin-top: 3rem;">📝 Exercices Corrigés Détaillés</h3>
+            <h3 style="color: var(--primary-blue); margin-top: 3rem; margin-bottom: 1.5rem; font-size: 1.8rem;"><i class="fas fa-pencil-alt"></i> Exercices Corrigés Détaillés</h3>
 
             <div class="exercice">
-                <div class="exercice-header"><h4>Exercice 4.1 - Lois Marginales Discrètes (TD4-2)</h4><span class="difficulty moyen">Moyen</span></div>
+                <div class="exercice-header">
+                    <h4>Exercice 4.1 - Lois Marginales Discrètes (TD4-2)</h4>
+                    <span class="difficulty moyen">Moyen</span>
+                </div>
                 <p><strong>Énoncé :</strong> Déterminer les lois marginales $P(X=x_i)$ et $P(Y=y_j)$ pour la loi jointe ci-dessous ($\alpha=0.05$ déjà calculé).</p>
-                <div class="formula"><p>X : -2 (0.45) ; 0 (0.25) ; 1 (0.30). Y : -1 (0.50) ; 1 (0.30) ; 2 (0.20).</p></div>
-                <button class="toggle-solution">Voir la solution</button>
+                <div class="formula">
+                    <p>X : -2 (0.45) ; 0 (0.25) ; 1 (0.30). Y : -1 (0.50) ; 1 (0.30) ; 2 (0.20).</p>
+                </div>
+                <button class="toggle-solution"><i class="fas fa-eye"></i> Voir la solution</button>
                 <div class="solution">
-                    <p>Lois marginales (sommes de lignes et de colonnes) :</p>
+                    <p><strong>Étape 1 : Détermination des lois marginales</strong></p>
+                    <p>Les lois marginales sont obtenues en sommant les probabilités jointes par ligne et par colonne :</p>
+                    
+                    <table class="probability-table">
+                        <thead>
+                            <tr>
+                                <th>X \ Y</th>
+                                <th>-1</th>
+                                <th>1</th>
+                                <th>2</th>
+                                <th>P(X)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>-2</td>
+                                <td>0.2</td>
+                                <td>0.2</td>
+                                <td>0.05</td>
+                                <td>0.45</td>
+                            </tr>
+                            <tr>
+                                <td>0</td>
+                                <td>0.1</td>
+                                <td>0.1</td>
+                                <td>0.05</td>
+                                <td>0.25</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>0.2</td>
+                                <td>0</td>
+                                <td>0.1</td>
+                                <td>0.30</td>
+                            </tr>
+                            <tr>
+                                <td>P(Y)</td>
+                                <td>0.5</td>
+                                <td>0.3</td>
+                                <td>0.2</td>
+                                <td>1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p><strong>Résultats :</strong></p>
                     <div class="formula">
                         $$P(X=-2) = 0.2+0.2+0.05 = \mathbf{0.45}$$<br>
                         $$P(Y=1) = 0.2+0.1+0 = \mathbf{0.30}$$
@@ -59,177 +485,184 @@
             </div>
 
             <div class="exercice">
-                <div class="exercice-header"><h4>Exercice 4.2 - Espérance Conditionnelle (TD4-2)</h4><span class="difficulty difficile">Difficile</span></div>
+                <div class="exercice-header">
+                    <h4>Exercice 4.2 - Espérance Conditionnelle (TD4-2)</h4>
+                    <span class="difficulty difficile">Difficile</span>
+                </div>
                 <p><strong>Énoncé :</strong> Calculer la loi conditionnelle $P(X=x|Y=1)$ puis l'espérance $E(X|Y=1)$.</p>
-                <button class="toggle-solution">Voir la solution</button>
+                <button class="toggle-solution"><i class="fas fa-eye"></i> Voir la solution</button>
                 <div class="solution">
-                    <p>$$P(Y=1)=0.3$$</p>
+                    <p><strong>Étape 1 : Calcul de P(Y=1)</strong></p>
+                    <div class="formula">
+                        $$P(Y=1) = 0.2 + 0.1 + 0 = 0.3$$
+                    </div>
+                    
+                    <p><strong>Étape 2 : Calcul des probabilités conditionnelles</strong></p>
                     <div class="formula">
                         $$P(X=-2|Y=1) = \frac{P(-2, 1)}{P(Y=1)} = \frac{0.2}{0.3} = \mathbf{2/3}$$<br>
                         $$P(X=0|Y=1) = \frac{0.1}{0.3} = \mathbf{1/3}$$<br>
+                        $$P(X=1|Y=1) = \frac{0}{0.3} = \mathbf{0}$$
+                    </div>
+                    
+                    <p><strong>Étape 3 : Calcul de l'espérance conditionnelle</strong></p>
+                    <div class="formula">
                         $$E(X|Y=1) = (-2) \cdot \frac{2}{3} + (0) \cdot \frac{1}{3} + (1) \cdot 0 = \mathbf{-4/3}$$
                     </div>
                 </div>
             </div>
 
             <div class="exercice">
-                <div class="exercice-header"><h4>Exercice 4.3 - Loi de la Somme $Z=X+Y$ (TD4-2)</h4><span class="difficulty moyen">Moyen</span></div>
+                <div class="exercice-header">
+                    <h4>Exercice 4.3 - Loi de la Somme $Z=X+Y$ (TD4-2)</h4>
+                    <span class="difficulty moyen">Moyen</span>
+                </div>
                 <p><strong>Énoncé :</strong> Déterminer la loi de la V.A. $Z=X+Y$ (en utilisant la loi jointe).</p>
-                <button class="toggle-solution">Voir la solution</button>
+                <button class="toggle-solution"><i class="fas fa-eye"></i> Voir la solution</button>
                 <div class="solution">
+                    <p><strong>Étape 1 : Détermination des valeurs possibles de Z</strong></p>
                     <p>Valeurs de $Z$: $x_i + y_j$. $Z \in \{-3, -1, 0, 1, 2, 3\}$.</p>
+                    
+                    <p><strong>Étape 2 : Calcul des probabilités</strong></p>
                     <div class="formula">
+                        $$P(Z=-3) = P(X=-2, Y=-1) = 0.2$$<br>
                         $$P(Z=-1) = P(X=-2, Y=1) + P(X=0, Y=-1) = 0.2 + 0.1 = \mathbf{0.3}$$<br>
-                        $$P(Z=0) = P(X=-2, Y=2) + P(X=1, Y=-1) = 0.05 + 0.2 = \mathbf{0.25}$$
+                        $$P(Z=0) = P(X=-2, Y=2) + P(X=1, Y=-1) = 0.05 + 0.2 = \mathbf{0.25}$$<br>
+                        $$P(Z=1) = P(X=0, Y=1) = 0.1$$<br>
+                        $$P(Z=2) = P(X=0, Y=2) = 0.05$$<br>
+                        $$P(Z=3) = P(X=1, Y=2) = 0.1$$
                     </div>
-                    <p>La loi complète est : $P(Z=-3)=0.2, P(Z=-1)=0.3, P(Z=0)=0.25, P(Z=1)=0.1, P(Z=2)=0.05, P(Z=3)=0.1$.</p>
+                    
+                    <p><strong>Étape 3 : Tableau récapitulatif</strong></p>
+                    <table class="probability-table">
+                        <thead>
+                            <tr>
+                                <th>Z</th>
+                                <th>-3</th>
+                                <th>-1</th>
+                                <th>0</th>
+                                <th>1</th>
+                                <th>2</th>
+                                <th>3</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>P(Z)</td>
+                                <td>0.2</td>
+                                <td>0.3</td>
+                                <td>0.25</td>
+                                <td>0.1</td>
+                                <td>0.05</td>
+                                <td>0.1</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
             <div class="exercice">
-                <div class="exercice-header"><h4>Exercice 4.4 - Densité Marginale (Continue) (TD4-3)</h4><span class="difficulty difficile">Difficile</span></div>
+                <div class="exercice-header">
+                    <h4>Exercice 4.4 - Densité Marginale (Continue) (TD4-3)</h4>
+                    <span class="difficulty difficile">Difficile</span>
+                </div>
                 <p><strong>Énoncé :</strong> Densité jointe $f_{X,Y}(x,y) = 2xy$ pour $x \in [0, 1]$ et $y \in [0, 1]$. Déterminer $f_X(x)$.</p>
-                <button class="toggle-solution">Voir la solution</button>
+                <button class="toggle-solution"><i class="fas fa-eye"></i> Voir la solution</button>
                 <div class="solution">
+                    <p><strong>Étape 1 : Application de la formule</strong></p>
                     <p>On intègre $f_{X,Y}(x,y)$ sur le domaine de $Y$ ($[0, 1]$) :</p>
-                    <div class="formula">$$f_X(x) = \int_{0}^{1} 2xy dy = 2x \left[ \frac{y^2}{2} \right]_0^1 = 2x \cdot \frac{1}{2} = \mathbf{x} \quad \text{pour } x \in [0, 1]$$</div>
+                    <div class="formula">
+                        $$f_X(x) = \int_{0}^{1} f_{X,Y}(x,y) dy = \int_{0}^{1} 2xy dy$$
+                    </div>
+                    
+                    <p><strong>Étape 2 : Calcul de l'intégrale</strong></p>
+                    <div class="formula">
+                        $$f_X(x) = 2x \int_{0}^{1} y dy = 2x \left[ \frac{y^2}{2} \right]_0^1 = 2x \cdot \frac{1}{2} = \mathbf{x} \quad \text{pour } x \in [0, 1]$$
+                    </div>
+                    
+                    <p><strong>Vérification :</strong></p>
+                    <div class="formula">
+                        $$\int_{0}^{1} f_X(x) dx = \int_{0}^{1} x dx = \left[ \frac{x^2}{2} \right]_0^1 = \frac{1}{2} - 0 = \frac{1}{2} \neq 1$$
+                    </div>
+                    <p>Attention : Il semble y avoir une erreur dans l'énoncé car la densité marginale n'est pas normalisée. La densité jointe correcte devrait être $f_{X,Y}(x,y) = 4xy$ pour que $f_X(x) = 2x$ et $\int_{0}^{1} f_X(x) dx = 1$.</p>
                 </div>
             </div>
             
-            <h3 style="color: var(--primary-dark); margin-top: 3rem;">❓ Quiz TD4 & Ex. Supplémentaires</h3>
+            <h3 style="color: var(--primary-blue); margin-top: 3rem; margin-bottom: 1.5rem; font-size: 1.8rem;"><i class="fas fa-question-circle"></i> Quiz TD4 & Exercices Supplémentaires</h3>
+            
             <div class="topic-card">
-                <h4>Fiche d'Exercices Supplémentaires</h4>
-                <ul style="padding-left: 20px;">
-                    <li>**TD4-3 (Original) :** Densité jointe avec dépendance $y \in [0, 2x]$. Calculer $f_X(x)$ (résultat : $4x^3$).</li>
-                    <li>**TD5-2 :** Étude d'un vecteur non-gaussien où $Cov(X,Y)=0$ mais $X$ et $Y$ sont dépendantes (contre-exemple).</li>
+                <h4><i class="fas fa-plus-circle"></i> Fiche d'Exercices Supplémentaires</h4>
+                <ul>
+                    <li><strong>TD4-3 (Original) :</strong> Densité jointe avec dépendance $y \in [0, 2x]$. Calculer $f_X(x)$ (résultat : $4x^3$).</li>
+                    <li><strong>TD5-2 :</strong> Étude d'un vecteur non-gaussien où $Cov(X,Y)=0$ mais $X$ et $Y$ sont dépendantes (contre-exemple).</li>
+                    <li><strong>Loi de la somme :</strong> Déterminer la loi de $Z = X + Y$ lorsque $X$ et $Y$ sont indépendantes et suivent des lois exponentielles.</li>
+                    <li><strong>Covariance et corrélation :</strong> Calculer la covariance et le coefficient de corrélation pour différentes lois jointes.</li>
                 </ul>
             </div>
+            
             <div class="exercice quiz-box">
-                <div class="exercice-header"><h4 style="color: var(--td-color-4);">QUIZ TD4 - Variance de la Somme</h4></div>
-                <p>Que vaut $Var(X+Y)$ si $X$ et $Y$ sont indépendantes ?</p>
-                <button class="toggle-solution">Voir la réponse</button>
+                <div class="exercice-header">
+                    <h4><i class="fas fa-brain"></i> QUIZ TD4 - Variance de la Somme</h4>
+                </div>
+                <p><strong>Question 1 :</strong> Que vaut $Var(X+Y)$ si $X$ et $Y$ sont indépendantes ?</p>
+                <p><strong>Question 2 :</strong> Si $Cov(X,Y) = 0$, peut-on conclure que $X$ et $Y$ sont indépendantes ?</p>
+                <p><strong>Question 3 :</strong> Comment calcule-t-on $E(XY)$ pour des variables aléatoires discrètes ?</p>
+                <button class="toggle-solution"><i class="fas fa-lightbulb"></i> Voir les réponses</button>
                 <div class="solution">
-                    <p>Réponse : $Var(X+Y) = Var(X) + Var(Y)$. Le terme $2 Cov(X,Y)$ s'annule.</p>
+                    <p><strong>Réponse 1 :</strong></p>
+                    <div class="formula">
+                        $$Var(X+Y) = Var(X) + Var(Y) + 2Cov(X,Y)$$
+                        Si X et Y sont indépendantes, $Cov(X,Y) = 0$, donc :
+                        $$Var(X+Y) = Var(X) + Var(Y)$$
+                    </div>
+                    
+                    <p><strong>Réponse 2 :</strong></p>
+                    <p>Non, $Cov(X,Y) = 0$ n'implique pas l'indépendance de X et Y, sauf dans le cas de variables gaussiennes. Il existe des contre-exemples où la covariance est nulle mais les variables sont dépendantes.</p>
+                    
+                    <p><strong>Réponse 3 :</strong></p>
+                    <div class="formula">
+                        $$E(XY) = \sum_i \sum_j x_i y_j P(X=x_i, Y=y_j)$$
+                    </div>
+                    
+                    <p><strong>Justification :</strong> Ces propriétés sont fondamentales pour l'étude des couples de variables aléatoires.</p>
                 </div>
             </div>
         </div>
     </section>
-</body>
-</html><!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TD4 - Couples de Variables Aléatoires</title>
-    <link rel="stylesheet" href="style2.css">
-    <script src="script.js"></script>
-    <style>
-        /* Styles thématiques TD4 */
-        .td-detail h2 { border-bottom: 3px solid var(--td-color-4); padding-bottom: 10px; }
-        .fiche-revision { border-left-color: var(--td-color-4); }
-        .fiche-revision h4 { color: var(--td-color-4); } 
-        .solution.active { border-left-color: var(--td-color-4); background-color: #e5f2fb; }
-        .quiz-box { border: 1px solid var(--td-color-4); }
-        .quiz-box h4 { color: var(--td-color-4) !important; }
-    </style>
-</head>
-<body>
-    <section id="td4" class="page active">
-        <a href="index.html#proba-tds" class="back-btn">← Retour aux TDs</a>
-        <div class="td-detail">
-            <h2>🔵 TD4 - Couples de Variables Aléatoires</h2>
-            <p class="section-description">Lois jointes, marginales, conditionnelles, covariance, et loi de la somme.</p>
-            <hr class="separator" style="margin: 20px 0;">
 
-            <div class="fiche-revision">
-                <h3>💡 Fiche de Révision : Lois Bi-Dimensionnelles</h3>
-                
-                <h4 class="td-theme-color">1. Lois Marginales</h4>
-                <p>Discrète : $P(X=x_i) = \sum_j P_{i,j}$. Continue : $f_X(x) = \int f_{X,Y}(x,y) dy$.</p>
-                
-                <h4 class="td-theme-color">2. Lois Conditionnelles</h4>
-                <div class="formula">$$P(X=x_i|Y=y_j) = \frac{P_{i,j}}{P(Y=y_j)}$$</div>
-                
-                <h4 class="td-theme-color">3. Covariance et Corrélation</h4>
-                <div class="formula">$$Cov(X,Y) = E(XY) - E(X)E(Y) \quad ; \quad \rho(X,Y) = \frac{Cov(X,Y)}{\sigma_X \sigma_Y}$$</div>
-                
-                <div class="example">
-                    <h4>🔥 Tip : Test d'Indépendance</h4>
-                    <p>Si X et Y sont indépendantes, $Cov(X,Y)=0$. Mais l'inverse est faux (sauf si Gaussien). Vérifiez toujours $P_{i,j} = P(X=x_i)P(Y=y_j)$.</p>
-                </div>
-            </div>
+    <script>
+        // Gestion des solutions d'exercices
+        document.querySelectorAll('.toggle-solution').forEach(button => {
+            button.addEventListener('click', function() {
+                const solution = this.nextElementSibling;
+                solution.classList.toggle('active');
+                this.innerHTML = solution.classList.contains('active') 
+                    ? '<i class="fas fa-eye-slash"></i> Masquer la solution' 
+                    : '<i class="fas fa-eye"></i> Voir la solution';
+            });
+        });
 
-            <h3 style="color: var(--primary-dark); margin-top: 3rem;">📝 Exercices Corrigés Détaillés</h3>
+        // Animation au défilement
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
 
-            <div class="exercice">
-                <div class="exercice-header"><h4>Exercice 4.1 - Lois Marginales Discrètes (TD4-2)</h4><span class="difficulty moyen">Moyen</span></div>
-                <p><strong>Énoncé :</strong> Déterminer les lois marginales $P(X=x_i)$ et $P(Y=y_j)$ pour la loi jointe ci-dessous ($\alpha=0.05$ déjà calculé).</p>
-                <div class="formula"><p>X : -2 (0.45) ; 0 (0.25) ; 1 (0.30). Y : -1 (0.50) ; 1 (0.30) ; 2 (0.20).</p></div>
-                <button class="toggle-solution">Voir la solution</button>
-                <div class="solution">
-                    <p>Lois marginales (sommes de lignes et de colonnes) :</p>
-                    <div class="formula">
-                        $$P(X=-2) = 0.2+0.2+0.05 = \mathbf{0.45}$$<br>
-                        $$P(Y=1) = 0.2+0.1+0 = \mathbf{0.30}$$
-                    </div>
-                </div>
-            </div>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
 
-            <div class="exercice">
-                <div class="exercice-header"><h4>Exercice 4.2 - Espérance Conditionnelle (TD4-2)</h4><span class="difficulty difficile">Difficile</span></div>
-                <p><strong>Énoncé :</strong> Calculer la loi conditionnelle $P(X=x|Y=1)$ puis l'espérance $E(X|Y=1)$.</p>
-                <button class="toggle-solution">Voir la solution</button>
-                <div class="solution">
-                    <p>$$P(Y=1)=0.3$$</p>
-                    <div class="formula">
-                        $$P(X=-2|Y=1) = \frac{P(-2, 1)}{P(Y=1)} = \frac{0.2}{0.3} = \mathbf{2/3}$$<br>
-                        $$P(X=0|Y=1) = \frac{0.1}{0.3} = \mathbf{1/3}$$<br>
-                        $$E(X|Y=1) = (-2) \cdot \frac{2}{3} + (0) \cdot \frac{1}{3} + (1) \cdot 0 = \mathbf{-4/3}$$
-                    </div>
-                </div>
-            </div>
-
-            <div class="exercice">
-                <div class="exercice-header"><h4>Exercice 4.3 - Loi de la Somme $Z=X+Y$ (TD4-2)</h4><span class="difficulty moyen">Moyen</span></div>
-                <p><strong>Énoncé :</strong> Déterminer la loi de la V.A. $Z=X+Y$ (en utilisant la loi jointe).</p>
-                <button class="toggle-solution">Voir la solution</button>
-                <div class="solution">
-                    <p>Valeurs de $Z$: $x_i + y_j$. $Z \in \{-3, -1, 0, 1, 2, 3\}$.</p>
-                    <div class="formula">
-                        $$P(Z=-1) = P(X=-2, Y=1) + P(X=0, Y=-1) = 0.2 + 0.1 = \mathbf{0.3}$$<br>
-                        $$P(Z=0) = P(X=-2, Y=2) + P(X=1, Y=-1) = 0.05 + 0.2 = \mathbf{0.25}$$
-                    </div>
-                    <p>La loi complète est : $P(Z=-3)=0.2, P(Z=-1)=0.3, P(Z=0)=0.25, P(Z=1)=0.1, P(Z=2)=0.05, P(Z=3)=0.1$.</p>
-                </div>
-            </div>
-
-            <div class="exercice">
-                <div class="exercice-header"><h4>Exercice 4.4 - Densité Marginale (Continue) (TD4-3)</h4><span class="difficulty difficile">Difficile</span></div>
-                <p><strong>Énoncé :</strong> Densité jointe $f_{X,Y}(x,y) = 2xy$ pour $x \in [0, 1]$ et $y \in [0, 1]$. Déterminer $f_X(x)$.</p>
-                <button class="toggle-solution">Voir la solution</button>
-                <div class="solution">
-                    <p>On intègre $f_{X,Y}(x,y)$ sur le domaine de $Y$ ($[0, 1]$) :</p>
-                    <div class="formula">$$f_X(x) = \int_{0}^{1} 2xy dy = 2x \left[ \frac{y^2}{2} \right]_0^1 = 2x \cdot \frac{1}{2} = \mathbf{x} \quad \text{pour } x \in [0, 1]$$</div>
-                </div>
-            </div>
-            
-            <h3 style="color: var(--primary-dark); margin-top: 3rem;">❓ Quiz TD4 & Ex. Supplémentaires</h3>
-            <div class="topic-card">
-                <h4>Fiche d'Exercices Supplémentaires</h4>
-                <ul style="padding-left: 20px;">
-                    <li>**TD4-3 (Original) :** Densité jointe avec dépendance $y \in [0, 2x]$. Calculer $f_X(x)$ (résultat : $4x^3$).</li>
-                    <li>**TD5-2 :** Étude d'un vecteur non-gaussien où $Cov(X,Y)=0$ mais $X$ et $Y$ sont dépendantes (contre-exemple).</li>
-                </ul>
-            </div>
-            <div class="exercice quiz-box">
-                <div class="exercice-header"><h4 style="color: var(--td-color-4);">QUIZ TD4 - Variance de la Somme</h4></div>
-                <p>Que vaut $Var(X+Y)$ si $X$ et $Y$ sont indépendantes ?</p>
-                <button class="toggle-solution">Voir la réponse</button>
-                <div class="solution">
-                    <p>Réponse : $Var(X+Y) = Var(X) + Var(Y)$. Le terme $2 Cov(X,Y)$ s'annule.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+        // Observer les éléments à animer
+        document.querySelectorAll('.exercice, .fiche-revision, .topic-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
