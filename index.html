@@ -2,9 +2,39 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Focus Révisions ISEP - Proba & Télécom</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-width=1.0">
+    <title>Focus Révisions ISEP - Excellence Académique</title>
+    <link rel="stylesheet" href="style2.css">
+    <script src="script.js"></script>
+    
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Appliquer les animations */
+        .main-header, .hero-section {
+            animation: fadeIn 1s ease-out;
+        }
+        .hero-section {
+            animation-delay: 0.2s;
+            animation-fill-mode: backwards; /* Garde l'état initial masqué */
+        }
+        .hero-content h1, .hero-content p, .cta-button, .stats-bar {
+            animation: slideUp 0.8s ease-out;
+            animation-fill-mode: backwards;
+        }
+        /* Décalage pour l'effet en cascade */
+        .hero-content h1 { animation-delay: 0.4s; }
+        .hero-content p { animation-delay: 0.6s; }
+        .cta-button { animation-delay: 0.8s; }
+        .stats-bar { animation-delay: 1s; }
+    </style>
 </head>
 <body>
 
@@ -26,9 +56,8 @@
                 <a href="#proba-tds" class="cta-button">Commencer les TDs Proba →</a>
             </div>
             
-            <div class="hero-image-placeholder">
-                <img src="University.jpg">
-            </div>
+            <div class="hero-image-placeholder" style="background-image: url('University.jpg'); background-size: cover; background-position: center;">
+                </div>
         </div>
 
         <div class="stats-bar">
@@ -88,10 +117,9 @@
         </section>
         
         <footer class="main-footer">
-            <p>&copy; 2025 Focus ISEP Révisions. Tous droits réservés.</p>
+            <p>&copy; 2025 Focus ISEP Révisions. Tous droits réservés - Seydi.</p>
         </footer>
     </section>
 
-    <script src="script.js"></script>
 </body>
 </html>
