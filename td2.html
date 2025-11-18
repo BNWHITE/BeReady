@@ -4,112 +4,697 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TD2 - Variables Aléatoires Discrètes</title>
-    <link rel="stylesheet" href="style2.css">
-    <script src="script.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
-        /* Styles thématiques TD2 */
-        .td-detail h2 { border-bottom: 3px solid var(--td-color-2); padding-bottom: 10px; }
-        .fiche-revision { border-left-color: var(--td-color-2); }
-        .fiche-revision h4 { color: var(--td-color-2); } 
-        .solution.active { border-left-color: var(--td-color-2); background-color: #fce7e7; }
-        .quiz-box { border: 1px solid var(--td-color-2); }
-        .quiz-box h4 { color: var(--td-color-2) !important; }
+        :root {
+            /* --- Couleurs Générales --- */
+            --primary-red: #e74c3c; /* Couleur principale TD2 */
+            --primary-dark: #2C3E50; /* Couleur du texte et des éléments sombres */
+            --secondary-gray: #f8f9fa; /* Arrière-plan clair */
+            --white: #FFFFFF;
+            --light-red: #fdedec;
+            --medium-red: #fadbd8;
+            --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 6px 15px rgba(0, 0, 0, 0.1);
+            --shadow-heavy: 0 10px 30px rgba(0, 0, 0, 0.15);
+            
+            /* --- Couleurs de feedback --- */
+            --bg-solution: #fef2f2; /* Fond très clair pour la solution */
+            --bg-quiz: #f4f6f8;     /* Fond clair pour les zones d'exercices supp. et quiz */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: var(--secondary-gray);
+            color: var(--primary-dark);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+            padding: 0;
+        }
+
+        /* ------------------------------------- */
+        /* --- 1. STRUCTURE ET NAVIGATION --- */
+        /* ------------------------------------- */
+
+        .page {
+            padding: 20px 5%;
+            min-height: 100vh;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .td-detail {
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-heavy);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .td-detail::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary-red), #c0392b);
+        }
+
+        .td-detail h2 {
+            color: var(--primary-red);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            border-bottom: 3px solid var(--primary-red);
+            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 25px;
+            padding: 12px 20px;
+            background-color: var(--primary-red);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .section-description {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            padding: 15px;
+            background-color: var(--light-red);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-red);
+        }
+
+        .separator {
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--primary-red), transparent);
+            margin: 40px 0;
+        }
+
+        /* ------------------------------------- */
+        /* --- 2. FICHES ET EXERCICES (CLE) --- */
+        /* ------------------------------------- */
+
+        /* Style du bloc de révision */
+        .fiche-revision {
+            border-left: 5px solid var(--primary-red);
+            padding: 25px;
+            margin: 30px 0;
+            background-color: var(--light-red);
+            border-radius: 0 12px 12px 0;
+            box-shadow: var(--shadow-light);
+        }
+
+        .fiche-revision h3 {
+            color: var(--primary-red);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .fiche-revision h4 {
+            margin-top: 1.8rem;
+            color: var(--primary-red);
+            font-size: 1.2rem;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed var(--medium-red);
+        }
+
+        .fiche-revision p {
+            margin-bottom: 15px;
+        }
+
+        /* Style des exercices */
+        .exercice {
+            border: 1px solid #e0e0e0;
+            padding: 25px;
+            margin-top: 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-light);
+            background-color: var(--white);
+            transition: all 0.3s;
+        }
+
+        .exercice:hover {
+            box-shadow: var(--shadow-medium);
+            transform: translateY(-3px);
+        }
+
+        .exercice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .exercice h4 {
+            color: var(--primary-dark);
+            font-size: 1.3rem;
+        }
+
+        .difficulty {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .facile { background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+        .moyen { background-color: #fff3e0; color: #ef6c00; border: 1px solid #ffe0b2; }
+        .difficile { background-color: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+
+        /* Bouton et solution (Animation Smooth) */
+        .toggle-solution {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--primary-red);
+            color: var(--white);
+            border: none;
+            padding: 12px 20px;
+            margin-top: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .toggle-solution:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .solution {
+            margin-top: 20px;
+            padding: 0 20px;
+            border-left: 4px solid var(--primary-red);
+            background-color: var(--bg-solution);
+            border-radius: 0 8px 8px 0;
+            
+            /* Propriétés pour l'animation (Initial state) */
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.4s ease-out;
+        }
+
+        /* État actif (géré par JS) */
+        .solution.active {
+            opacity: 1;
+            max-height: 2000px;
+            padding: 20px;
+        }
+
+        .formula {
+            background-color: var(--primary-dark);
+            color: var(--white);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            box-shadow: var(--shadow-light);
+        }
+
+        /* Styles des Tips et des Fiches Supp. */
+        .example {
+            margin-top: 20px;
+            border-left: 4px solid #ff9800;
+            padding: 20px;
+            background-color: #fff8e1;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .example h4 {
+            color: #ff9800;
+            margin-top: 0;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Style de la carte d'exercices supplémentaires */
+        .topic-card {
+            padding: 20px;
+            background-color: var(--bg-quiz);
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid var(--primary-red);
+        }
+
+        .topic-card h4 {
+            color: var(--primary-red);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .topic-card ul {
+            padding-left: 20px;
+        }
+
+        .topic-card li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        /* Style du quiz */
+        .quiz-box {
+            border: 2px solid var(--primary-red);
+            background-color: var(--light-red);
+        }
+
+        .quiz-box h4 {
+            color: var(--primary-red) !important;
+        }
+
+        /* Style pour les listes */
+        ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page {
+                padding: 15px 3%;
+            }
+            
+            .td-detail {
+                padding: 25px;
+            }
+            
+            .td-detail h2 {
+                font-size: 1.8rem;
+            }
+            
+            .exercice-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .formula {
+                font-size: 0.9rem;
+                padding: 15px;
+            }
+        }
+
+        /* Animation pour les éléments qui apparaissent */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .exercice, .fiche-revision, .topic-card {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Style pour les icônes */
+        .icon {
+            margin-right: 8px;
+        }
+        
+        /* Tableau pour les lois de probabilité */
+        .probability-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .probability-table th, .probability-table td {
+            padding: 12px 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        
+        .probability-table th {
+            background-color: var(--primary-red);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .probability-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .probability-table tr:hover {
+            background-color: #f1f1f1;
+        }
     </style>
 </head>
 <body>
     <section id="td2" class="page active">
-        <a href="index.html#proba-tds" class="back-btn">← Retour aux TDs</a>
+        <a href="#" class="back-btn"><i class="fas fa-arrow-left"></i> Retour aux TDs</a>
+        
         <div class="td-detail">
-            <h2>🔴 TD2 - Variables Aléatoires Discrètes</h2>
-            <p class="section-description">Étude des lois classiques : Binomiale, Poisson, Géométrique, et propriétés des V.A. discrètes générales.</p>
-            <hr class="separator" style="margin: 20px 0;">
+            <h2><i class="fas fa-chart-bar"></i> TD2 - Variables Aléatoires Discrètes</h2>
+            <p class="section-description">Étude approfondie des lois classiques : Binomiale, Poisson, Géométrique, et propriétés des variables aléatoires discrètes. Ce TD vous prépare à modéliser des situations réelles et à calculer des probabilités complexes.</p>
+            
+            <hr class="separator">
 
             <div class="fiche-revision">
-                <h3>💡 Fiche de Révision : Lois et Moments</h3>
+                <h3><i class="fas fa-lightbulb"></i> Fiche de Révision : Lois Discrètes et Moments</h3>
                 
-                <h4 class="td-theme-color">1. Loi Binomiale $B(n, p)$</h4>
+                <h4>1. Loi Binomiale B(n, p)</h4>
+                <p><strong>Contexte :</strong> Nombre de succès dans une suite de n épreuves de Bernoulli indépendantes de même paramètre p.</p>
                 <div class="formula">
-                    $$P(X=k) = C_n^k p^k (1-p)^{n-k} \quad ; \quad E(X)=np, V(X)=np(1-p)$$
+                    $$P(X=k) = C_n^k p^k (1-p)^{n-k} \quad \text{pour } k = 0, 1, \dots, n$$
+                    $$E(X) = np \quad ; \quad V(X) = np(1-p)$$
                 </div>
                 
-                <h4 class="td-theme-color">2. Loi de Poisson $P(\lambda)$</h4>
+                <h4>2. Loi de Poisson P(λ)</h4>
+                <p><strong>Contexte :</strong> Modélisation d'événements rares se produisant à taux constant λ.</p>
                 <div class="formula">
-                    $$P(X=k) = e^{-\lambda} \frac{\lambda^k}{k!} \quad ; \quad E(X)=\lambda, V(X)=\lambda$$
+                    $$P(X=k) = e^{-\lambda} \frac{\lambda^k}{k!} \quad \text{pour } k = 0, 1, 2, \dots$$
+                    $$E(X) = \lambda \quad ; \quad V(X) = \lambda$$
                 </div>
+                <p><strong>Approximation :</strong> Quand n est grand et p petit (n ≥ 50, p ≤ 0.1, np < 15), B(n,p) ≈ P(λ) avec λ = np.</p>
                 
-                <h4 class="td-theme-color">3. Loi Géométrique $G(p)$</h4>
-                <p>Nombre d'essais $k$ jusqu'au premier succès (succès au $k$-ème essai).</p>
+                <h4>3. Loi Géométrique G(p)</h4>
+                <p><strong>Contexte :</strong> Nombre d'essais nécessaires jusqu'au premier succès (le succès a lieu au k-ème essai).</p>
                 <div class="formula">
-                    $$P(X=k) = (1-p)^{k-1} p \quad ; \quad E(X)=1/p$$
+                    $$P(X=k) = (1-p)^{k-1} p \quad \text{pour } k = 1, 2, 3, \dots$$
+                    $$E(X) = \frac{1}{p} \quad ; \quad V(X) = \frac{1-p}{p^2}$$
                 </div>
+                <p><strong>Propriété d'absence de mémoire :</strong> P(X > m+n | X > m) = P(X > n)</p>
                 
                 <div class="example">
-                    <h4>🔥 Tip : Calcul de $E(X)$ et $V(X)$ (V.A. Générale)</h4>
-                    <p>$$E(X) = \sum x_i P(X=x_i) \quad ; \quad V(X) = E(X^2) - [E(X)]^2$$</p>
+                    <h4><i class="fas fa-fire"></i> Conseil Méthodologique : Calcul de E(X) et V(X)</h4>
+                    <p>Pour une variable aléatoire discrète générale :</p>
+                    <div class="formula">
+                        $$E(X) = \sum x_i P(X=x_i) \quad ; \quad E(X^2) = \sum x_i^2 P(X=x_i)$$
+                        $$V(X) = E(X^2) - [E(X)]^2$$
+                    </div>
+                    <p><strong>Propriétés importantes :</strong> E(aX+b) = aE(X)+b ; V(aX+b) = a²V(X)</p>
                 </div>
             </div>
 
-            <h3 style="color: var(--primary-dark); margin-top: 3rem;">📝 Exercices Corrigés Détaillés</h3>
+            <h3 style="color: var(--primary-red); margin-top: 3rem; margin-bottom: 1.5rem; font-size: 1.8rem;"><i class="fas fa-pencil-alt"></i> Exercices Corrigés Détaillés</h3>
 
             <div class="exercice">
-                <div class="exercice-header"><h4>Exercice 2.1 - Loi V.A. Discrète (TD3-1)</h4><span class="difficulty difficile">Difficile</span></div>
-                <p><strong>Énoncé :</strong> $X$ est le résultat du lancer d'un dé : si le résultat est pair, $X=2$. Si impair, $X$ est le résultat. Déterminer la loi de $X$, $E(X)$ et $V(X)$.</p>
-                <button class="toggle-solution">Voir la solution</button>
+                <div class="exercice-header">
+                    <h4>Exercice 2.1 - Variable Aléatoire Discrète (TD3-1)</h4>
+                    <span class="difficulty difficile">Difficile</span>
+                </div>
+                <p><strong>Énoncé :</strong> On définit une variable aléatoire X comme suit : on lance un dé équilibré. Si le résultat est pair, X = 2. Si le résultat est impair, X prend la valeur du résultat. Déterminer la loi de X, son espérance E(X) et sa variance V(X).</p>
+                <button class="toggle-solution"><i class="fas fa-eye"></i> Voir la solution</button>
                 <div class="solution">
-                    <p>Valeurs possibles de $X$: $x \in \{1, 2, 3, 5\}$.</p>
-                    <p>Probabilités : $P(X=1) = 1/6$. $P(X=3) = 1/6$. $P(X=5) = 1/6$. $P(X=2) = P(\{2, 4, 6\}) = 3/6 = 1/2$.</p>
+                    <p><strong>Étape 1 : Détermination de la loi de X</strong></p>
+                    <p>Les valeurs possibles de X sont : x ∈ {1, 2, 3, 5} (les nombres impairs + 2)</p>
+                    
+                    <table class="probability-table">
+                        <thead>
+                            <tr>
+                                <th>Valeur x</th>
+                                <th>Événements correspondants</th>
+                                <th>P(X = x)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Dé = 1</td>
+                                <td>1/6</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Dé = 2, 4 ou 6</td>
+                                <td>3/6 = 1/2</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Dé = 3</td>
+                                <td>1/6</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Dé = 5</td>
+                                <td>1/6</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p><strong>Étape 2 : Calcul de E(X)</strong></p>
                     <div class="formula">
-                        $$E(X) = 1\cdot\frac{1}{6} + 2\cdot\frac{3}{6} + 3\cdot\frac{1}{6} + 5\cdot\frac{1}{6} = \frac{1+6+3+5}{6} = \frac{15}{6} = \mathbf{2.5}$$<br>
-                        $$E(X^2) = 1^2\cdot\frac{1}{6} + 2^2\cdot\frac{3}{6} + 3^2\cdot\frac{1}{6} + 5^2\cdot\frac{1}{6} = \frac{1+12+9+25}{6} = \frac{47}{6}$$<br>
-                        $$V(X) = \frac{47}{6} - (2.5)^2 = \frac{47}{6} - \frac{25}{4} = \frac{94-75}{12} = \mathbf{19/12} \approx 1.583$$
+                        $$E(X) = \sum x_i P(X=x_i) = 1 \cdot \frac{1}{6} + 2 \cdot \frac{3}{6} + 3 \cdot \frac{1}{6} + 5 \cdot \frac{1}{6}$$
+                        $$E(X) = \frac{1 + 6 + 3 + 5}{6} = \frac{15}{6} = \mathbf{2.5}$$
+                    </div>
+                    
+                    <p><strong>Étape 3 : Calcul de V(X)</strong></p>
+                    <p>D'abord, calculons E(X²) :</p>
+                    <div class="formula">
+                        $$E(X^2) = \sum x_i^2 P(X=x_i) = 1^2 \cdot \frac{1}{6} + 2^2 \cdot \frac{3}{6} + 3^2 \cdot \frac{1}{6} + 5^2 \cdot \frac{1}{6}$$
+                        $$E(X^2) = \frac{1 + 12 + 9 + 25}{6} = \frac{47}{6}$$
+                    </div>
+                    <p>Puis calculons V(X) :</p>
+                    <div class="formula">
+                        $$V(X) = E(X^2) - [E(X)]^2 = \frac{47}{6} - (2.5)^2 = \frac{47}{6} - \frac{25}{4} = \frac{94 - 75}{12} = \mathbf{\frac{19}{12} \approx 1.583}$$
                     </div>
                 </div>
             </div>
 
             <div class="exercice">
-                <div class="exercice-header"><h4>Exercice 2.3 - Panne Avion (Binomiale) (TD3-2)</h4><span class="difficulty difficile">Difficile</span></div>
-                <p><strong>Énoncé :</strong> Avion A (4 moteurs), panne si $\ge 2$ moteurs en panne. Probabilité de panne moteur $p=0.1$. Calculer $P(\text{panne avion})$.</p>
-                <button class="toggle-solution">Voir la solution</button>
+                <div class="exercice-header">
+                    <h4>Exercice 2.2 - Comparaison d'Avions (Binomiale) (TD3-2)</h4>
+                    <span class="difficulty moyen">Moyen</span>
+                </div>
+                <p><strong>Énoncé :</strong> On compare deux avions : l'avion A a 4 moteurs et l'avion B a 2 moteurs. Chaque moteur a une probabilité p de tomber en panne, indépendamment des autres. Un avion arrive à destination si moins de la moitié de ses moteurs tombent en panne. Lequel des deux avions est le plus fiable ? Discuter en fonction de p.</p>
+                <button class="toggle-solution"><i class="fas fa-eye"></i> Voir la solution</button>
                 <div class="solution">
-                    <p>$X \sim B(4, 0.1)$. Panne si $X \ge 2$.</p>
+                    <p><strong>Analyse de l'avion A (4 moteurs) :</strong></p>
+                    <p>Soit X_A ~ B(4, p) le nombre de moteurs en panne. L'avion A arrive si X_A ≤ 1.</p>
                     <div class="formula">
-                        $$P(\text{panne}) = P(X=2) + P(X=3) + P(X=4)$$<br>
-                        $$P(X=2) = C_4^2 p^2 (1-p)^2 = 6(0.1)^2(0.9)^2 = 6 \times 0.0081 = 0.0486$$<br>
-                        $$P(X=3) = C_4^3 p^3 (1-p)^1 = 4(0.1)^3(0.9) = 4 \times 0.0009 = 0.0036$$<br>
-                        $$P(X=4) = C_4^4 p^4 (1-p)^0 = (0.1)^4 = 0.0001$$<br>
+                        $$P(\text{arrivée A}) = P(X_A = 0) + P(X_A = 1) = (1-p)^4 + 4p(1-p)^3$$
+                    </div>
+                    
+                    <p><strong>Analyse de l'avion B (2 moteurs) :</strong></p>
+                    <p>Soit X_B ~ B(2, p) le nombre de moteurs en panne. L'avion B arrive si X_B = 0.</p>
+                    <div class="formula">
+                        $$P(\text{arrivée B}) = P(X_B = 0) = (1-p)^2$$
+                    </div>
+                    
+                    <p><strong>Comparaison :</strong></p>
+                    <p>On étudie la différence :</p>
+                    <div class="formula">
+                        $$P(\text{arrivée A}) - P(\text{arrivée B}) = (1-p)^4 + 4p(1-p)^3 - (1-p)^2$$
+                        $$= (1-p)^2[(1-p)^2 + 4p(1-p) - 1] = (1-p)^2[1 - 2p + p^2 + 4p - 4p^2 - 1]$$
+                        $$= (1-p)^2(2p - 3p^2) = p(1-p)^2(2 - 3p)$$
+                    </div>
+                    
+                    <p><strong>Conclusion :</strong></p>
+                    <ul>
+                        <li>Si 0 < p < 2/3 ≈ 0.667, alors P(arrivée A) > P(arrivée B) : l'avion A est plus fiable</li>
+                        <li>Si p > 2/3, alors P(arrivée A) < P(arrivée B) : l'avion B est plus fiable</li>
+                        <li>Si p = 0 ou p = 2/3, les deux avions ont la même fiabilité</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="exercice">
+                <div class="exercice-header">
+                    <h4>Exercice 2.3 - Panne d'Avion (Binomiale) (TD3-2)</h4>
+                    <span class="difficulty difficile">Difficile</span>
+                </div>
+                <p><strong>Énoncé :</strong> Un avion possède 4 moteurs. Chaque moteur a une probabilité p = 0.1 de tomber en panne, indépendamment des autres. L'avion tombe en panne si au moins 2 moteurs tombent en panne. Calculer la probabilité que l'avion tombe en panne.</p>
+                <button class="toggle-solution"><i class="fas fa-eye"></i> Voir la solution</button>
+                <div class="solution">
+                    <p>Soit X ~ B(4, 0.1) le nombre de moteurs en panne. L'avion tombe en panne si X ≥ 2.</p>
+                    <div class="formula">
+                        $$P(\text{panne}) = P(X \ge 2) = P(X=2) + P(X=3) + P(X=4)$$
+                    </div>
+                    
+                    <p>Calculons chaque terme :</p>
+                    <div class="formula">
+                        $$P(X=2) = C_4^2 p^2 (1-p)^2 = 6 \times (0.1)^2 \times (0.9)^2 = 6 \times 0.01 \times 0.81 = 0.0486$$
+                        $$P(X=3) = C_4^3 p^3 (1-p)^1 = 4 \times (0.1)^3 \times 0.9 = 4 \times 0.001 \times 0.9 = 0.0036$$
+                        $$P(X=4) = C_4^4 p^4 (1-p)^0 = 1 \times (0.1)^4 \times 1 = 0.0001$$
+                    </div>
+                    
+                    <p>Donc :</p>
+                    <div class="formula">
                         $$P(\text{panne}) = 0.0486 + 0.0036 + 0.0001 = \mathbf{0.0523}$$
                     </div>
+                    
+                    <p><strong>Interprétation :</strong> L'avion a environ 5.23% de chances de tomber en panne.</p>
                 </div>
             </div>
 
             <div class="exercice">
-                <div class="exercice-header"><h4>Exercice 2.4 - Clients (Poisson) (TD3-3)</h4><span class="difficulty moyen">Moyen</span></div>
-                <p><strong>Énoncé :</strong> Magasin reçoit en moyenne $\lambda=4$ clients/jour ($P(4)$). Calculer $P(\text{au moins 6 clients})$.</p>
-                <button class="toggle-solution">Voir la solution</button>
+                <div class="exercice-header">
+                    <h4>Exercice 2.4 - Clients d'un Magasin (Poisson) (TD3-3)</h4>
+                    <span class="difficulty moyen">Moyen</span>
+                </div>
+                <p><strong>Énoncé :</strong> Un magasin reçoit en moyenne λ = 4 clients par jour, le nombre de clients suivant une loi de Poisson. Calculer la probabilité que le magasin reçoive au moins 6 clients un jour donné.</p>
+                <button class="toggle-solution"><i class="fas fa-eye"></i> Voir la solution</button>
                 <div class="solution">
-                    <p>$$P(X \ge 6) = 1 - P(X \le 5) = 1 - \sum_{k=0}^{5} P(X=k)$$</p>
-                    <p>$$P(X \le 5) = e^{-4} \left(1 + 4 + \frac{4^2}{2} + \frac{4^3}{6} + \frac{4^4}{24} + \frac{4^5}{120}\right) \approx e^{-4} (1 + 4 + 8 + 10.667 + 10.667 + 8.533) \approx 0.785$$</p>
-                    <div class="formula">$$P(X \ge 6) \approx 1 - 0.785 = \mathbf{0.215}$$</div>
+                    <p>Soit X ~ P(4) le nombre de clients par jour. On cherche P(X ≥ 6).</p>
+                    <div class="formula">
+                        $$P(X \ge 6) = 1 - P(X \le 5) = 1 - \sum_{k=0}^{5} P(X=k)$$
+                    </div>
+                    
+                    <p>Calculons P(X ≤ 5) :</p>
+                    <div class="formula">
+                        $$P(X \le 5) = e^{-4} \left(1 + 4 + \frac{4^2}{2} + \frac{4^3}{6} + \frac{4^4}{24} + \frac{4^5}{120}\right)$$
+                        $$= e^{-4} (1 + 4 + 8 + 10.667 + 10.667 + 8.533)$$
+                        $$= e^{-4} \times 42.867 \approx 0.0183 \times 42.867 \approx 0.785$$
+                    </div>
+                    
+                    <p>Donc :</p>
+                    <div class="formula">
+                        $$P(X \ge 6) \approx 1 - 0.785 = \mathbf{0.215}$$
+                    </div>
+                    
+                    <p><strong>Interprétation :</strong> Le magasin a environ 21.5% de chances de recevoir au moins 6 clients un jour donné.</p>
+                </div>
+            </div>
+
+            <div class="exercice">
+                <div class="exercice-header">
+                    <h4>Exercice 2.5 - Loi Géométrique (Nouveau)</h4>
+                    <span class="difficulty moyen">Moyen</span>
+                </div>
+                <p><strong>Énoncé :</strong> On lance un dé équilibré jusqu'à obtenir un 6. Soit X la variable aléatoire représentant le nombre de lancers nécessaires. </p>
+                <p>1. Quelle est la loi de X ? Donner ses paramètres.</p>
+                <p>2. Calculer la probabilité d'obtenir le premier 6 au 3ème lancer.</p>
+                <p>3. Calculer la probabilité d'obtenir le premier 6 en au plus 5 lancers.</p>
+                <button class="toggle-solution"><i class="fas fa-eye"></i> Voir la solution</button>
+                <div class="solution">
+                    <p><strong>1. Loi de X :</strong></p>
+                    <p>X suit une loi géométrique de paramètre p = 1/6 (probabilité d'obtenir un 6 à chaque lancer).</p>
+                    <div class="formula">
+                        $$X \sim G\left(\frac{1}{6}\right)$$
+                    </div>
+                    
+                    <p><strong>2. P(X = 3) :</strong></p>
+                    <div class="formula">
+                        $$P(X=3) = (1-p)^{2} p = \left(\frac{5}{6}\right)^2 \times \frac{1}{6} = \frac{25}{216} \approx \mathbf{0.1157}$$
+                    </div>
+                    
+                    <p><strong>3. P(X ≤ 5) :</strong></p>
+                    <div class="formula">
+                        $$P(X \le 5) = 1 - P(X > 5) = 1 - (1-p)^5 = 1 - \left(\frac{5}{6}\right)^5$$
+                        $$= 1 - \frac{3125}{7776} = \frac{4651}{7776} \approx \mathbf{0.5981}$$
+                    </div>
+                    
+                    <p><strong>Interprétation :</strong> On a environ 59.81% de chances d'obtenir au moins un 6 en 5 lancers ou moins.</p>
                 </div>
             </div>
             
-            <h3 style="color: var(--primary-dark); margin-top: 3rem;">❓ Quiz TD2 & Ex. Supplémentaires</h3>
+            <h3 style="color: var(--primary-red); margin-top: 3rem; margin-bottom: 1.5rem; font-size: 1.8rem;"><i class="fas fa-question-circle"></i> Quiz TD2 & Exercices Supplémentaires</h3>
+            
             <div class="topic-card">
-                <h4>Fiche d'Exercices Supplémentaires</h4>
-                <ul style="padding-left: 20px;">
-                    <li>**TD3-1 d/e/f :** Calcul d'espérance et variance d'un autre jeu de dés.</li>
-                    <li>**Loi Géométrique :** Calculer $P(X \ge k)$ pour $X \sim G(p)$.</li>
+                <h4><i class="fas fa-plus-circle"></i> Fiche d'Exercices Supplémentaires</h4>
+                <ul>
+                    <li><strong>TD3-1 d/e/f :</strong> Calcul d'espérance et variance d'un autre jeu de dés avec des règles différentes.</li>
+                    <li><strong>Loi Géométrique :</strong> Calculer P(X ≥ k) pour X ~ G(p) et interpréter le résultat.</li>
+                    <li><strong>Approximation Poisson :</strong> Dans une usine, un défaut apparaît avec probabilité 0.01 sur 200 pièces. Approximation par Poisson et calcul de P(au moins 3 défauts).</li>
+                    <li><strong>Loi Binomiale Négative :</strong> Nombre d'essais jusqu'au r-ème succès (généralisation de la géométrique).</li>
                 </ul>
             </div>
+            
             <div class="exercice quiz-box">
-                <div class="exercice-header"><h4 style="color: var(--td-color-2);">QUIZ TD2 - Linéarité</h4></div>
-                <p>Si $X$ est une V.A. de variance $V(X)=4$, que vaut $V(3X-5)$ ?</p>
-                <button class="toggle-solution">Voir la réponse</button>
+                <div class="exercice-header">
+                    <h4><i class="fas fa-brain"></i> QUIZ TD2 - Propriétés des Variables Aléatoires</h4>
+                </div>
+                <p><strong>Question 1 :</strong> Si X est une variable aléatoire de variance V(X) = 4, que vaut V(3X - 5) ?</p>
+                <p><strong>Question 2 :</strong> Si X ~ B(n, p) et Y ~ B(m, p) sont indépendantes, quelle est la loi de X + Y ?</p>
+                <p><strong>Question 3 :</strong> Si X ~ P(λ) et Y ~ P(μ) sont indépendantes, quelle est la loi de X + Y ?</p>
+                <button class="toggle-solution"><i class="fas fa-lightbulb"></i> Voir les réponses</button>
                 <div class="solution">
-                    <p>Réponse : $V(3X-5) = 3^2 V(X) = 9 \times 4 = \mathbf{36}$.</p>
+                    <p><strong>Réponse 1 :</strong></p>
+                    <div class="formula">
+                        $$V(3X - 5) = 3^2 V(X) = 9 \times 4 = \mathbf{36}$$
+                    </div>
+                    
+                    <p><strong>Réponse 2 :</strong></p>
+                    <p>Si X ~ B(n, p) et Y ~ B(m, p) sont indépendantes, alors X + Y ~ B(n + m, p).</p>
+                    
+                    <p><strong>Réponse 3 :</strong></p>
+                    <p>Si X ~ P(λ) et Y ~ P(μ) sont indépendantes, alors X + Y ~ P(λ + μ).</p>
+                    
+                    <p><strong>Justification :</strong> Ces propriétés de stabilité sont fondamentales pour les lois binomiale et de Poisson.</p>
                 </div>
             </div>
         </div>
     </section>
+
+    <script>
+        // Gestion des solutions d'exercices
+        document.querySelectorAll('.toggle-solution').forEach(button => {
+            button.addEventListener('click', function() {
+                const solution = this.nextElementSibling;
+                solution.classList.toggle('active');
+                this.innerHTML = solution.classList.contains('active') 
+                    ? '<i class="fas fa-eye-slash"></i> Masquer la solution' 
+                    : '<i class="fas fa-eye"></i> Voir la solution';
+            });
+        });
+
+        // Animation au défilement
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observer les éléments à animer
+        document.querySelectorAll('.exercice, .fiche-revision, .topic-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
