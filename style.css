@@ -955,21 +955,19 @@ button {
     margin: 20px 0;
 }
 /* Responsive */
+/* Responsive */
 
-/* Point de rupture pour les tablettes et grands téléphones (Max 992px) */
+/* Point de rupture pour les tablettes (Max 992px) */
 @media (max-width: 992px) {
     .container {
-        padding: 0 15px;
+        padding: 0 15px; /* Réduction du padding général */
     }
     
     /* Hero Section: Passage de 2 colonnes à 1 */
-    .hero-section {
-        padding: 60px 0;
-    }
     .hero-content {
         grid-template-columns: 1fr;
         text-align: center;
-        gap: 40px;
+        gap: 30px; 
     }
     .hero-image {
         order: -1; /* L'image apparaît au-dessus du texte */
@@ -978,7 +976,7 @@ button {
         font-size: 2.2rem;
     }
     
-    /* Statistiques: Passage de 4 colonnes à 2 */
+    /* Stats: Passage de 4 colonnes à 2 */
     .stats-container {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -990,37 +988,71 @@ button {
     }
 }
 
-/* Point de rupture pour les téléphones et petites tablettes (Max 768px) */
+/* Point de rupture pour les téléphones (Max 768px) */
 @media (max-width: 768px) {
+    
+    /* GLOBAL SPACING: Réduction des paddings et marges */
+    .section {
+        padding: 50px 0; /* Moins de vide vertical */
+    }
+    .hero-section {
+        padding: 40px 0; 
+    }
+    .stats-bar {
+        padding: 20px 0;
+    }
     
     /* Header: Empilement des éléments */
     .header-content {
         flex-direction: column;
-        gap: 15px;
+        gap: 10px;
         padding: 10px 0;
     }
     
     .nav-links {
-        gap: 15px;
+        gap: 10px;
         flex-wrap: wrap;
         justify-content: center;
+        font-size: 0.85rem;
     }
     
     .user-section {
-        width: 100%; /* Utilisation de toute la largeur pour le bloc utilisateur */
+        width: 100%;
         justify-content: center;
-        margin-top: 10px;
     }
     
-    /* Sections générales: Réduction du padding */
-    .section {
-        padding: 40px 0; 
-    }
-    .section-title {
+    /* Typography */
+    .hero-title {
         font-size: 1.8rem;
     }
+    .section-title {
+        font-size: 1.6rem;
+    }
+    .cta-button {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
     
-    /* Grids: Passage à 1 seule colonne */
+    /* Hero Actions: Empiler les deux boutons d'action et prendre toute la largeur */
+    .hero-actions {
+        justify-content: center;
+        flex-direction: column; 
+    }
+    .hero-actions a {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* Trust Badges: Empilement et pleine largeur */
+    .trust-badges {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .trust-badge {
+        justify-content: center;
+    }
+    
+    /* Grids: Passage à 1 seule colonne pour tout */
     .td-grid, 
     .app-grid,
     .testimonials,
@@ -1028,71 +1060,43 @@ button {
         grid-template-columns: 1fr; 
     }
     
-    /* Hero */
-    .hero-actions {
-        justify-content: center;
+    /* Cartes */
+    .td-card h3 {
+        font-size: 1.3rem;
     }
-    .trust-badges {
-        flex-direction: column;
-        align-items: center;
+    .td-card p {
+        font-size: 0.95rem;
     }
-    
-    /* Formulaires: Empilement des champs */
+
+    /* Newsletter: Empilement */
     .newsletter-form {
         flex-direction: column;
     }
-    .newsletter-form input, 
+    .newsletter-form input {
+        margin-bottom: 10px; 
+    }
     .newsletter-form button.cta-button {
-        width: 100%; 
-    }
-
-    /* Modal */
-    .modal-content {
-        margin: 10vh auto; /* Moins d'espace en haut pour le modal */
-    }
-    
-    /* Témoignages */
-    .testimonial::before {
-        font-size: 3rem;
+        width: 100%;
+        justify-content: center;
     }
 }
 
 /* Point de rupture pour les petits téléphones (Max 576px) */
 @media (max-width: 576px) {
-    /* Base spacing */
     .container {
-        padding: 0 10px; /* Réduction du padding latéral */
+        padding: 0 10px; /* Padding minimal */
     }
     
-    /* Typography */
     .logo {
-        font-size: 1.5rem;
-    }
-    .hero-title {
-        font-size: 1.8rem;
-    }
-    .cta-button {
-        padding: 10px 20px;
-        font-size: 0.9rem;
+        font-size: 1.4rem;
     }
     
-    /* Stats: Passage de 2 colonnes à 1 */
+    /* Stats: S'assurer que les stats sont bien empilées */
     .stats-container {
-        grid-template-columns: 1fr;
-    }
-    .stat-number {
-        font-size: 2rem;
+        grid-template-columns: 1fr; 
     }
     
-    /* Cartes */
-    .td-card {
-        padding: 20px;
-    }
-    .td-card h3 {
-        font-size: 1.3rem;
-    }
-    
-    /* Footer: Passage de 2 colonnes à 1 */
+    /* Footer: Passage à 1 colonne */
     .footer-content {
         grid-template-columns: 1fr;
     }
@@ -1100,8 +1104,4 @@ button {
         flex-direction: column;
         gap: 10px;
     }
-    
-    /* Les styles spécifiques pour .complete-btn à la fin de votre fichier d'origine ont été nettoyés
-       et intégrés à la logique du 768px, qui gère mieux les éléments de grille. 
-       Cependant, pour être complet, je retire le style de .complete-btn en double qui était présent à la fin de votre fichier d'origine et qui semblait être une erreur. */
 }
