@@ -94,6 +94,9 @@ class AuthManager {
                 }
                 user = newUser;
                 console.log('✅ Nouvel utilisateur créé:', user);
+                
+                // NOUVEAU : Afficher le message de bienvenue et appel à contribution
+                this.displayWelcomeMessage(user.username);
             }
 
             this.currentUser = user;
@@ -127,14 +130,39 @@ class AuthManager {
         }
     }
 
+    // NOUVELLE MÉTHODE POUR AFFICHER LE MESSAGE DE BIENVENUE ET D'APPEL À CONTRIBUTION
+    displayWelcomeMessage(username) {
+        const welcomeMessage = `
+            🎉 Bienvenue sur Focus ISEP, ${username} ! 🎉
+            
+            Votre inscription a été validée. Vous pouvez maintenant accéder à toutes les ressources.
+            
+            ⚠️ IMPORTANT : Respect et Alerte
+            * Veuillez utiliser ces ressources pour votre apprentissage personnel uniquement.
+            * Si vous trouvez une erreur, une faute de frappe, ou un contenu incorrect, veuillez nous en informer immédiatement (via l'email de contact). Votre vigilance est essentielle !
+            
+            🚀 REJOIGNEZ LA TEAM !
+            * Nous sommes un projet étudiant collaboratif. Si vous souhaitez fournir des ressources (TDs corrigés, fiches, etc.) ou participer au développement, contactez l'administrateur pour rejoindre l'équipe de contributeurs.
+        `;
+        
+        // Utiliser une alerte pour garantir que le message est vu (simule l'email)
+        alert(welcomeMessage); 
+    }
+
     logout() {
         this.currentUser = null;
         localStorage.removeItem('focusUser');
         this.updateUI();
-        userProgress = {};
+        // Assuming userProgress is globally defined
+        if (typeof userProgress !== 'undefined') userProgress = {};
         this.updateProgressUI();
         this.updateStats();
-        showNotification('👋 Déconnexion réussie', 'info');
+        // Assuming showNotification is globally available
+        if (typeof showNotification !== 'undefined') {
+            showNotification('👋 Déconnexion réussie', 'info');
+        } else {
+            console.log('👋 Déconnexion réussie');
+        }
     }
 
     updateUI() {
@@ -146,7 +174,12 @@ class AuthManager {
         if (this.currentUser) {
             loginBtn.style.display = 'none';
             userInfo.style.display = 'flex';
-            securityManager.safeInnerHTML(userGreeting, `Bonjour, ${this.currentUser.username}`);
+             // Assuming securityManager is globally available
+            if (typeof securityManager !== 'undefined') {
+                 securityManager.safeInnerHTML(userGreeting, `Bonjour, ${this.currentUser.username}`);
+            } else {
+                 userGreeting.textContent = `Bonjour, ${this.currentUser.username}`;
+            }
             if (progressIndicator) progressIndicator.style.display = 'block';
         } else {
             loginBtn.style.display = 'block';
@@ -173,6 +206,7 @@ class AuthManager {
                 throw error;
             }
 
+            // Assuming userProgress is globally defined
             userProgress = {};
             if (data) {
                 data.forEach(progress => {
@@ -183,7 +217,10 @@ class AuthManager {
             console.log('✅ Progression chargée:', userProgress);
             this.updateProgressUI();
             this.updateTDCards();
-            BadgeManager.checkBadges();
+            // Assuming BadgeManager is globally available
+            if (typeof BadgeManager !== 'undefined') {
+                 BadgeManager.checkBadges();
+            }
             
         } catch (error) {
             console.error('❌ Erreur chargement progression:', error);
@@ -193,6 +230,7 @@ class AuthManager {
     updateProgressUI() {
         if (!this.currentUser) return;
 
+        // Assuming userProgress is globally defined
         const completedTDs = Object.values(userProgress).filter(p => p.is_completed).length;
         const totalTDs = 7; // 5 proba + 2 archi
         const progressPercent = (completedTDs / totalTDs) * 100;
@@ -202,13 +240,19 @@ class AuthManager {
         
         if (progressFill && progressText) {
             progressFill.style.width = `${progressPercent}%`;
-            securityManager.safeInnerHTML(progressText, `Votre progression: ${completedTDs}/${totalTDs} TDs complétés`);
+            // Assuming securityManager is globally available
+            if (typeof securityManager !== 'undefined') {
+                securityManager.safeInnerHTML(progressText, `Votre progression: ${completedTDs}/${totalTDs} TDs complétés`);
+            } else {
+                progressText.textContent = `Votre progression: ${completedTDs}/${totalTDs} TDs complétés`;
+            }
         }
     }
 
     updateTDCards() {
         const tdCards = document.querySelectorAll('.td-card:not(.locked-card)');
         
+        // Assuming userProgress is globally defined
         tdCards.forEach(card => {
             const tdNumber = parseInt(card.getAttribute('data-td'));
             const tdType = card.getAttribute('data-type');
@@ -250,7 +294,12 @@ class AuthManager {
             if (!error && count !== null) {
                 const totalUsersElement = document.getElementById('totalUsers');
                 if (totalUsersElement) {
-                    securityManager.safeInnerHTML(totalUsersElement, count.toString());
+                     // Assuming securityManager is globally available
+                    if (typeof securityManager !== 'undefined') {
+                         securityManager.safeInnerHTML(totalUsersElement, count.toString());
+                    } else {
+                         totalUsersElement.textContent = count.toString();
+                    }
                 }
             }
         } catch (error) {
