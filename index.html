@@ -8,7 +8,6 @@
     <!-- CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="telecom" href="telecom.html">
     
     <!-- Supabase JS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -164,7 +163,7 @@
                     </div>
                     <div class="stat-item">
                         <p class="stat-number">100%</p>
-                        <p class="stat-label">Contenu Cible</p>
+                        <p class="stat-label">Contenu Ciblé</p>
                     </div>
                 </div>
             </div>
@@ -199,7 +198,7 @@
                 
                 <div class="td-grid">
                     <!-- TDs Probabilités -->
-                    <div class="td-card" data-td="1" data-type="proba">
+                    <a href="td1.html" class="td-card" data-td="1" data-type="proba">
                         <div class="card-header">
                             <h3>TD1</h3>
                             <span class="difficulty easy">Facile</span>
@@ -207,13 +206,13 @@
                         <p>Probabilités Conditionnelles & Indépendance</p>
                         <div class="card-footer">
                             <span class="time-estimate"><i class="far fa-clock"></i> ~1.5h</span>
-                            <button class="complete-btn" data-td="1" data-type="proba">
+                            <button class="complete-btn" data-td="1" data-type="proba" onclick="event.preventDefault(); event.stopPropagation();">
                                 <i class="far fa-square"></i> Terminer
                             </button>
                         </div>
-                    </div>
+                    </a>
                     
-                    <div class="td-card" data-td="2" data-type="proba">
+                    <a href="td2.html" class="td-card" data-td="2" data-type="proba">
                         <div class="card-header">
                             <h3>TD2</h3>
                             <span class="difficulty medium">Moyen</span>
@@ -221,13 +220,13 @@
                         <p>Variables Aléatoires Discrètes : Binomiale, Poisson...</p>
                         <div class="card-footer">
                             <span class="time-estimate"><i class="far fa-clock"></i> ~2h</span>
-                            <button class="complete-btn" data-td="2" data-type="proba">
+                            <button class="complete-btn" data-td="2" data-type="proba" onclick="event.preventDefault(); event.stopPropagation();">
                                 <i class="far fa-square"></i> Terminer
                             </button>
                         </div>
-                    </div>
+                    </a>
                     
-                    <div class="td-card" data-td="3" data-type="proba">
+                    <a href="td3.html" class="td-card" data-td="3" data-type="proba">
                         <div class="card-header">
                             <h3>TD3</h3>
                             <span class="difficulty medium">Moyen</span>
@@ -235,13 +234,13 @@
                         <p>Variables Aléatoires Continues & Loi Normale</p>
                         <div class="card-footer">
                             <span class="time-estimate"><i class="far fa-clock"></i> ~2h</span>
-                            <button class="complete-btn" data-td="3" data-type="proba">
+                            <button class="complete-btn" data-td="3" data-type="proba" onclick="event.preventDefault(); event.stopPropagation();">
                                 <i class="far fa-square"></i> Terminer
                             </button>
                         </div>
-                    </div>
+                    </a>
                     
-                    <div class="td-card" data-td="4" data-type="proba">
+                    <a href="td4.html" class="td-card" data-td="4" data-type="proba">
                         <div class="card-header">
                             <h3>TD4</h3>
                             <span class="difficulty hard">Difficile</span>
@@ -249,13 +248,13 @@
                         <p>Couples de Variables Aléatoires : Loi Jointe & Marginales</p>
                         <div class="card-footer">
                             <span class="time-estimate"><i class="far fa-clock"></i> ~2.5h</span>
-                            <button class="complete-btn" data-td="4" data-type="proba">
+                            <button class="complete-btn" data-td="4" data-type="proba" onclick="event.preventDefault(); event.stopPropagation();">
                                 <i class="far fa-square"></i> Terminer
                             </button>
                         </div>
-                    </div>
+                    </a>
                     
-                    <div class="td-card" data-td="5" data-type="proba">
+                    <a href="td5.html" class="td-card" data-td="5" data-type="proba">
                         <div class="card-header">
                             <h3>TD5</h3>
                             <span class="difficulty hard">Difficile</span>
@@ -263,11 +262,25 @@
                         <p>Vecteurs Gaussiens & Covariance</p>
                         <div class="card-footer">
                             <span class="time-estimate"><i class="far fa-clock"></i> ~3h</span>
-                            <button class="complete-btn" data-td="5" data-type="proba">
+                            <button class="complete-btn" data-td="5" data-type="proba" onclick="event.preventDefault(); event.stopPropagation();">
                                 <i class="far fa-square"></i> Terminer
                             </button>
                         </div>
-                    </div>
+                    </a>
+                    
+                    <a href="statistique.html" class="td-card" data-td="6" data-type="proba">
+                        <div class="card-header">
+                            <h3>Statistiques</h3>
+                            <span class="difficulty medium">Moyen</span>
+                        </div>
+                        <p>Statistiques descriptives et inférentielles</p>
+                        <div class="card-footer">
+                            <span class="time-estimate"><i class="far fa-clock"></i> ~2h</span>
+                            <button class="complete-btn" data-td="6" data-type="proba" onclick="event.preventDefault(); event.stopPropagation();">
+                                <i class="far fa-square"></i> Terminer
+                            </button>
+                        </div>
+                    </a>
                 </div>
             </section>
 
@@ -279,7 +292,7 @@
                 <p class="section-description">Comprenez le fonctionnement interne des ordinateurs, des portes logiques aux processeurs modernes.</p>
                 
                 <div class="td-grid">
-                    <div class="td-card" data-td="1" data-type="archi">
+                    <a href="archi1.html" class="td-card" data-td="1" data-type="archi">
                         <div class="card-header">
                             <h3>Architecture 1</h3>
                             <span class="difficulty easy">Facile</span>
@@ -287,13 +300,13 @@
                         <p>Portes logiques et algèbre de Boole</p>
                         <div class="card-footer">
                             <span class="time-estimate"><i class="far fa-clock"></i> ~2h</span>
-                            <button class="complete-btn" data-td="1" data-type="archi">
+                            <button class="complete-btn" data-td="1" data-type="archi" onclick="event.preventDefault(); event.stopPropagation();">
                                 <i class="far fa-square"></i> Terminer
                             </button>
                         </div>
-                    </div>
+                    </a>
                     
-                    <div class="td-card" data-td="2" data-type="archi">
+                    <a href="archi2.html" class="td-card" data-td="2" data-type="archi">
                         <div class="card-header">
                             <h3>Architecture 2</h3>
                             <span class="difficulty medium">Moyen</span>
@@ -301,11 +314,11 @@
                         <p>Processeurs et jeux d'instructions</p>
                         <div class="card-footer">
                             <span class="time-estimate"><i class="far fa-clock"></i> ~2.5h</span>
-                            <button class="complete-btn" data-td="2" data-type="archi">
+                            <button class="complete-btn" data-td="2" data-type="archi" onclick="event.preventDefault(); event.stopPropagation();">
                                 <i class="far fa-square"></i> Terminer
                             </button>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </section>
 
@@ -323,7 +336,7 @@
                         </div>
                         <h4>Informatique</h4>
                         <p>Développement logiciel, algorithmique, bases de données</p>
-                        <button class="cta-button" style="margin-top: 15px;">Accéder</button>
+                        <a href="app_info.html" class="cta-button" style="margin-top: 15px; text-decoration: none; display: inline-block;">Accéder</a>
                     </div>
                     
                     <div class="app-card">
@@ -332,7 +345,7 @@
                         </div>
                         <h4>Électronique</h4>
                         <p>Circuits analogiques/numériques, capteurs, systèmes embarqués</p>
-                        <button class="cta-button" style="margin-top: 15px;">Accéder</button>
+                        <a href="app_elec.html" class="cta-button" style="margin-top: 15px; text-decoration: none; display: inline-block;">Accéder</a>
                     </div>
                     
                     <div class="app-card">
@@ -341,7 +354,7 @@
                         </div>
                         <h4>Télécommunications</h4>
                         <p>Réseaux, transmission de données, protocoles de communication</p>
-                        <button href="telecom.html" class="cta-button" style="margin-top: 15px;">Accéder</button>
+                        <a href="telecom.html" class="cta-button" style="margin-top: 15px; text-decoration: none; display: inline-block;">Accéder</a>
                     </div>
                     
                     <div class="app-card">
@@ -350,7 +363,7 @@
                         </div>
                         <h4>Traitement du Signal</h4>
                         <p>Analyse fréquentielle, filtrage, traitement d'images et audio</p>
-                        <button class="cta-button" style="margin-top: 15px;">Accéder</button>
+                        <a href="app_signal.html" class="cta-button" style="margin-top: 15px; text-decoration: none; display: inline-block;">Accéder</a>
                     </div>
                 </div>
             </section>
@@ -454,7 +467,7 @@
                 </div>
                 
                 <div class="footer-bottom">
-                    <p>&copy; 2025 Focus ISEP Révisions. Projet étudiant collaboratif - Seydi.</p>
+                    <p>&copy; 2025 Focus ISEP Révisions. Projet étudiant collaboratif - Seydi</p>
                     <div class="legal-links">
                         <a href="#privacy">Politique de confidentialité</a>
                         <a href="#cgu">Conditions générales</a>
