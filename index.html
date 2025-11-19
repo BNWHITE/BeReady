@@ -4,11 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Focus Révisions ISEP - Excellence Académique</title>
+    
+    <!-- CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
     
     <!-- Supabase JS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- Configuration MathJax -->
+    
+    <!-- MathJax Configuration -->
     <script>
         window.MathJax = {
             tex: {
@@ -19,868 +23,25 @@
             },
             svg: {
                 fontCache: 'global'
+            },
+            security: {
+                allow: {
+                    URLs: 'safe'
+                }
             }
         };
     </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #2c5aa0;
-            --primary-dark: #1e3d72;
-            --secondary: #4CAF50;
-            --accent: #FF6B35;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --gray: #6c757d;
-            --light-gray: #e9ecef;
-            --border-radius: 8px;
-            --shadow: 0 4px 12px rgba(0,0,0,0.1);
-            --transition: all 0.3s ease;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: var(--dark);
-            background-color: var(--light);
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        button {
-            cursor: pointer;
-            border: none;
-            font-family: inherit;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header */
-        .main-header {
-            background: white;
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 25px;
-            align-items: center;
-        }
-
-        .nav-link {
-            font-weight: 500;
-            padding: 8px 0;
-            position: relative;
-            transition: var(--transition);
-            font-size: 0.95rem;
-        }
-
-        .nav-link:hover, .nav-link.active {
-            color: var(--primary);
-        }
-
-        .nav-link.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--primary);
-        }
-
-        .user-section {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .login-btn, .logout-btn {
-            background: var(--primary);
-            color: white;
-            padding: 8px 16px;
-            border-radius: var(--border-radius);
-            font-weight: 500;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .login-btn:hover, .logout-btn:hover {
-            background: var(--primary-dark);
-        }
-
-        .logout-btn {
-            background: var(--gray);
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* Hero Section */
-        .hero-section {
-            padding: 80px 0;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-        }
-
-        .hero-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
-            align-items: center;
-        }
-
-        .tagline {
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-        }
-
-        .hero-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 20px;
-        }
-
-        .hero-description {
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-            opacity: 0.9;
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .cta-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--accent);
-            color: white;
-            padding: 12px 24px;
-            border-radius: var(--border-radius);
-            font-weight: 600;
-            transition: var(--transition);
-        }
-
-        .cta-button:hover {
-            background: #e55a2b;
-            transform: translateY(-2px);
-        }
-
-        .cta-button.secondary {
-            background: transparent;
-            border: 2px solid white;
-        }
-
-        .cta-button.secondary:hover {
-            background: white;
-            color: var(--primary);
-        }
-
-        .hero-image {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .hero-image-placeholder {
-            width: 100%;
-            height: 300px;
-            background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.2) 100%);
-            border-radius: var(--border-radius);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.2rem;
-            color: rgba(255,255,255,0.7);
-        }
-
-        /* Trust Badges */
-        .trust-badges {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 40px;
-            flex-wrap: wrap;
-        }
-
-        .trust-badge {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255,255,255,0.1);
-            padding: 10px 20px;
-            border-radius: var(--border-radius);
-            font-size: 0.9rem;
-        }
-
-        .trust-badge i {
-            color: var(--secondary);
-        }
-
-        /* Stats Bar */
-        .stats-bar {
-            background: white;
-            padding: 40px 0;
-            box-shadow: var(--shadow);
-        }
-
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
-
-        .stat-item {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-
-        .stat-label {
-            color: var(--gray);
-            font-weight: 500;
-        }
-
-        /* Sections */
-        .section {
-            padding: 80px 0;
-        }
-
-        .section-title {
-            font-size: 2rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 15px;
-            color: var(--dark);
-        }
-
-        .section-description {
-            text-align: center;
-            max-width: 700px;
-            margin: 0 auto 40px;
-            color: var(--gray);
-            font-size: 1.1rem;
-        }
-
-        .separator {
-            border: none;
-            height: 1px;
-            background: var(--light-gray);
-            margin: 40px 0;
-        }
-
-        /* Progress Indicator */
-        .progress-indicator {
-            background: var(--light);
-            padding: 20px;
-            border-radius: var(--border-radius);
-            margin-bottom: 30px;
-            display: none;
-        }
-
-        .progress-bar {
-            height: 10px;
-            background: var(--light-gray);
-            border-radius: 5px;
-            margin-bottom: 10px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--secondary);
-            border-radius: 5px;
-            transition: width 0.5s ease;
-        }
-
-        /* TD Grid */
-        .td-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-        }
-
-        .td-card {
-            background: white;
-            border-radius: var(--border-radius);
-            padding: 25px;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            border-left: 4px solid var(--primary);
-            cursor: pointer;
-        }
-
-        .td-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-        }
-
-        .td-card.completed {
-            border-left-color: var(--secondary);
-        }
-
-        .locked-card {
-            opacity: 0.7;
-            background: var(--light-gray);
-            cursor: not-allowed;
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .td-card h3 {
-            font-size: 1.5rem;
-            color: var(--primary);
-        }
-
-        .difficulty {
-            font-size: 0.8rem;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-weight: 600;
-        }
-
-        .difficulty.easy {
-            background: #e8f5e9;
-            color: #2e7d32;
-        }
-
-        .difficulty.medium {
-            background: #fff3e0;
-            color: #ef6c00;
-        }
-
-        .difficulty.hard {
-            background: #ffebee;
-            color: #c62828;
-        }
-
-        .card-footer {
-            margin-top: 20px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.85rem;
-        }
-
-        .completion-badge {
-            color: var(--secondary);
-            font-weight: 600;
-        }
-
-        .time-estimate {
-            color: var(--gray);
-        }
-
-        .locked-badge {
-            color: var(--gray);
-        }
-
-        /* Telecom Features */
-        .telecom-features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin: 40px 0;
-        }
-
-        .feature {
-            text-align: center;
-            padding: 30px 20px;
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-        }
-
-        .feature:hover {
-            transform: translateY(-5px);
-        }
-
-        .feature i {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 20px;
-        }
-
-        .feature h4 {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            color: var(--dark);
-        }
-
-        .secondary-cta {
-            display: block;
-            width: fit-content;
-            margin: 30px auto 0;
-            background: var(--primary);
-        }
-
-        .secondary-cta:hover {
-            background: var(--primary-dark);
-        }
-
-        /* Testimonials */
-        .testimonials {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .testimonial {
-            background: white;
-            padding: 30px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            position: relative;
-        }
-
-        .testimonial::before {
-            content: '"';
-            font-size: 4rem;
-            color: var(--light-gray);
-            position: absolute;
-            top: 10px;
-            left: 20px;
-            line-height: 1;
-        }
-
-        .testimonial-content {
-            margin-bottom: 20px;
-            font-style: italic;
-            position: relative;
-            z-index: 1;
-        }
-
-        .testimonial-author {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-        }
-
-        .testimonial-author strong {
-            color: var(--primary);
-        }
-
-        .testimonial-author span {
-            font-size: 0.9rem;
-            color: var(--gray);
-        }
-
-        /* Newsletter */
-        .newsletter-section {
-            background: var(--light);
-            padding: 60px 0;
-            text-align: center;
-        }
-
-        .newsletter-content {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .newsletter-form {
-            display: flex;
-            gap: 10px;
-            margin: 30px 0 20px;
-        }
-
-        .newsletter-form input {
-            flex: 1;
-            padding: 12px 15px;
-            border: 1px solid var(--light-gray);
-            border-radius: var(--border-radius);
-            font-size: 1rem;
-        }
-
-        .privacy-note {
-            font-size: 0.85rem;
-            color: var(--gray);
-        }
-
-        /* Footer */
-        .main-footer {
-            background: var(--dark);
-            color: white;
-            padding: 40px 0 20px;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 40px;
-            margin-bottom: 30px;
-        }
-
-        .footer-column h4 {
-            color: white;
-            margin-bottom: 20px;
-            font-size: 1.2rem;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 10px;
-        }
-
-        .footer-links a {
-            color: #adb5bd;
-            transition: var(--transition);
-        }
-
-        .footer-links a:hover {
-            color: white;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid #495057;
-            padding-top: 20px;
-            text-align: center;
-            color: #adb5bd;
-            font-size: 0.9rem;
-        }
-
-        .legal-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 10px;
-        }
-
-        .legal-links a {
-            color: #adb5bd;
-            font-size: 0.8rem;
-        }
-
-        .legal-links a:hover {
-            color: white;
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            background-color: white;
-            margin: 5% auto;
-            padding: 30px;
-            border-radius: var(--border-radius);
-            width: 90%;
-            max-width: 500px;
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .close-modal {
-            position: absolute;
-            right: 15px;
-            top: 15px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--gray);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--light-gray);
-            border-radius: var(--border-radius);
-            font-size: 1rem;
-            transition: var(--transition);
-        }
-
-        .form-group input:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.1);
-        }
-
-        .input-help {
-            display: block;
-            margin-top: 5px;
-            font-size: 0.8rem;
-            color: var(--gray);
-        }
-
-        .modal-note {
-            font-size: 0.85rem;
-            color: var(--gray);
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .spinner {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid #ffffff;
-            border-radius: 50%;
-            border-top-color: transparent;
-            animation: spin 1s ease-in-out infinite;
-            margin-left: 8px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Notifications */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 0;
-            border-radius: 8px;
-            z-index: 10000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            max-width: 400px;
-            animation: slideInRight 0.3s ease;
-        }
-
-        .notification.success {
-            background: var(--secondary);
-            color: white;
-        }
-
-        .notification.error {
-            background: #f44336;
-            color: white;
-        }
-
-        .notification.info {
-            background: var(--primary);
-            color: white;
-        }
-
-        .notification-content {
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .notification-close {
-            background: none;
-            border: none;
-            color: inherit;
-            font-size: 1.2rem;
-            cursor: pointer;
-            margin-left: 15px;
-        }
-
-        @keyframes slideInRight {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        @keyframes slideOutRight {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(100%); opacity: 0; }
-        }
-
-        /* Legal Pages */
-        .legal-content {
-            max-width: 800px;
-            margin: 40px auto;
-            background: white;
-            padding: 40px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-        }
-
-        .legal-content h1 {
-            color: var(--primary);
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .legal-content h2 {
-            color: var(--primary-dark);
-            margin: 30px 0 15px;
-            font-size: 1.5rem;
-        }
-
-        .legal-content h3 {
-            color: var(--dark);
-            margin: 20px 0 10px;
-            font-size: 1.2rem;
-        }
-
-        .legal-content p {
-            margin-bottom: 15px;
-            line-height: 1.7;
-        }
-
-        .legal-content ul, .legal-content ol {
-            margin: 15px 0;
-            padding-left: 25px;
-        }
-
-        .legal-content li {
-            margin-bottom: 8px;
-            line-height: 1.6;
-        }
-
-        .highlight-box {
-            background: var(--light);
-            padding: 20px;
-            border-radius: var(--border-radius);
-            border-left: 4px solid var(--primary);
-            margin: 20px 0;
-        }
-
-        /* Responsive */
-        @media (max-width: 992px) {
-            .hero-content {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-            
-            .stats-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr 1fr;
-                gap: 30px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .nav-links {
-                gap: 15px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            .hero-title {
-                font-size: 2rem;
-            }
-            
-            .hero-actions {
-                justify-content: center;
-            }
-            
-            .newsletter-form {
-                flex-direction: column;
-            }
-            
-            .td-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .trust-badges {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .stats-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .testimonials {
-                grid-template-columns: 1fr;
-            }
-            
-            .telecom-features {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .legal-links {
-                flex-direction: column;
-                gap: 10px;
-            }
-        }
-    </style>
+    
+    <!-- CSP Meta Tag -->
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' https://cdn.jsdelivr.net https://eznzfgcwbqcckkvhsdhi.supabase.co;
+        style-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline';
+        font-src 'self' https://cdnjs.cloudflare.com;
+        connect-src 'self' https://eznzfgcwbqcckkvhsdhi.supabase.co;
+        img-src 'self' data: https:;
+    ">
 </head>
 <body>
     <!-- Modal de connexion -->
@@ -897,12 +58,12 @@
             <form id="loginForm">
                 <div class="form-group">
                     <label for="username">Pseudo *</label>
-                    <input type="text" id="username" name="username" required minlength="3">
-                    <small class="input-help">Minimum 3 caractères</small>
+                    <input type="text" id="username" name="username" required minlength="3" maxlength="50" pattern="[a-zA-Z0-9_-]+" title="Lettres, chiffres, tirets et underscores uniquement">
+                    <small class="input-help">3-50 caractères (lettres, chiffres, - _)</small>
                 </div>
                 <div class="form-group">
                     <label for="email">Email *</label>
-                    <input type="email" id="email" name="email" required>
+                    <input type="email" id="email" name="email" required maxlength="255">
                     <small class="input-help">Votre email ISEP de préférence</small>
                 </div>
                 <button type="submit" class="cta-button" id="loginSubmitBtn" style="width: 100%; justify-content: center;">
@@ -922,11 +83,15 @@
                     <nav class="nav-links">
                         <a href="#home" class="nav-link active">Accueil</a>
                         <a href="#proba-tds" class="nav-link">TDs Proba</a>
-                        <a href="#telecom-rev" class="nav-link">Révision Télécom</a>
+                        <a href="#archi-ordi" class="nav-link">Architecture</a>
+                        <a href="#app" class="nav-link">APP</a>
                         <a href="#about" class="nav-link">À Propos</a>
                         <a href="#faq" class="nav-link">FAQ</a>
                     </nav>
                     <div id="userSection" class="user-section">
+                        <button id="themeToggle" class="theme-toggle" title="Changer le thème">
+                            <i class="fas fa-moon"></i>
+                        </button>
                         <button id="loginBtn" class="login-btn">
                             <i class="fas fa-user"></i> Se connecter
                         </button>
@@ -947,7 +112,7 @@
                     <div>
                         <span class="tagline">OPTIMISEZ VOTRE RÉVISION</span>
                         <h1 class="hero-title">Maîtriser les Probabilités et les Réseaux avec Précision</h1>
-                        <p class="hero-description">Accédez à des fiches de révision structurées, des exercices corrigés pas à pas, et un résumé complet des concepts clés en Télécommunications pour une préparation ciblée et efficace.</p>
+                        <p class="hero-description">Accédez à des fiches de révision structurées, des exercices corrigés pas à pas, et un résumé complet des concepts clés pour une préparation ciblée et efficace.</p>
                         <div class="hero-actions">
                             <a href="#proba-tds" class="cta-button">Commencer les TDs Proba →</a>
                             <a href="#newsletter" class="cta-button secondary">Recevoir des fiches gratuites</a>
@@ -993,8 +158,8 @@
                         <p class="stat-label">TDs de Proba</p>
                     </div>
                     <div class="stat-item">
-                        <p class="stat-number">1</p>
-                        <p class="stat-label">Fiche Télécom Complète</p>
+                        <p class="stat-number">4</p>
+                        <p class="stat-label">Modules APP</p>
                     </div>
                     <div class="stat-item">
                         <p class="stat-number">100%</p>
@@ -1005,10 +170,23 @@
         </section>
 
         <div class="container">
+            <!-- Section Badges -->
+            <section id="badges" class="section">
+                <h2 class="section-title">🎖️ Vos Badges de Progression</h2>
+                <p class="section-description">Débloquez des badges en complétant les TDs et modules !</p>
+                
+                <div class="badges-section">
+                    <div class="badges-grid" id="badgesGrid">
+                        <!-- Les badges seront générés dynamiquement -->
+                    </div>
+                </div>
+            </section>
+
             <hr class="separator">
 
+            <!-- Section Probabilités -->
             <section id="proba-tds" class="section">
-                <h2 class="section-title">Modules de Travaux Dirigés (TD) - Probabilités</h2>
+                <h2 class="section-title">📊 Modules de Travaux Dirigés - Probabilités</h2>
                 <p class="section-description">Cliquez sur un module pour accéder à la fiche de révision complète et aux exercices corrigés.</p>
                 
                 <div id="progressIndicator" class="progress-indicator">
@@ -1019,7 +197,8 @@
                 </div>
                 
                 <div class="td-grid">
-                    <div class="td-card" data-td="1">
+                    <!-- TDs Probabilités -->
+                    <div class="td-card" data-td="1" data-type="proba">
                         <div class="card-header">
                             <h3>TD1</h3>
                             <span class="difficulty easy">Facile</span>
@@ -1027,9 +206,13 @@
                         <p>Probabilités Conditionnelles & Indépendance</p>
                         <div class="card-footer">
                             <span class="time-estimate"><i class="far fa-clock"></i> ~1.5h</span>
+                            <button class="complete-btn" data-td="1" data-type="proba">
+                                <i class="far fa-square"></i> Terminer
+                            </button>
                         </div>
                     </div>
-                    <div class="td-card" data-td="2">
+                    
+                    <div class="td-card" data-td="2" data-type="proba">
                         <div class="card-header">
                             <h3>TD2</h3>
                             <span class="difficulty medium">Moyen</span>
@@ -1037,9 +220,13 @@
                         <p>Variables Aléatoires Discrètes : Binomiale, Poisson...</p>
                         <div class="card-footer">
                             <span class="time-estimate"><i class="far fa-clock"></i> ~2h</span>
+                            <button class="complete-btn" data-td="2" data-type="proba">
+                                <i class="far fa-square"></i> Terminer
+                            </button>
                         </div>
                     </div>
-                    <div class="td-card" data-td="3">
+                    
+                    <div class="td-card" data-td="3" data-type="proba">
                         <div class="card-header">
                             <h3>TD3</h3>
                             <span class="difficulty medium">Moyen</span>
@@ -1047,9 +234,13 @@
                         <p>Variables Aléatoires Continues & Loi Normale</p>
                         <div class="card-footer">
                             <span class="time-estimate"><i class="far fa-clock"></i> ~2h</span>
+                            <button class="complete-btn" data-td="3" data-type="proba">
+                                <i class="far fa-square"></i> Terminer
+                            </button>
                         </div>
                     </div>
-                    <div class="td-card" data-td="4">
+                    
+                    <div class="td-card" data-td="4" data-type="proba">
                         <div class="card-header">
                             <h3>TD4</h3>
                             <span class="difficulty hard">Difficile</span>
@@ -1057,9 +248,13 @@
                         <p>Couples de Variables Aléatoires : Loi Jointe & Marginales</p>
                         <div class="card-footer">
                             <span class="time-estimate"><i class="far fa-clock"></i> ~2.5h</span>
+                            <button class="complete-btn" data-td="4" data-type="proba">
+                                <i class="far fa-square"></i> Terminer
+                            </button>
                         </div>
                     </div>
-                    <div class="td-card" data-td="5">
+                    
+                    <div class="td-card" data-td="5" data-type="proba">
                         <div class="card-header">
                             <h3>TD5</h3>
                             <span class="difficulty hard">Difficile</span>
@@ -1067,16 +262,9 @@
                         <p>Vecteurs Gaussiens & Covariance</p>
                         <div class="card-footer">
                             <span class="time-estimate"><i class="far fa-clock"></i> ~3h</span>
-                        </div>
-                    </div>
-                    <div class="td-card locked-card">
-                        <div class="card-header">
-                            <h3>TD6</h3>
-                            <span class="difficulty">À venir</span>
-                        </div>
-                        <p>Estimation et Théorèmes Limites (À venir)</p>
-                        <div class="card-footer">
-                            <span class="locked-badge"><i class="fas fa-lock"></i> Bientôt disponible</span>
+                            <button class="complete-btn" data-td="5" data-type="proba">
+                                <i class="far fa-square"></i> Terminer
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1084,29 +272,86 @@
 
             <hr class="separator">
 
-            <section id="telecom-rev" class="section">
-                <h2 class="section-title">Révision Complète - Télécommunications</h2>
-                <p class="section-description">Synthèse ultra-détaillée des concepts clés : Bilan de Liaison (PIRE, $P_r$), Théorème de Shannon, SINR, Affaiblissement (LTE, Wi-Fi, Fibre).</p>
+            <!-- Section Architecture des Ordinateurs -->
+            <section id="archi-ordi" class="section">
+                <h2 class="section-title">💻 Architecture des Ordinateurs</h2>
+                <p class="section-description">Comprenez le fonctionnement interne des ordinateurs, des portes logiques aux processeurs modernes.</p>
                 
-                <div class="telecom-features">
-                    <div class="feature">
-                        <i class="fas fa-chart-line"></i>
-                        <h4>Bilan de Liaison</h4>
-                        <p>Comprenez PIRE, puissance reçue et calculs d'affaiblissement</p>
+                <div class="td-grid">
+                    <div class="td-card" data-td="1" data-type="archi">
+                        <div class="card-header">
+                            <h3>Architecture 1</h3>
+                            <span class="difficulty easy">Facile</span>
+                        </div>
+                        <p>Portes logiques et algèbre de Boole</p>
+                        <div class="card-footer">
+                            <span class="time-estimate"><i class="far fa-clock"></i> ~2h</span>
+                            <button class="complete-btn" data-td="1" data-type="archi">
+                                <i class="far fa-square"></i> Terminer
+                            </button>
+                        </div>
                     </div>
-                    <div class="feature">
-                        <i class="fas fa-bolt"></i>
-                        <h4>Théorème de Shannon</h4>
-                        <p>Maîtrisez la capacité maximale d'un canal de communication</p>
-                    </div>
-                    <div class="feature">
-                        <i class="fas fa-wifi"></i>
-                        <h4>Technologies Réseau</h4>
-                        <p>LTE, Wi-Fi, Fibre optique et leurs spécificités</p>
+                    
+                    <div class="td-card" data-td="2" data-type="archi">
+                        <div class="card-header">
+                            <h3>Architecture 2</h3>
+                            <span class="difficulty medium">Moyen</span>
+                        </div>
+                        <p>Processeurs et jeux d'instructions</p>
+                        <div class="card-footer">
+                            <span class="time-estimate"><i class="far fa-clock"></i> ~2.5h</span>
+                            <button class="complete-btn" data-td="2" data-type="archi">
+                                <i class="far fa-square"></i> Terminer
+                            </button>
+                        </div>
                     </div>
                 </div>
+            </section>
+
+            <hr class="separator">
+
+            <!-- Section APP -->
+            <section id="app" class="section">
+                <h2 class="section-title">🔬 Apprentissage par Projet (APP)</h2>
+                <p class="section-description">Projets intégrateurs combinant informatique, électronique, télécom et traitement du signal.</p>
                 
-                <a href="telecom.html" class="cta-button secondary-cta">Accéder à la Fiche Télécom Complète →</a>
+                <div class="app-grid">
+                    <div class="app-card">
+                        <div class="app-icon">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <h4>Informatique</h4>
+                        <p>Développement logiciel, algorithmique, bases de données</p>
+                        <button class="cta-button" style="margin-top: 15px;">Accéder</button>
+                    </div>
+                    
+                    <div class="app-card">
+                        <div class="app-icon">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        <h4>Électronique</h4>
+                        <p>Circuits analogiques/numériques, capteurs, systèmes embarqués</p>
+                        <button class="cta-button" style="margin-top: 15px;">Accéder</button>
+                    </div>
+                    
+                    <div class="app-card">
+                        <div class="app-icon">
+                            <i class="fas fa-broadcast-tower"></i>
+                        </div>
+                        <h4>Télécommunications</h4>
+                        <p>Réseaux, transmission de données, protocoles de communication</p>
+                        <button class="cta-button" style="margin-top: 15px;">Accéder</button>
+                    </div>
+                    
+                    <div class="app-card">
+                        <div class="app-icon">
+                            <i class="fas fa-wave-square"></i>
+                        </div>
+                        <h4>Traitement du Signal</h4>
+                        <p>Analyse fréquentielle, filtrage, traitement d'images et audio</p>
+                        <button class="cta-button" style="margin-top: 15px;">Accéder</button>
+                    </div>
+                </div>
             </section>
 
             <hr class="separator">
@@ -1154,7 +399,7 @@
                         
                         <div id="newsletterFormContainer">
                             <form id="newsletterForm" class="newsletter-form">
-                                <input type="email" id="newsletterEmail" placeholder="Votre adresse email" required>
+                                <input type="email" id="newsletterEmail" placeholder="Votre adresse email" required maxlength="255">
                                 <button type="submit" class="cta-button">S'inscrire à la newsletter</button>
                             </form>
                         </div>
@@ -1182,7 +427,8 @@
                         <h4>Ressources</h4>
                         <ul class="footer-links">
                             <li><a href="#proba-tds">TDs Probabilités</a></li>
-                            <li><a href="#telecom-rev">Révision Télécom</a></li>
+                            <li><a href="#archi-ordi">Architecture</a></li>
+                            <li><a href="#app">APP</a></li>
                             <li><a href="#newsletter">Newsletter</a></li>
                         </ul>
                     </div>
@@ -1192,7 +438,7 @@
                         <ul class="footer-links">
                             <li><a href="#faq">FAQ</a></li>
                             <li><a href="#about">À Propos</a></li>
-                            <li><a href="mailto:seydina.sy@eleve.isep.fr">Contact</a></li>
+                            <li><a href="mailto:contact@focus-isep.fr">Contact</a></li>
                         </ul>
                     </div>
                     
@@ -1207,7 +453,7 @@
                 </div>
                 
                 <div class="footer-bottom">
-                    <p>&copy; 2025 Focus ISEP Révisions. Projet étudiant collaboratif - Seydi </p>
+                    <p>&copy; 2025 Focus ISEP Révisions. Projet étudiant collaboratif - Seydi.</p>
                     <div class="legal-links">
                         <a href="#privacy">Politique de confidentialité</a>
                         <a href="#cgu">Conditions générales</a>
@@ -1219,886 +465,14 @@
         </footer>
     </section>
 
-    <!-- Pages légales -->
-    <div id="legalPages" style="display: none;">
-        <!-- À Propos -->
-        <div id="aboutPage" class="legal-content">
-            <h1>À Propos de Focus ISEP</h1>
-            
-            <div class="highlight-box">
-                <h3>🎯 Notre Mission</h3>
-                <p>Focus ISEP est une plateforme collaborative créée par et pour les étudiants de l'ISEP, dans le but de mutualiser les ressources et faciliter la réussite académique.</p>
-            </div>
-
-            <h2>📚 Ce que nous proposons</h2>
-            <ul>
-                <li><strong>TDs de Probabilités complets</strong> avec corrections détaillées</li>
-                <li><strong>Fiches de révision Télécommunications</strong> synthétiques</li>
-                <li><strong>Suivi de progression personnel</strong> pour mesurer vos avancées</li>
-                <li><strong>Contenu 100% ciblé ISEP</strong> adapté à votre cursus</li>
-            </ul>
-
-            <h2>🔒 Notre engagement</h2>
-            <p>Nous nous engageons à :</p>
-            <ul>
-                <li>✅ <strong>Respecter votre vie privée</strong> - Vos données ne seront jamais vendues ou partagées</li>
-                <li>✅ <strong>Utiliser vos données uniquement</strong> pour améliorer votre expérience d'apprentissage</li>
-                <li>✅ <strong>Maintenir la gratuité</strong> de l'accès aux ressources pédagogiques</li>
-                <li>✅ <strong>Fournir un contenu de qualité</strong> vérifié par des étudiants avancés</li>
-            </ul>
-
-            <h2>👥 Qui sommes-nous ?</h2>
-            <p>Focus ISEP est un projet étudiant indépendant, développé par Seydi et d'autres étudiants motivés de l'ISEP. Notre objectif est simple : s'entraider pour réussir ensemble !</p>
-
-            <div class="highlight-box">
-                <h3>💡 Philosophie</h3>
-                <p>"La connaissance n'a de valeur que lorsqu'elle est partagée. Focus ISEP incarne cette vision en créant une communauté d'entraide étudiante solidaire et efficace."</p>
-            </div>
-            
-            <button onclick="LegalPagesManager.hideAll()" class="cta-button" style="margin-top: 30px;">Retour à l'accueil</button>
-        </div>
-
-        <!-- FAQ -->
-        <div id="faqPage" class="legal-content">
-            <h1>Foire Aux Questions</h1>
-
-            <h2>🤔 Questions Générales</h2>
-
-            <h3>Q: Focus ISEP est-il vraiment gratuit ?</h3>
-            <p><strong>R:</strong> Oui, absolument ! L'accès à toutes les ressources est et restera gratuit. C'est un projet étudiant collaboratif, pas une entreprise commerciale.</p>
-
-            <h3>Q: Puis-je contribuer au projet ?</h3>
-            <p><strong>R:</strong> Bien sûr ! Si vous avez des fiches, des corrections ou des ressources à partager, contactez-nous. La force de Focus ISEP, c'est la communauté !</p>
-
-            <h2>🔐 Sécurité et Données</h2>
-
-            <h3>Q: Que faites-vous de mes données ?</h3>
-            <p><strong>R:</strong> Nous stockons uniquement :
-                <ul>
-                    <li>Votre pseudo et email pour votre compte</li>
-                    <li>Votre progression dans les TDs pour votre suivi personnel</li>
-                    <li>Vos préférences de newsletter (si abonné)</li>
-                </ul>
-                <strong>Nous ne vendons, ne partageons ni n'utilisons vos données à des fins commerciales.</strong>
-            </p>
-
-            <h3>Q: Mes données sont-elles sécurisées ?</h3>
-            <p><strong>R:</strong> Oui, nous utilisons Supabase avec un chiffrement de niveau entreprise. Vos données sont stockées en France et protégées par le RGPD.</p>
-
-            <h3>Q: Puis-je supprimer mon compte ?</h3>
-            <p><strong>R:</strong> Oui, envoyez simplement un email à seydina.sy@eleve.isep.fr avec votre demande. Toutes vos données seront supprimées sous 48h.</p>
-
-            <h2>📖 Utilisation de la Plateforme</h2>
-
-            <h3>Q: Comment sont créées les corrections ?</h3>
-            <p><strong>R:</strong> Toutes les corrections sont réalisées par des étudiants ayant validé les matières concernées, puis vérifiées par d'autres étudiants et parfois par des anciens.</p>
-
-            <h3>Q: Puis-je suggérer de nouvelles fonctionnalités ?</h3>
-            <p><strong>R:</strong> Absolument ! Nous sommes toujours à l'écoute de vos suggestions pour améliorer la plateforme.</p>
-
-            <h3>Q: Le contenu est-il officiellement approuvé par l'ISEP ?</h3>
-            <p><strong>R:</strong> Non, Focus ISEP est une initiative étudiante indépendante. Le contenu est créé par des étudiants pour des étudiants.</p>
-            
-            <button onclick="LegalPagesManager.hideAll()" class="cta-button" style="margin-top: 30px;">Retour à l'accueil</button>
-        </div>
-
-        <!-- CGU -->
-        <div id="cguPage" class="legal-content">
-            <h1>Conditions Générales d'Utilisation</h1>
-            <p><em>Dernière mise à jour : 2025</em></p>
-
-            <div class="highlight-box">
-                <h3>⚠️ Attention</h3>
-                <p>Focus ISEP est un <strong>projet étudiant collaboratif et gratuit</strong>. En utilisant cette plateforme, vous acceptez ces conditions simples et transparentes.</p>
-            </div>
-
-            <h2>1. Acceptation des Conditions</h2>
-            <p>L'utilisation de Focus ISEP implique l'acceptation pleine et entière des présentes conditions d'utilisation.</p>
-
-            <h2>2. Description du Service</h2>
-            <p>Focus ISEP met à disposition :</p>
-            <ul>
-                <li>Des ressources pédagogiques pour les étudiants de l'ISEP</li>
-                <li>Un système de suivi de progression personnel</li>
-                <li>Une newsletter optionnelle avec du contenu éducatif</li>
-            </ul>
-
-            <h2>3. Compte Utilisateur</h2>
-            <p>La création d'un compte nécessite :</p>
-            <ul>
-                <li>Un pseudo unique (minimum 3 caractères)</li>
-                <li>Une adresse email valide</li>
-                <li>L'acceptation de notre politique de confidentialité</li>
-            </ul>
-
-            <h2>4. Utilisation Acceptable</h2>
-            <p>Vous vous engagez à :</p>
-            <ul>
-                <li>Utiliser la plateforme à des fins éducatives uniquement</li>
-                <li>Ne pas tenter de perturber le service</li>
-                <li>Respecter les autres utilisateurs</li>
-                <li>Ne pas copier massivement le contenu sans citation</li>
-            </ul>
-
-            <h2>5. Propriété Intellectuelle</h2>
-            <p>Le contenu pédagogique est sous licence Creative Commons BY-NC-SA :</p>
-            <ul>
-                <li>✅ Vous pouvez le partager et l'adapter</li>
-                <li>✅ Vous devez citer Focus ISEP</li>
-                <li>❌ Utilisation commerciale interdite</li>
-                <li>✅ Mêmes conditions pour les adaptations</li>
-            </ul>
-
-            <h2>6. Limitation de Responsabilité</h2>
-            <p>Focus ISEP est un service gratuit fourni "tel quel". Nous ne garantissons pas :</p>
-            <ul>
-                <li>L'exactitude absolue de tous les contenus</li>
-                <li>La disponibilité permanente du service</li>
-                <li>La réussite aux examens (ça dépend de votre travail !)</li>
-            </ul>
-
-            <h2>7. Modification des Conditions</h2>
-            <p>Nous nous engageons à :</p>
-            <ul>
-                <li>Vous informer des modifications importantes</li>
-                <li>Consulter la communauté pour les changements majeurs</li>
-                <li>Garder l'esprit collaboratif et transparent</li>
-            </ul>
-
-            <h2>8. Contact</h2>
-            <p>Pour toute question : <strong>seydina.sy@eleve.isep.fr"></strong></p>
-            
-            <button onclick="LegalPagesManager.hideAll()" class="cta-button" style="margin-top: 30px;">Retour à l'accueil</button>
-        </div>
-
-        <!-- Politique de Confidentialité -->
-        <div id="privacyPage" class="legal-content">
-            <h1>Politique de Confidentialité</h1>
-            <p><em>Vos données sont en sécurité avec nous</em></p>
-
-            <div class="highlight-box">
-                <h3>🔒 Notre Promesse</h3>
-                <p>Nous ne vendons, ne partageons ni n'utilisons vos données à des fins commerciales. Vos informations servent uniquement à améliorer votre expérience d'apprentissage.</p>
-            </div>
-
-            <h2>1. Données Collectées</h2>
-            <p>Nous collectons le strict nécessaire :</p>
-            <ul>
-                <li><strong>Données de compte :</strong> Pseudo, email, date d'inscription</li>
-                <li><strong>Progression :</strong> TDs complétés, scores, temps passé</li>
-                <li><strong>Newsletter :</strong> Préférences d'abonnement (optionnel)</li>
-                <li><strong>Techniques :</strong> Adresse IP, navigateur (pour la sécurité)</li>
-            </ul>
-
-            <h2>2. Utilisation des Données</h2>
-            <p>Vos données servent uniquement à :</p>
-            <ul>
-                <li>✅ Vous connecter à votre compte</li>
-                <li>✅ Sauvegarder votre progression</li>
-                <li>✅ Vous envoyer des notifications de progression</li>
-                <li>✅ Vous envoyer la newsletter (si abonné)</li>
-                <li>✅ Améliorer la plateforme (statistiques anonymes)</li>
-            </ul>
-
-            <p><strong>Ce que nous ne faisons PAS :</strong></p>
-            <ul>
-                <li>❌ Vendre ou louer vos données</li>
-                <li>❌ Partager avec des tiers commerciaux</li>
-                <li>❌ Utiliser pour du marketing externe</li>
-                <li>❌ Analyser votre comportement à des fins commerciales</li>
-            </ul>
-
-            <h2>3. Protection des Données</h2>
-            <p>Nous utilisons :</p>
-            <ul>
-                <li>Supabase (hébergement sécurisé en UE)</li>
-                <li>Chiffrement des données en transit et au repos</li>
-                <li>Authentification sécurisée</li>
-                <li>Sauvegardes régulières</li>
-            </ul>
-
-            <h2>4. Vos Droits</h2>
-            <p>Conformément au RGPD, vous avez droit à :</p>
-            <ul>
-                <li>📋 Accès à vos données personnelles</li>
-                <li>✏️ Rectification des données inexactes</li>
-                <li>🗑️ Suppression de votre compte et données</li>
-                <li>📤 Portabilité de vos données</li>
-                <li>🚫 Opposition au traitement</li>
-            </ul>
-
-            <h2>5. Conservation des Données</h2>
-            <p>Nous conservons vos données :</p>
-            <ul>
-                <li>Compte actif : Tant que vous utilisez la plateforme</li>
-                <li>Compte inactif : 2 ans puis suppression</li>
-                <li>Données de progression : Conservées avec votre compte</li>
-            </ul>
-
-            <h2>6. Cookies</h2>
-            <p>Nous utilisons uniquement des cookies techniques essentiels :</p>
-            <ul>
-                <li>Session de connexion</li>
-                <li>Préférences d'interface</li>
-                <li>Aucun cookie de tracking publicitaire</li>
-            </ul>
-
-            <h2>7. Contact DPO</h2>
-            <p>Pour exercer vos droits : <strong>seydina.sy@eleve.isep.fr</strong></p>
-            <p>Nous nous engageons à répondre sous 72h.</p>
-            
-            <button onclick="LegalPagesManager.hideAll()" class="cta-button" style="margin-top: 30px;">Retour à l'accueil</button>
-        </div>
-    </div>
-
-    <script>
-        // Configuration Supabase
-        const SUPABASE_URL = 'https://eznzfgcwbqcckkvhsdhi.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_6WhkWn3e1Gdy8DTnkLmjMA_O10roVtv';
-        
-        // Initialisation Supabase
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        
-        // Gestion de l'état utilisateur
-        let currentUser = null;
-        let userProgress = {};
-
-        // Gestion des pages légales
-        class LegalPagesManager {
-            static showPage(pageId) {
-                // Cacher la page principale
-                document.getElementById('home').style.display = 'none';
-                
-                // Afficher la page légale demandée
-                const page = document.getElementById(pageId);
-                if (page) {
-                    page.style.display = 'block';
-                    document.getElementById('legalPages').style.display = 'block';
-                    
-                    // Scroll vers le haut
-                    window.scrollTo(0, 0);
-                }
-            }
-            
-            static hideAll() {
-                document.getElementById('legalPages').style.display = 'none';
-                document.getElementById('home').style.display = 'block';
-                
-                // Cacher toutes les pages légales
-                document.querySelectorAll('#legalPages > div').forEach(page => {
-                    page.style.display = 'none';
-                });
-            }
-        }
-
-        // Gestion de l'authentification
-        class AuthManager {
-            constructor() {
-                this.currentUser = null;
-                this.init();
-            }
-
-            async init() {
-                console.log('🔧 Initialisation AuthManager avec Supabase...');
-                
-                // Vérifier si l'utilisateur est déjà connecté
-                const savedUser = localStorage.getItem('focusUser');
-                if (savedUser) {
-                    try {
-                        this.currentUser = JSON.parse(savedUser);
-                        this.updateUI();
-                        await this.loadUserProgress();
-                        await this.updateStats();
-                    } catch (e) {
-                        console.error('Erreur parsing saved user:', e);
-                        localStorage.removeItem('focusUser');
-                    }
-                }
-                
-                await this.updateStats();
-            }
-
-            async login(username, email) {
-                const submitBtn = document.getElementById('loginSubmitBtn');
-                const btnText = document.getElementById('loginBtnText');
-                const spinner = document.getElementById('loginSpinner');
-                
-                // Afficher le spinner
-                btnText.textContent = 'Connexion...';
-                spinner.style.display = 'inline-block';
-                submitBtn.disabled = true;
-
-                try {
-                    console.log('🔐 Tentative de connexion:', { username, email });
-
-                    // Vérifier d'abord si l'utilisateur existe
-                    const { data: existingUser, error: checkError } = await supabase
-                        .from('users')
-                        .select('*')
-                        .or(`username.eq.${username},email.eq.${email}`)
-                        .maybeSingle();
-
-                    let user;
-                    
-                    if (existingUser) {
-                        // Utilisateur existant
-                        console.log('👤 Utilisateur existant trouvé');
-                        user = existingUser;
-                        
-                        // Mettre à jour last_login
-                        const { error: updateError } = await supabase
-                            .from('users')
-                            .update({ last_login: new Date().toISOString() })
-                            .eq('id', user.id);
-                            
-                        if (updateError) {
-                            console.warn('⚠️ Erreur mise à jour last_login:', updateError);
-                        }
-                    } else {
-                        // Nouvel utilisateur - création
-                        console.log('🆕 Création nouvel utilisateur');
-                        const { data: newUser, error: insertError } = await supabase
-                            .from('users')
-                            .insert([{ 
-                                username, 
-                                email,
-                                created_at: new Date().toISOString(),
-                                last_login: new Date().toISOString()
-                            }])
-                            .select()
-                            .single();
-                        
-                        if (insertError) {
-                            console.error('❌ Erreur création utilisateur:', insertError);
-                            throw insertError;
-                        }
-                        user = newUser;
-                        console.log('✅ Nouvel utilisateur créé:', user);
-                    }
-
-                    this.currentUser = user;
-                    localStorage.setItem('focusUser', JSON.stringify(user));
-                    this.updateUI();
-                    await this.loadUserProgress();
-                    await this.updateStats();
-                    
-                    return { success: true, user };
-                    
-                } catch (error) {
-                    console.error('❌ Erreur de connexion:', error);
-                    
-                    let errorMessage = 'Erreur de connexion';
-                    
-                    if (error.code === '23505') {
-                        errorMessage = 'Ce pseudo ou email est déjà utilisé';
-                    } else if (error.message.includes('JWT')) {
-                        errorMessage = 'Erreur de configuration Supabase';
-                    } else if (error.message.includes('relation "users" does not exist')) {
-                        errorMessage = 'Base de données non configurée. Contactez l\'administrateur.';
-                    } else {
-                        errorMessage = error.message || 'Erreur inconnue';
-                    }
-                    
-                    return { success: false, error: errorMessage };
-                } finally {
-                    btnText.textContent = 'Se connecter / S\'inscrire';
-                    spinner.style.display = 'none';
-                    submitBtn.disabled = false;
-                }
-            }
-
-            logout() {
-                this.currentUser = null;
-                localStorage.removeItem('focusUser');
-                this.updateUI();
-                userProgress = {};
-                this.updateProgressUI();
-                this.updateStats();
-                showNotification('👋 Déconnexion réussie', 'info');
-            }
-
-            updateUI() {
-                const loginBtn = document.getElementById('loginBtn');
-                const userInfo = document.getElementById('userInfo');
-                const userGreeting = document.getElementById('userGreeting');
-                const progressIndicator = document.getElementById('progressIndicator');
-
-                if (this.currentUser) {
-                    loginBtn.style.display = 'none';
-                    userInfo.style.display = 'flex';
-                    userGreeting.textContent = `Bonjour, ${this.currentUser.username}`;
-                    if (progressIndicator) progressIndicator.style.display = 'block';
-                } else {
-                    loginBtn.style.display = 'block';
-                    userInfo.style.display = 'none';
-                    if (progressIndicator) progressIndicator.style.display = 'none';
-                }
-            }
-
-            async loadUserProgress() {
-                if (!this.currentUser) return;
-
-                try {
-                    console.log('📊 Chargement progression pour:', this.currentUser.id);
-                    const { data, error } = await supabase
-                        .from('td_progress')
-                        .select('*')
-                        .eq('user_id', this.currentUser.id);
-
-                    if (error) {
-                        if (error.message.includes('relation "td_progress" does not exist')) {
-                            console.warn('⚠️ Table td_progress non trouvée');
-                            return;
-                        }
-                        throw error;
-                    }
-
-                    userProgress = {};
-                    if (data) {
-                        data.forEach(progress => {
-                            userProgress[progress.td_number] = progress;
-                        });
-                    }
-
-                    console.log('✅ Progression chargée:', userProgress);
-                    this.updateProgressUI();
-                    this.updateTDCards();
-                    
-                } catch (error) {
-                    console.error('❌ Erreur chargement progression:', error);
-                }
-            }
-
-            updateProgressUI() {
-                if (!this.currentUser) return;
-
-                const completedTDs = Object.values(userProgress).filter(p => p.is_completed).length;
-                const totalTDs = 5;
-                const progressPercent = (completedTDs / totalTDs) * 100;
-
-                const progressFill = document.getElementById('progressFill');
-                const progressText = document.getElementById('progressText');
-                
-                if (progressFill && progressText) {
-                    progressFill.style.width = `${progressPercent}%`;
-                    progressText.textContent = `Votre progression: ${completedTDs}/${totalTDs} TDs complétés`;
-                }
-            }
-
-            updateTDCards() {
-                const tdCards = document.querySelectorAll('.td-card:not(.locked-card)');
-                
-                tdCards.forEach(card => {
-                    const tdNumber = parseInt(card.getAttribute('data-td'));
-                    if (!tdNumber) return;
-                    
-                    const progress = userProgress[tdNumber];
-                    
-                    if (progress && progress.is_completed) {
-                        card.classList.add('completed');
-                        let footer = card.querySelector('.card-footer');
-                        if (!footer) {
-                            footer = document.createElement('div');
-                            footer.className = 'card-footer';
-                            card.appendChild(footer);
-                        }
-                        footer.innerHTML = `<span class="completion-badge"><i class="fas fa-check"></i> Complété</span>`;
-                    }
-                });
-            }
-
-            async updateStats() {
-                try {
-                    const { count, error } = await supabase
-                        .from('users')
-                        .select('*', { count: 'exact', head: true });
-
-                    if (error) {
-                        if (error.message.includes('relation "users" does not exist')) {
-                            console.warn('⚠️ Table users non trouvée pour les stats');
-                            return;
-                        }
-                        throw error;
-                    }
-
-                    if (!error && count !== null) {
-                        const totalUsersElement = document.getElementById('totalUsers');
-                        if (totalUsersElement) {
-                            totalUsersElement.textContent = count;
-                        }
-                    }
-                } catch (error) {
-                    console.error('❌ Erreur mise à jour stats:', error);
-                }
-            }
-
-            isLoggedIn() {
-                return this.currentUser !== null;
-            }
-        }
-
-        // Gestion de la progression
-        class ProgressManager {
-            static async markTDCompleted(tdNumber, score = null, timeSpent = null) {
-                if (!authManager.currentUser) {
-                    showNotification('🔐 Veuillez vous connecter pour enregistrer votre progression.', 'info');
-                    return false;
-                }
-
-                try {
-                    const progressData = {
-                        user_id: authManager.currentUser.id,
-                        td_number: tdNumber,
-                        is_completed: true,
-                        completed_at: new Date().toISOString(),
-                        score: score,
-                        time_spent: timeSpent,
-                        last_accessed: new Date().toISOString()
-                    };
-
-                    console.log('💾 Sauvegarde progression:', progressData);
-
-                    const { data, error } = await supabase
-                        .from('td_progress')
-                        .upsert(progressData, { onConflict: 'user_id,td_number' })
-                        .select()
-                        .single();
-
-                    if (error) throw error;
-
-                    userProgress[tdNumber] = data;
-                    authManager.updateProgressUI();
-                    authManager.updateTDCards();
-                    
-                    showNotification('✅ Progression sauvegardée !', 'success');
-                    return true;
-                    
-                } catch (error) {
-                    console.error('❌ Erreur sauvegarde progression:', error);
-                    showNotification('❌ Erreur sauvegarde progression', 'error');
-                    return false;
-                }
-            }
-
-            static async updateLastAccessed(tdNumber) {
-                if (!authManager.currentUser) return;
-
-                try {
-                    await supabase
-                        .from('td_progress')
-                        .upsert({
-                            user_id: authManager.currentUser.id,
-                            td_number: tdNumber,
-                            last_accessed: new Date().toISOString()
-                        }, { onConflict: 'user_id,td_number' });
-                        
-                } catch (error) {
-                    console.error('❌ Erreur mise à jour accès:', error);
-                }
-            }
-        }
-
-        // Gestion newsletter
-        class NewsletterManager {
-            static async subscribe(email, userId = null) {
-                try {
-                    const { data: existing, error: checkError } = await supabase
-                        .from('newsletter_subscriptions')
-                        .select('*')
-                        .eq('email', email)
-                        .eq('is_active', true)
-                        .single();
-
-                    if (existing) {
-                        return { success: false, error: 'Vous êtes déjà inscrit à la newsletter' };
-                    }
-
-                    const subscriptionData = {
-                        email: email,
-                        user_id: userId,
-                        subscribed_at: new Date().toISOString(),
-                        is_active: true
-                    };
-
-                    console.log('📧 Inscription newsletter:', subscriptionData);
-
-                    const { data, error } = await supabase
-                        .from('newsletter_subscriptions')
-                        .insert([subscriptionData])
-                        .select()
-                        .single();
-
-                    if (error) throw error;
-                    
-                    console.log('✅ Inscription newsletter réussie');
-                    return { success: true, data };
-                    
-                } catch (error) {
-                    console.error('❌ Erreur inscription newsletter:', error);
-                    return { success: false, error: error.message };
-                }
-            }
-        }
-
-        // Initialisation
-        const authManager = new AuthManager();
-
-        // Fonction utilitaire pour les notifications
-        function showNotification(message, type = 'info') {
-            // Supprimer les notifications existantes
-            document.querySelectorAll('.notification').forEach(n => n.remove());
-
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            notification.innerHTML = `
-                <div class="notification-content">
-                    <span class="notification-message">${message}</span>
-                    <button class="notification-close">&times;</button>
-                </div>
-            `;
-
-            // Appliquer les styles
-            Object.assign(notification.style, {
-                position: 'fixed',
-                top: '20px',
-                right: '20px',
-                padding: '0',
-                borderRadius: '8px',
-                zIndex: '10000',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                maxWidth: '400px',
-                animation: 'slideInRight 0.3s ease'
-            });
-
-            // Couleurs selon le type
-            const colors = {
-                success: { bg: '#4CAF50', text: '#fff' },
-                error: { bg: '#f44336', text: '#fff' },
-                info: { bg: '#2196F3', text: '#fff' }
-            };
-
-            const color = colors[type] || colors.info;
-            notification.style.background = color.bg;
-            notification.style.color = color.text;
-
-            document.body.appendChild(notification);
-
-            // Bouton de fermeture
-            notification.querySelector('.notification-close').addEventListener('click', function() {
-                notification.remove();
-            });
-
-            // Fermeture automatique
-            setTimeout(function() {
-                if (notification.parentNode) {
-                    notification.style.animation = 'slideOutRight 0.3s ease';
-                    setTimeout(function() {
-                        if (notification.parentNode) {
-                            notification.remove();
-                        }
-                    }, 300);
-                }
-            }, 4000);
-        }
-
-        // Événements DOM
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Initialisation de Focus ISEP...');
-
-            // Modal de connexion
-            const loginModal = document.getElementById('loginModal');
-            const loginBtn = document.getElementById('loginBtn');
-            const logoutBtn = document.getElementById('logoutBtn');
-            const closeModal = document.querySelector('.close-modal');
-            const loginForm = document.getElementById('loginForm');
-
-            // Gestion du modal de connexion
-            if (loginBtn) {
-                loginBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    console.log('🎯 Bouton connexion cliqué');
-                    loginModal.style.display = 'block';
-                });
-            }
-
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    authManager.logout();
-                });
-            }
-            
-            if (closeModal) {
-                closeModal.addEventListener('click', function() {
-                    loginModal.style.display = 'none';
-                });
-            }
-
-            // Fermer modal en cliquant à l'extérieur
-            window.addEventListener('click', function(e) {
-                if (e.target === loginModal) {
-                    loginModal.style.display = 'none';
-                }
-            });
-
-            // Connexion
-            if (loginForm) {
-                loginForm.addEventListener('submit', async function(e) {
-                    e.preventDefault();
-                    const username = document.getElementById('username').value.trim();
-                    const email = document.getElementById('email').value.trim();
-
-                    if (username.length < 3) {
-                        showNotification('❌ Le pseudo doit faire au moins 3 caractères', 'error');
-                        return;
-                    }
-
-                    const result = await authManager.login(username, email);
-                    
-                    if (result.success) {
-                        loginModal.style.display = 'none';
-                        loginForm.reset();
-                        showNotification(`🎉 Bienvenue ${username} !`, 'success');
-                    } else {
-                        showNotification('❌ ' + result.error, 'error');
-                    }
-                });
-            }
-
-            // Newsletter
-            const newsletterForm = document.getElementById('newsletterForm');
-            if (newsletterForm) {
-                newsletterForm.addEventListener('submit', async function(e) {
-                    e.preventDefault();
-                    const email = document.getElementById('newsletterEmail').value.trim();
-                    
-                    const result = await NewsletterManager.subscribe(email, authManager.currentUser?.id);
-                    
-                    if (result.success) {
-                        showNotification('✅ Inscription à la newsletter réussie !', 'success');
-                        newsletterForm.reset();
-                    } else {
-                        showNotification('❌ ' + result.error, 'error');
-                    }
-                });
-            }
-
-            // Gestion des clics sur les TDs
-            document.querySelectorAll('.td-card:not(.locked-card)').forEach(card => {
-                card.addEventListener('click', async function(e) {
-                    e.preventDefault();
-                    const tdNumber = parseInt(this.getAttribute('data-td'));
-                    console.log('🎯 Clic sur TD:', tdNumber);
-                    
-                    if (!authManager.isLoggedIn()) {
-                        showNotification('🔐 Veuillez vous connecter pour accéder aux TDs', 'info');
-                        loginModal.style.display = 'block';
-                        return;
-                    }
-
-                    // Mettre à jour le dernier accès
-                    await ProgressManager.updateLastAccessed(tdNumber);
-                    
-                    // Rediriger vers la page du TD
-                    const tdPages = {
-                        1: 'td1.html',
-                        2: 'td2.html',
-                        3: 'td3.html',
-                        4: 'td4.html',
-                        5: 'td5.html'
-                    };
-                    
-                    const tdPage = tdPages[tdNumber];
-                    if (tdPage) {
-                        console.log('🔗 Redirection vers:', tdPage);
-                        window.location.href = tdPage;
-                    } else {
-                        showNotification('❌ Page TD non trouvée', 'error');
-                    }
-                });
-            });
-
-            // Gestion des pages légales
-            document.querySelectorAll('a[href^="#"]').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    const target = this.getAttribute('href').substring(1);
-                    
-                    if (['about', 'faq', 'cgu', 'privacy'].includes(target)) {
-                        e.preventDefault();
-                        LegalPagesManager.showPage(target + 'Page');
-                    }
-                });
-            });
-
-            // Navigation smooth scroll
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    const href = this.getAttribute('href');
-                    if (href === '#home' || href === '#proba-tds' || href === '#telecom-rev' || href === '#newsletter') {
-                        e.preventDefault();
-                        const target = document.querySelector(href);
-                        if (target) {
-                            target.scrollIntoView({
-                                behavior: 'smooth',
-                                block: 'start'
-                            });
-                        }
-                    }
-                });
-            });
-
-            console.log('✅ Focus ISEP initialisé avec succès!');
-        });
-
-        // Animation CSS pour les notifications
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideInRight {
-                from { transform: translateX(100%); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
-            }
-            
-            @keyframes slideOutRight {
-                from { transform: translateX(0); opacity: 1; }
-                to { transform: translateX(100%); opacity: 0; }
-            }
-            
-            .notification-content {
-                padding: 15px 20px;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-            }
-            
-            .notification-close {
-                background: none;
-                border: none;
-                color: inherit;
-                font-size: 1.2rem;
-                cursor: pointer;
-                margin-left: 15px;
-            }
-            
-            .notification-message {
-                flex: 1;
-            }
-            
-            .spinner {
-                display: inline-block;
-                width: 16px;
-                height: 16px;
-                border: 2px solid #ffffff;
-                border-radius: 50%;
-                border-top-color: transparent;
-                animation: spin 1s ease-in-out infinite;
-                margin-left: 8px;
-            }
-            
-            @keyframes spin {
-                to { transform: rotate(360deg); }
-            }
-        `;
-        document.head.appendChild(style);
-    </script>
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/security.js"></script>
+    <script src="js/theme-manager.js"></script>
+    <script src="js/auth-manager.js"></script>
+    <script src="js/progress-manager.js"></script>
+    <script src="js/badge-manager.js"></script>
+    <script src="js/legal-pages.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
