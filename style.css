@@ -1027,4 +1027,24 @@ button {
         flex-direction: column;
         gap: 10px;
     }
+    /* Style spécifique pour le bouton d'accès */
+    .complete-btn {
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: var(--border-radius);
+        font-weight: 500;
+        transition: var(--transition);
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        text-decoration: none;
+    }
+    
+    .complete-btn:hover {
+        background: var(--primary-dark);
+        transform: scale(1.05);
+        color: white;
+    }
 }
