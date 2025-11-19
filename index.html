@@ -1011,7 +1011,18 @@
     </section>
 
     <script>
-        // Gestion de l'authentification
+        // Configuration Supabase
+        const SUPABASE_URL = 'https://eznzfgcwbqcckkvhsdhi.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV6bnpmZ2N3YnFjY2trdmhzZGhpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ5Mjg2MTksImV4cCI6MjA1MDUwNDYxOX0.6WhkWn3e1Gdy8DTnkLmjMA_O10roVtv';
+        
+        // Initialisation Supabase
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        // Gestion de l'état utilisateur
+        let currentUser = null;
+        let userProgress = {};
+
+        // Gestion de l'authentification - VERSION CORRIGÉE
         class AuthManager {
             constructor() {
                 this.currentUser = null;
@@ -1021,12 +1032,19 @@
             async init() {
                 console.log('🔧 Initialisation AuthManager avec Supabase...');
                 
-                // Vérifier la connexion Supabase
-                const { data, error } = await supabase.from('users').select('count', { count: 'exact', head: true });
-                if (error) {
-                    console.error('❌ Erreur connexion Supabase:', error);
-                } else {
-                    console.log('✅ Connexion Supabase réussie!');
+                // Test de connexion à Supabase
+                try {
+                    const { data, error } = await supabase.from('users').select('count', { count: 'exact', head: true });
+                    if (error) {
+                        console.error('❌ Erreur connexion Supabase:', error);
+                        if (error.message.includes('relation "users" does not exist')) {
+                            console.error('⚠️ La table "users" n\'existe pas. Créez-la d\'abord dans Supabase.');
+                        }
+                    } else {
+                        console.log('✅ Connexion Supabase réussie!');
+                    }
+                } catch (error) {
+                    console.error('❌ Erreur lors du test de connexion:', error);
                 }
 
                 // Vérifier si l'utilisateur est déjà connecté
@@ -1054,13 +1072,13 @@
                 try {
                     console.log('🔐 Tentative de connexion:', { username, email });
 
-                    // Vérifier si l'utilisateur existe
+                    // Vérifier d'abord si l'utilisateur existe
                     const { data: existingUser, error: checkError } = await supabase
                         .from('users')
                         .select('*')
                         .eq('username', username)
                         .eq('email', email)
-                        .single();
+                        .maybeSingle(); // Utiliser maybeSingle au lieu de single
 
                     let user;
                     
@@ -1068,12 +1086,15 @@
                         // Utilisateur existant - mise à jour last_login
                         console.log('👤 Utilisateur existant trouvé');
                         user = existingUser;
+                        
                         const { error: updateError } = await supabase
                             .from('users')
                             .update({ last_login: new Date().toISOString() })
                             .eq('id', user.id);
                             
-                        if (updateError) throw updateError;
+                        if (updateError) {
+                            console.warn('⚠️ Erreur mise à jour last_login:', updateError);
+                        }
                     } else {
                         // Nouvel utilisateur - création
                         console.log('🆕 Création nouvel utilisateur');
@@ -1082,17 +1103,36 @@
                             .insert([{ 
                                 username, 
                                 email,
-                                created_at: new Date().toISOString()
+                                created_at: new Date().toISOString(),
+                                last_login: new Date().toISOString()
                             }])
                             .select()
                             .single();
                         
                         if (insertError) {
                             console.error('❌ Erreur création utilisateur:', insertError);
-                            throw insertError;
+                            
+                            // Si c'est une erreur de contrainte unique, essayer de récupérer l'utilisateur existant
+                            if (insertError.code === '23505') {
+                                const { data: existingUserByEmail } = await supabase
+                                    .from('users')
+                                    .select('*')
+                                    .eq('email', email)
+                                    .single();
+                                
+                                if (existingUserByEmail) {
+                                    user = existingUserByEmail;
+                                    console.log('✅ Utilisateur récupéré par email:', user);
+                                } else {
+                                    throw new Error('Ce pseudo ou email est déjà utilisé');
+                                }
+                            } else {
+                                throw insertError;
+                            }
+                        } else {
+                            user = newUser;
+                            console.log('✅ Nouvel utilisateur créé:', user);
                         }
-                        user = newUser;
-                        console.log('✅ Nouvel utilisateur créé:', user);
                     }
 
                     this.currentUser = user;
@@ -1107,10 +1147,15 @@
                     console.error('❌ Erreur de connexion:', error);
                     
                     let errorMessage = 'Erreur de connexion';
-                    if (error.code === '23505') {
+                    
+                    if (error.message.includes('23505')) {
                         errorMessage = 'Ce pseudo ou email est déjà utilisé';
                     } else if (error.message.includes('JWT')) {
                         errorMessage = 'Erreur de configuration Supabase';
+                    } else if (error.message.includes('relation "users" does not exist')) {
+                        errorMessage = 'Base de données non configurée. Contactez l\'administrateur.';
+                    } else {
+                        errorMessage = error.message || 'Erreur inconnue';
                     }
                     
                     return { success: false, error: errorMessage };
@@ -1159,12 +1204,20 @@
                         .select('*')
                         .eq('user_id', this.currentUser.id);
 
-                    if (error) throw error;
+                    if (error) {
+                        if (error.message.includes('relation "td_progress" does not exist')) {
+                            console.warn('⚠️ Table td_progress non trouvée');
+                            return;
+                        }
+                        throw error;
+                    }
 
                     userProgress = {};
-                    data.forEach(progress => {
-                        userProgress[progress.td_number] = progress;
-                    });
+                    if (data) {
+                        data.forEach(progress => {
+                            userProgress[progress.td_number] = progress;
+                        });
+                    }
 
                     console.log('✅ Progression chargée:', userProgress);
                     this.updateProgressUI();
@@ -1227,6 +1280,14 @@
                         .from('users')
                         .select('*', { count: 'exact', head: true });
 
+                    if (error) {
+                        if (error.message.includes('relation "users" does not exist')) {
+                            console.warn('⚠️ Table users non trouvée pour les stats');
+                            return;
+                        }
+                        throw error;
+                    }
+
                     if (!error && count !== null) {
                         const totalUsersElement = document.getElementById('totalUsers');
                         if (totalUsersElement) {
@@ -1235,109 +1296,6 @@
                     }
                 } catch (error) {
                     console.error('❌ Erreur mise à jour stats:', error);
-                }
-            }
-        }
-
-        // Gestion de la progression
-        class ProgressManager {
-            static async markTDCompleted(tdNumber, score = null, timeSpent = null) {
-                if (!authManager.currentUser) {
-                    showNotification('🔐 Veuillez vous connecter pour enregistrer votre progression.', 'info');
-                    return false;
-                }
-
-                try {
-                    const progressData = {
-                        user_id: authManager.currentUser.id,
-                        td_number: tdNumber,
-                        is_completed: true,
-                        completed_at: new Date().toISOString(),
-                        score: score,
-                        time_spent: timeSpent,
-                        last_accessed: new Date().toISOString()
-                    };
-
-                    console.log('💾 Sauvegarde progression:', progressData);
-
-                    const { data, error } = await supabase
-                        .from('td_progress')
-                        .upsert(progressData, { onConflict: 'user_id,td_number' })
-                        .select()
-                        .single();
-
-                    if (error) throw error;
-
-                    userProgress[tdNumber] = data;
-                    authManager.updateProgressUI();
-                    authManager.updateTDCards();
-                    
-                    showNotification('✅ Progression sauvegardée !', 'success');
-                    return true;
-                    
-                } catch (error) {
-                    console.error('❌ Erreur sauvegarde progression:', error);
-                    showNotification('❌ Erreur sauvegarde progression', 'error');
-                    return false;
-                }
-            }
-
-            static async updateLastAccessed(tdNumber) {
-                if (!authManager.currentUser) return;
-
-                try {
-                    await supabase
-                        .from('td_progress')
-                        .upsert({
-                            user_id: authManager.currentUser.id,
-                            td_number: tdNumber,
-                            last_accessed: new Date().toISOString()
-                        }, { onConflict: 'user_id,td_number' });
-                        
-                } catch (error) {
-                    console.error('❌ Erreur mise à jour accès:', error);
-                }
-            }
-        }
-
-        // Gestion newsletter
-        class NewsletterManager {
-            static async subscribe(email, userId = null) {
-                try {
-                    const { data: existing, error: checkError } = await supabase
-                        .from('newsletter_subscriptions')
-                        .select('*')
-                        .eq('email', email)
-                        .eq('is_active', true)
-                        .single();
-
-                    if (existing) {
-                        return { success: false, error: 'Vous êtes déjà inscrit à la newsletter' };
-                    }
-
-                    const subscriptionData = {
-                        email: email,
-                        user_id: userId,
-                        subscribed_at: new Date().toISOString(),
-                        is_active: true
-                    };
-
-                    console.log('📧 Inscription newsletter:', subscriptionData);
-
-                    const { data, error } = await supabase
-                        .from('newsletter_subscriptions')
-                        .insert([subscriptionData])
-                        .select()
-                        .single();
-
-                    if (error) throw error;
-                    
-                    console.log('✅ Inscription newsletter réussie');
-                    return { success: true, data };
-                    
-                } catch (error) {
-                    console.error('❌ Erreur inscription newsletter:', error);
-                    return { success: false, error: error.message };
                 }
             }
         }
@@ -1390,61 +1348,7 @@
                 }
             });
 
-            // Newsletter
-            const newsletterForm = document.getElementById('newsletterForm');
-            if (newsletterForm) {
-                newsletterForm.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const email = document.getElementById('newsletterEmail').value.trim();
-                    
-                    const result = await NewsletterManager.subscribe(email, authManager.currentUser?.id);
-                    
-                    if (result.success) {
-                        showNotification('✅ Inscription à la newsletter réussie !', 'success');
-                        newsletterForm.reset();
-                    } else {
-                        showNotification('❌ ' + result.error, 'error');
-                    }
-                });
-            }
-
-            // Gestion des clics sur les TDs
-            document.querySelectorAll('.td-card:not(.locked-card)').forEach(card => {
-                card.addEventListener('click', async (e) => {
-                    e.preventDefault();
-                    const tdNumber = authManager.extractTDNumber(card);
-                    if (!tdNumber) return;
-                    
-                    if (!authManager.currentUser) {
-                        showNotification('🔐 Connectez-vous pour accéder aux TDs', 'info');
-                        loginModal.style.display = 'block';
-                        return;
-                    }
-
-                    await ProgressManager.updateLastAccessed(tdNumber);
-                    
-                    const href = card.getAttribute('href');
-                    if (href && href !== '#') {
-                        window.location.href = href;
-                    }
-                });
-            });
-
-            // Navigation smooth scroll
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                });
-            });
-
-            console.log('✅ Focus ISEP initialisé avec succès!');
+            console.log('✅ Focus ISEP initialisé!');
         });
 
         // Fonction utilitaire pour les notifications
@@ -1460,6 +1364,30 @@
                 </div>
             `;
 
+            // Styles de notification
+            Object.assign(notification.style, {
+                position: 'fixed',
+                top: '20px',
+                right: '20px',
+                padding: '0',
+                borderRadius: '8px',
+                zIndex: '10000',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                maxWidth: '400px',
+                animation: 'slideInRight 0.3s ease'
+            });
+
+            // Couleurs selon le type
+            const colors = {
+                success: { bg: '#4CAF50', text: '#fff' },
+                error: { bg: '#f44336', text: '#fff' },
+                info: { bg: '#2196F3', text: '#fff' }
+            };
+
+            const color = colors[type] || colors.info;
+            notification.style.background = color.bg;
+            notification.style.color = color.text;
+
             document.body.appendChild(notification);
 
             notification.querySelector('.notification-close').addEventListener('click', () => {
@@ -1473,6 +1401,56 @@
                 }
             }, 4000);
         }
+
+        // Animation CSS pour les notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            
+            @keyframes slideOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+            
+            .notification-content {
+                padding: 15px 20px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            
+            .notification-close {
+                background: none;
+                border: none;
+                color: inherit;
+                font-size: 1.2rem;
+                cursor: pointer;
+                margin-left: 15px;
+            }
+            
+            .notification-message {
+                flex: 1;
+            }
+            
+            .spinner {
+                display: inline-block;
+                width: 16px;
+                height: 16px;
+                border: 2px solid #ffffff;
+                border-radius: 50%;
+                border-top-color: transparent;
+                animation: spin 1s ease-in-out infinite;
+                margin-left: 8px;
+            }
+            
+            @keyframes spin {
+                to { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
