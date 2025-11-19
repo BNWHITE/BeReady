@@ -82,7 +82,7 @@
                     <div class="logo">FOCUS ISEP</div>
                     <nav class="nav-links">
                         <a href="#home" class="nav-link active">Accueil</a>
-                        <a href="#proba-tds" class="nav-link">TDs Proba</a>
+                        <a href="#maths" class="nav-link">Mathématiques</a>
                         <a href="#archi-ordi" class="nav-link">Architecture</a>
                         <a href="#app" class="nav-link">APP</a>
                         <a href="#about" class="nav-link">À Propos</a>
@@ -114,14 +114,12 @@
                         <h1 class="hero-title">Maîtriser les Probabilités et les Réseaux avec Précision</h1>
                         <p class="hero-description">Accédez à des fiches de révision structurées, des exercices corrigés pas à pas, et un résumé complet des concepts clés pour une préparation ciblée et efficace.</p>
                         <div class="hero-actions">
-                            <a href="#proba-tds" class="cta-button">Commencer les TDs Proba →</a>
+                            <a href="#maths" class="cta-button">Commencer les TDs Mathématiques →</a>
                             <a href="#newsletter" class="cta-button secondary">Recevoir des fiches gratuites</a>
                         </div>
                     </div>
                     <div class="hero-image">
-                        <div class="hero-image-placeholder">
-                            <i class="fas fa-graduation-cap" style="font-size: 4rem;"></i>
-                        </div>
+                        <img src="University.jpg" alt="Focus ISEP - Excellence Académique" class="hero-img">
                     </div>
                 </div>
                 
@@ -184,103 +182,113 @@
 
             <hr class="separator">
 
-            <!-- Section Probabilités -->
-            <section id="proba-tds" class="section">
-                <h2 class="section-title">📊 Modules de Travaux Dirigés - Probabilités</h2>
+            <!-- Section Mathématiques -->
+            <section id="maths" class="section">
+                <h2 class="section-title">📊 Mathématiques</h2>
                 <p class="section-description">Cliquez sur un module pour accéder à la fiche de révision complète et aux exercices corrigés.</p>
                 
-                <div id="progressIndicator" class="progress-indicator">
-                    <div class="progress-bar">
-                        <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+                <!-- Sous-section Probabilités -->
+                <div class="subsection">
+                    <h3 class="subsection-title">🎲 Probabilités</h3>
+                    <div id="progressIndicator" class="progress-indicator">
+                        <div class="progress-bar">
+                            <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <span id="progressText">Votre progression: 0/5 TDs complétés</span>
                     </div>
-                    <span id="progressText">Votre progression: 0/5 TDs complétés</span>
+                    
+                    <div class="td-grid">
+                        <!-- TDs Probabilités -->
+                        <a href="td1.html" class="td-card" data-td="1" data-type="proba">
+                            <div class="card-header">
+                                <h3>TD1</h3>
+                                <span class="difficulty easy">Facile</span>
+                            </div>
+                            <p>Probabilités Conditionnelles & Indépendance</p>
+                            <div class="card-footer">
+                                <span class="time-estimate"><i class="far fa-clock"></i> ~1.5h</span>
+                                <button class="complete-btn" data-td="1" data-type="proba" onclick="event.preventDefault(); event.stopPropagation();">
+                                    <i class="far fa-square"></i> Terminer
+                                </button>
+                            </div>
+                        </a>
+                        
+                        <a href="td2.html" class="td-card" data-td="2" data-type="proba">
+                            <div class="card-header">
+                                <h3>TD2</h3>
+                                <span class="difficulty medium">Moyen</span>
+                            </div>
+                            <p>Variables Aléatoires Discrètes : Binomiale, Poisson...</p>
+                            <div class="card-footer">
+                                <span class="time-estimate"><i class="far fa-clock"></i> ~2h</span>
+                                <button class="complete-btn" data-td="2" data-type="proba" onclick="event.preventDefault(); event.stopPropagation();">
+                                    <i class="far fa-square"></i> Terminer
+                                </button>
+                            </div>
+                        </a>
+                        
+                        <a href="td3.html" class="td-card" data-td="3" data-type="proba">
+                            <div class="card-header">
+                                <h3>TD3</h3>
+                                <span class="difficulty medium">Moyen</span>
+                            </div>
+                            <p>Variables Aléatoires Continues & Loi Normale</p>
+                            <div class="card-footer">
+                                <span class="time-estimate"><i class="far fa-clock"></i> ~2h</span>
+                                <button class="complete-btn" data-td="3" data-type="proba" onclick="event.preventDefault(); event.stopPropagation();">
+                                    <i class="far fa-square"></i> Terminer
+                                </button>
+                            </div>
+                        </a>
+                        
+                        <a href="td4.html" class="td-card" data-td="4" data-type="proba">
+                            <div class="card-header">
+                                <h3>TD4</h3>
+                                <span class="difficulty hard">Difficile</span>
+                            </div>
+                            <p>Couples de Variables Aléatoires : Loi Jointe & Marginales</p>
+                            <div class="card-footer">
+                                <span class="time-estimate"><i class="far fa-clock"></i> ~2.5h</span>
+                                <button class="complete-btn" data-td="4" data-type="proba" onclick="event.preventDefault(); event.stopPropagation();">
+                                    <i class="far fa-square"></i> Terminer
+                                </button>
+                            </div>
+                        </a>
+                        
+                        <a href="td5.html" class="td-card" data-td="5" data-type="proba">
+                            <div class="card-header">
+                                <h3>TD5</h3>
+                                <span class="difficulty hard">Difficile</span>
+                            </div>
+                            <p>Vecteurs Gaussiens & Covariance</p>
+                            <div class="card-footer">
+                                <span class="time-estimate"><i class="far fa-clock"></i> ~3h</span>
+                                <button class="complete-btn" data-td="5" data-type="proba" onclick="event.preventDefault(); event.stopPropagation();">
+                                    <i class="far fa-square"></i> Terminer
+                                </button>
+                            </div>
+                        </a>
+                    </div>
                 </div>
                 
-                <div class="td-grid">
-                    <!-- TDs Probabilités -->
-                    <a href="td1.html" class="td-card" data-td="1" data-type="proba">
-                        <div class="card-header">
-                            <h3>TD1</h3>
-                            <span class="difficulty easy">Facile</span>
-                        </div>
-                        <p>Probabilités Conditionnelles & Indépendance</p>
-                        <div class="card-footer">
-                            <span class="time-estimate"><i class="far fa-clock"></i> ~1.5h</span>
-                            <button class="complete-btn" data-td="1" data-type="proba" onclick="event.preventDefault(); event.stopPropagation();">
-                                <i class="far fa-square"></i> Terminer
-                            </button>
-                        </div>
-                    </a>
-                    
-                    <a href="td2.html" class="td-card" data-td="2" data-type="proba">
-                        <div class="card-header">
-                            <h3>TD2</h3>
-                            <span class="difficulty medium">Moyen</span>
-                        </div>
-                        <p>Variables Aléatoires Discrètes : Binomiale, Poisson...</p>
-                        <div class="card-footer">
-                            <span class="time-estimate"><i class="far fa-clock"></i> ~2h</span>
-                            <button class="complete-btn" data-td="2" data-type="proba" onclick="event.preventDefault(); event.stopPropagation();">
-                                <i class="far fa-square"></i> Terminer
-                            </button>
-                        </div>
-                    </a>
-                    
-                    <a href="td3.html" class="td-card" data-td="3" data-type="proba">
-                        <div class="card-header">
-                            <h3>TD3</h3>
-                            <span class="difficulty medium">Moyen</span>
-                        </div>
-                        <p>Variables Aléatoires Continues & Loi Normale</p>
-                        <div class="card-footer">
-                            <span class="time-estimate"><i class="far fa-clock"></i> ~2h</span>
-                            <button class="complete-btn" data-td="3" data-type="proba" onclick="event.preventDefault(); event.stopPropagation();">
-                                <i class="far fa-square"></i> Terminer
-                            </button>
-                        </div>
-                    </a>
-                    
-                    <a href="td4.html" class="td-card" data-td="4" data-type="proba">
-                        <div class="card-header">
-                            <h3>TD4</h3>
-                            <span class="difficulty hard">Difficile</span>
-                        </div>
-                        <p>Couples de Variables Aléatoires : Loi Jointe & Marginales</p>
-                        <div class="card-footer">
-                            <span class="time-estimate"><i class="far fa-clock"></i> ~2.5h</span>
-                            <button class="complete-btn" data-td="4" data-type="proba" onclick="event.preventDefault(); event.stopPropagation();">
-                                <i class="far fa-square"></i> Terminer
-                            </button>
-                        </div>
-                    </a>
-                    
-                    <a href="td5.html" class="td-card" data-td="5" data-type="proba">
-                        <div class="card-header">
-                            <h3>TD5</h3>
-                            <span class="difficulty hard">Difficile</span>
-                        </div>
-                        <p>Vecteurs Gaussiens & Covariance</p>
-                        <div class="card-footer">
-                            <span class="time-estimate"><i class="far fa-clock"></i> ~3h</span>
-                            <button class="complete-btn" data-td="5" data-type="proba" onclick="event.preventDefault(); event.stopPropagation();">
-                                <i class="far fa-square"></i> Terminer
-                            </button>
-                        </div>
-                    </a>
-                    
-                    <a href="statistique.html" class="td-card" data-td="6" data-type="proba">
-                        <div class="card-header">
-                            <h3>Statistiques</h3>
-                            <span class="difficulty medium">Moyen</span>
-                        </div>
-                        <p>Statistiques descriptives et inférentielles</p>
-                        <div class="card-footer">
-                            <span class="time-estimate"><i class="far fa-clock"></i> ~2h</span>
-                            <button class="complete-btn" data-td="6" data-type="proba" onclick="event.preventDefault(); event.stopPropagation();">
-                                <i class="far fa-square"></i> Terminer
-                            </button>
-                        </div>
-                    </a>
+                <!-- Sous-section Statistiques -->
+                <div class="subsection">
+                    <h3 class="subsection-title">📈 Statistiques</h3>
+                    <div class="td-grid">
+                        <a href="statistique.html" class="td-card" data-td="6" data-type="stats">
+                            <div class="card-header">
+                                <h3>Statistiques</h3>
+                                <span class="difficulty medium">Moyen</span>
+                            </div>
+                            <p>Statistiques descriptives et inférentielles</p>
+                            <div class="card-footer">
+                                <span class="time-estimate"><i class="far fa-clock"></i> ~2h</span>
+                                <button class="complete-btn" data-td="6" data-type="stats" onclick="event.preventDefault(); event.stopPropagation();">
+                                    <i class="far fa-square"></i> Terminer
+                                </button>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </section>
 
@@ -440,7 +448,7 @@
                     <div>
                         <h4>Ressources</h4>
                         <ul class="footer-links">
-                            <li><a href="#proba-tds">TDs Probabilités</a></li>
+                            <li><a href="#maths">Mathématiques</a></li>
                             <li><a href="#archi-ordi">Architecture</a></li>
                             <li><a href="#app">APP</a></li>
                             <li><a href="#newsletter">Newsletter</a></li>
@@ -487,6 +495,6 @@
     <script src="js/progress-manager.js"></script>
     <script src="js/badge-manager.js"></script>
     <script src="js/legal-pages.js"></script>
-    <script src="js/app.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
