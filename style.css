@@ -228,7 +228,7 @@ button {
 
 .hero-img {
     /* FIX AGRESSIF : Limiter la hauteur pour la réduire visiblement sur tous les écrans */
-    max-height: 350px; 
+    max-height: 4000px; 
     
     /* Limite de largeur pour qu'elle ne prenne pas toute la colonne sur desktop (1fr) */
     max-width: 90%; 
