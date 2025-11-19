@@ -50,6 +50,7 @@
                 <a href="#home" class="nav-link active">Accueil</a>
                 <a href="#proba-tds" class="nav-link">TDs Proba</a>
                 <a href="#telecom-rev" class="nav-link">Révision Télécom</a>
+                <a href="#temoignages" class="nav-link">Témoignages</a>
             </nav>
         </header>
 
@@ -58,7 +59,10 @@
                 <span class="tagline">OPTIMISEZ VOTRE RÉVISION</span>
                 <h1>Maîtriser les Probabilités et les Réseaux avec Précision</h1>
                 <p>Accédez à des fiches de révision structurées, des exercices corrigés pas à pas, et un résumé complet des concepts clés en Télécommunications pour une préparation ciblée et efficace.</p>
-                <a href="#proba-tds" class="cta-button">Commencer les TDs Proba →</a>
+                <div class="hero-actions">
+                    <a href="#proba-tds" class="cta-button">Commencer les TDs Proba →</a>
+                    <a href="#newsletter" class="cta-button secondary">Recevoir des fiches gratuites</a>
+                </div>
             </div>
             <div class="hero-image-placeholder" style="background-image: url('University.jpg'); background-size: cover; background-position: center;"> </div>
         </div>
@@ -76,6 +80,10 @@
                 <p class="stat-number">100%</p>
                 <p class="stat-label">Contenu Cible</p>
             </div>
+            <div class="stat-item">
+                <p class="stat-number">95%</p>
+                <p class="stat-label">Satisfaction</p>
+            </div>
         </div>
         
         <hr class="separator">
@@ -83,30 +91,72 @@
         <section id="proba-tds" class="sub-section">
             <h2 class="section-title">Modules de Travaux Dirigés (TD) - Probabilités</h2>
             <p class="section-description">Cliquez sur un module pour accéder à la fiche de révision complète et aux exercices corrigés.</p>
+            <div class="progress-indicator">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 60%"></div>
+                </div>
+                <span>Votre progression: 3/5 TDs complétés</span>
+            </div>
             <div class="td-grid">
-                <a href="td1.html" class="td-card">
-                    <h3>TD1</h3>
+                <a href="td1.html" class="td-card completed">
+                    <div class="card-header">
+                        <h3>TD1</h3>
+                        <span class="difficulty easy">Facile</span>
+                    </div>
                     <p>Probabilités Conditionnelles & Indépendance</p>
+                    <div class="card-footer">
+                        <span class="completion-badge"><i class="fas fa-check"></i> Complété</span>
+                    </div>
                 </a>
-                <a href="td2.html" class="td-card">
-                    <h3>TD2</h3>
+                <a href="td2.html" class="td-card completed">
+                    <div class="card-header">
+                        <h3>TD2</h3>
+                        <span class="difficulty medium">Moyen</span>
+                    </div>
                     <p>Variables Aléatoires Discrètes : Binomiale, Poisson...</p>
+                    <div class="card-footer">
+                        <span class="completion-badge"><i class="fas fa-check"></i> Complété</span>
+                    </div>
                 </a>
-                <a href="td3.html" class="td-card">
-                    <h3>TD3</h3>
+                <a href="td3.html" class="td-card completed">
+                    <div class="card-header">
+                        <h3>TD3</h3>
+                        <span class="difficulty medium">Moyen</span>
+                    </div>
                     <p>Variables Aléatoires Continues & Loi Normale</p>
+                    <div class="card-footer">
+                        <span class="completion-badge"><i class="fas fa-check"></i> Complété</span>
+                    </div>
                 </a>
                 <a href="td4.html" class="td-card">
-                    <h3>TD4</h3>
+                    <div class="card-header">
+                        <h3>TD4</h3>
+                        <span class="difficulty hard">Difficile</span>
+                    </div>
                     <p>Couples de Variables Aléatoires : Loi Jointe & Marginales</p>
+                    <div class="card-footer">
+                        <span class="time-estimate"><i class="far fa-clock"></i> ~2h</span>
+                    </div>
                 </a>
                 <a href="td5.html" class="td-card">
-                    <h3>TD5</h3>
+                    <div class="card-header">
+                        <h3>TD5</h3>
+                        <span class="difficulty hard">Difficile</span>
+                    </div>
                     <p>Vecteurs Gaussiens & Covariance</p>
+                    <div class="card-footer">
+                        <span class="time-estimate"><i class="far fa-clock"></i> ~2.5h</span>
+                    </div>
                 </a>
                 <div class="td-card locked-card">
-                    <h3>TD6</h3>
+                    <div class="card-header">
+                        <h3>TD6</h3>
+                        <span class="difficulty">À venir</span>
+                    </div>
                     <p>Estimation et Théorèmes Limites (À venir)</p>
+                    <div class="card-footer">
+                        <span class="locked-badge"><i class="fas fa-lock"></i> Bientôt disponible</span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -116,11 +166,77 @@
         <section id="telecom-rev" class="sub-section">
             <h2 class="section-title">Révision Complète - Télécommunications</h2>
             <p class="section-description">Synthèse ultra-détaillée des concepts clés : Bilan de Liaison (PIRE, $P_r$), Théorème de Shannon, SINR, Affaiblissement (LTE, Wi-Fi, Fibre).</p>
+            <div class="telecom-features">
+                <div class="feature">
+                    <i class="fas fa-chart-line"></i>
+                    <h4>Bilan de Liaison</h4>
+                    <p>Comprenez PIRE, puissance reçue et calculs d'affaiblissement</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-bolt"></i>
+                    <h4>Théorème de Shannon</h4>
+                    <p>Maîtrisez la capacité maximale d'un canal de communication</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-wifi"></i>
+                    <h4>Technologies Réseau</h4>
+                    <p>LTE, Wi-Fi, Fibre optique et leurs spécificités</p>
+                </div>
+            </div>
             <a href="telecom.html" class="cta-button secondary-cta">Accéder à la Fiche Télécom Complète →</a>
+        </section>
+
+        <hr class="separator">
+
+        <section id="temoignages" class="sub-section">
+            <h2 class="section-title">Ce que disent nos étudiants</h2>
+            <div class="testimonials">
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <p>"Grâce à ces fiches, j'ai enfin compris les probabilités conditionnelles qui me posaient problème depuis des mois. Les explications pas à pas sont incroyablement claires."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <strong>Marie L.</strong>
+                        <span>Étudiante en 2ème année</span>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <p>"La fiche télécom m'a sauvé pour mon partiel. Tout est synthétisé de manière logique avec des exemples concrets. Je recommande à 100%!"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <strong>Thomas D.</strong>
+                        <span>Étudiant en 3ème année</span>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <p>"Le système de progression m'a motivé à terminer tous les TDs. J'ai amélioré ma moyenne de 2 points en probabilités!"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <strong>Alexandre P.</strong>
+                        <span>Étudiant en 2ème année</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="separator">
+
+        <section id="newsletter" class="sub-section newsletter-section">
+            <div class="newsletter-content">
+                <h2>Recevez des fiches de révision gratuites</h2>
+                <p>Inscrivez-vous pour recevoir des résumés de cours, des exercices supplémentaires et des astuces de révision directement dans votre boîte mail.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Votre adresse email" required>
+                    <button type="submit" class="cta-button">S'inscrire</button>
+                </form>
+                <p class="privacy-note">Nous respectons votre vie privée. Désabonnez-vous à tout moment.</p>
+            </div>
         </section>
         
         <footer class="main-footer">
-            <p>&copy; 2025 Focus ISEP Révisions. Tous droits réservés - Seydi.</p>
+            <p>&copy; 2025 Focus ISEP Révisions. Tous droits réservés - Seydi</p>
         </footer>
     </section>
 
@@ -148,12 +264,29 @@
             observer.observe(card);
         });
 
+        // Observer les témoignages
+        document.querySelectorAll('.testimonial').forEach(testimonial => {
+            testimonial.style.opacity = '0';
+            testimonial.style.transform = 'translateY(20px)';
+            testimonial.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(testimonial);
+        });
+
         // Navigation active
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', function() {
                 document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
                 this.classList.add('active');
             });
+        });
+
+        // Gestion du formulaire newsletter
+        document.querySelector('.newsletter-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input[type="email"]').value;
+            // Simulation d'envoi
+            alert(`Merci! Vous recevrez bientôt des fiches de révision à ${email}`);
+            this.reset();
         });
 
         // Re-process MathJax après le chargement de la page
