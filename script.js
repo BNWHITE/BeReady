@@ -16,14 +16,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // La navigation par ancres reste la même
+    // CORRECTION : Ne bloquer que les ancres internes, pas les liens vers d'autres pages
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
+        // Vérifier que ce n'est pas un lien vers une page externe
+        if (anchor.getAttribute('href').length > 1) { // Pas seulement "#"
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
             });
-        });
+        }
     });
 
     // Initialisation
