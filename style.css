@@ -227,9 +227,11 @@ button {
 }
 
 .hero-image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    /* Nouvelle taille maximale */
+    max-width: 80%; /* Réduit l'image à 80% de sa taille d'origine ou de son conteneur */
+    height: auto;   /* Maintient les proportions de l'image */
+    display: block; /* S'assure que margin: auto fonctionne */
+    margin: 0 auto; /* Centre l'image si elle est plus petite que son conteneur */
 }
 
 .hero-image-placeholder {
@@ -1001,7 +1003,9 @@ button {
     .stats-bar {
         padding: 20px 0;
     }
-    
+    .hero-image {
+        max-width: 90%; /* Peut-être un peu plus grand sur mobile pour qu'elle reste visible */
+    }
     /* Header: Empilement des éléments */
     .header-content {
         flex-direction: column;
@@ -1103,5 +1107,8 @@ button {
     .legal-links {
         flex-direction: column;
         gap: 10px;
+    }
+    .hero-image {
+        max-width: 95%; /* Encore plus grand sur très petits écrans si nécessaire */
     }
 }
