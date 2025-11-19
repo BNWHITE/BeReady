@@ -4,11 +4,19 @@
     box-sizing: border-box;
 }
 
+/* Couleurs ISEP: Bleu foncé et Jaune accent */
 :root {
-    --primary: #2c5aa0;
-    --primary-dark: #1e3d72;
-    --secondary: #4CAF50;
-    --accent: #FF6B35;
+    --isep-blue-dark: hsl(200, 48%, 32%); /* Bleu principal ISEP (rgb: 44, 102, 130) */
+    --isep-blue-medium: hsl(200, 50%, 40%); /* Bleu ISEP un peu plus clair */
+    --isep-yellow: hsl(48, 100%, 65%);   /* Jaune ISEP (rgb: 255, 224, 60) */
+    --isep-blue-dark-rgb: 44, 102, 130; /* Pour les ombres/transparence */
+    
+    /* Couleurs structurelles */
+    --primary: var(--isep-blue-dark);
+    --primary-dark: var(--isep-blue-medium);
+    --secondary: var(--isep-yellow); /* Utilisé pour les succès/éléments mis en avant */
+    --accent: var(--isep-yellow); /* Utilisé pour les CTA */
+    
     --light: #f8f9fa;
     --dark: #212529;
     --gray: #6c757d;
@@ -18,12 +26,17 @@
     --transition: all 0.3s ease;
 }
 
-/* Mode Sombre */
+/* Mode Sombre (Ajustement des couleurs ISEP pour le contraste) */
 [data-theme="dark"] {
-    --primary: #3b82f6;
-    --primary-dark: #1d4ed8;
-    --secondary: #10b981;
-    --accent: #f59e0b;
+    --isep-blue-dark: hsl(200, 48%, 45%); 
+    --isep-blue-medium: hsl(200, 50%, 50%);
+    --isep-yellow: hsl(48, 100%, 75%); /* Plus lumineux */
+
+    --primary: var(--isep-blue-dark);
+    --primary-dark: var(--isep-blue-medium);
+    --secondary: var(--isep-yellow);
+    --accent: var(--isep-yellow);
+
     --light: #1f2937;
     --dark: #f8f9fa;
     --gray: #9ca3af;
@@ -77,7 +90,7 @@ button {
 .logo {
     font-size: 1.8rem;
     font-weight: 700;
-    color: var(--primary);
+    color: var(--primary); /* Bleu ISEP */
 }
 
 .nav-links {
@@ -95,7 +108,7 @@ button {
 }
 
 .nav-link:hover, .nav-link.active {
-    color: var(--primary);
+    color: var(--primary); /* Bleu ISEP */
 }
 
 .nav-link.active::after {
@@ -105,7 +118,7 @@ button {
     left: 0;
     width: 100%;
     height: 2px;
-    background: var(--primary);
+    background: var(--primary); /* Bleu ISEP */
 }
 
 .user-section {
@@ -115,7 +128,7 @@ button {
 }
 
 .login-btn, .logout-btn {
-    background: var(--primary);
+    background: var(--primary); /* Bleu ISEP */
     color: white;
     padding: 8px 16px;
     border-radius: var(--border-radius);
@@ -159,7 +172,8 @@ button {
 /* Hero Section */
 .hero-section {
     padding: 80px 0;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    /* Dégradé utilisant les couleurs ISEP */
+    background: linear-gradient(135deg, var(--isep-blue-medium) 0%, var(--isep-blue-dark) 100%);
     color: white;
 }
 
@@ -198,12 +212,13 @@ button {
     flex-wrap: wrap;
 }
 
+/* CTA Buttons */
 .cta-button {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: var(--accent);
-    color: white;
+    background: var(--accent); /* Jaune ISEP */
+    color: var(--dark); /* Texte foncé sur le jaune */
     padding: 12px 24px;
     border-radius: var(--border-radius);
     font-weight: 600;
@@ -211,14 +226,16 @@ button {
 }
 
 .cta-button:hover {
-    background: #e55a2b;
+    background: var(--isep-yellow);
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(255, 107, 53, 0.3);
+    /* Utilisation de la variable RGB pour une ombre de couleur ISEP */
+    box-shadow: 0 8px 20px rgba(255, 224, 60, 0.5); 
 }
 
 .cta-button.secondary {
     background: transparent;
     border: 2px solid white;
+    color: white;
 }
 
 .cta-button.secondary:hover {
@@ -226,26 +243,19 @@ button {
     color: var(--primary);
 }
 
-.hero-img {
-    /* FIX AGRESSIF : Limiter la hauteur pour la réduire visiblement sur tous les écrans */
-    max-height: 4000px; 
-    
-    /* Limite de largeur pour qu'elle ne prenne pas toute la colonne sur desktop (1fr) */
-    max-width: 90%; 
-    
-    /* S'assurer que les proportions sont conservées */
-    width: auto; 
-    height: auto; 
-    
-    /* S'assurer que l'image est bien centrée dans son conteneur flex (.hero-image) */
-    display: block; 
-}
-
 .hero-image {
-    /* Ces styles devraient déjà exister, mais assurez-vous qu'ils sont là */
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.hero-img {
+    max-width: 80%; /* Pour réduire la taille de l'image sur desktop */
+    max-height: 350px;
+    width: auto; 
+    height: auto;
+    border-radius: var(--border-radius);
+    display: block; 
 }
 
 .hero-image-placeholder {
@@ -280,7 +290,7 @@ button {
 }
 
 .trust-badge i {
-    color: var(--secondary);
+    color: var(--secondary); /* Jaune ISEP */
 }
 
 /* Stats Bar */
@@ -305,7 +315,7 @@ button {
 .stat-number {
     font-size: 2.5rem;
     font-weight: 700;
-    color: var(--primary);
+    color: var(--primary); /* Bleu ISEP */
     margin-bottom: 10px;
 }
 
@@ -324,7 +334,7 @@ button {
     font-weight: 700;
     text-align: center;
     margin-bottom: 15px;
-    color: var(--dark);
+    color: var(--primary); /* Bleu ISEP */
 }
 
 .section-description {
@@ -362,7 +372,7 @@ button {
 
 .progress-fill {
     height: 100%;
-    background: var(--secondary);
+    background: var(--secondary); /* Jaune ISEP pour la progression */
     border-radius: 5px;
     transition: width 0.5s ease;
 }
@@ -380,7 +390,7 @@ button {
     padding: 25px;
     box-shadow: var(--shadow);
     transition: var(--transition);
-    border-left: 4px solid var(--primary);
+    border-left: 4px solid var(--primary); /* Bleu ISEP */
     cursor: pointer;
     position: relative;
     overflow: hidden;
@@ -392,7 +402,7 @@ button {
 }
 
 .td-card.completed {
-    border-left-color: var(--secondary);
+    border-left-color: var(--secondary); /* Jaune ISEP une fois complété */
     animation: pulse 2s infinite;
 }
 
@@ -411,7 +421,7 @@ button {
 
 .td-card h3 {
     font-size: 1.5rem;
-    color: var(--primary);
+    color: var(--primary); /* Bleu ISEP */
 }
 
 .difficulty {
@@ -462,7 +472,7 @@ button {
 
 /* Bouton de complétion */
 .complete-btn {
-    background: var(--secondary);
+    background: var(--primary); /* Bleu ISEP */
     color: white;
     border: none;
     padding: 8px 16px;
@@ -475,12 +485,13 @@ button {
 }
 
 .complete-btn:hover {
-    background: #45a049;
+    background: var(--primary-dark);
     transform: scale(1.05);
 }
 
 .complete-btn.completed {
-    background: var(--gray);
+    background: var(--secondary); /* Jaune ISEP une fois complété */
+    color: var(--dark);
 }
 
 /* Badges Collection */
@@ -510,7 +521,7 @@ button {
 
 .badge.earned {
     border-color: var(--secondary);
-    background: linear-gradient(135deg, var(--light) 0%, rgba(76, 175, 80, 0.1) 100%);
+    background: linear-gradient(135deg, var(--light) 0%, rgba(255, 224, 60, 0.2) 100%); /* Fond très léger de jaune */
     animation: glow 2s ease-in-out infinite alternate;
 }
 
@@ -622,7 +633,8 @@ button {
 }
 
 .testimonial {
-    background: var(--light);
+    background: var(--primary); /* Fond en bleu ISEP */
+    color: white;
     padding: 30px;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
@@ -632,7 +644,7 @@ button {
 .testimonial::before {
     content: '"';
     font-size: 4rem;
-    color: var(--light-gray);
+    color: var(--secondary); /* Guillemets en jaune ISEP */
     position: absolute;
     top: 10px;
     left: 20px;
@@ -653,12 +665,12 @@ button {
 }
 
 .testimonial-author strong {
-    color: var(--primary);
+    color: var(--secondary); /* Nom en jaune ISEP */
 }
 
 .testimonial-author span {
     font-size: 0.9rem;
-    color: var(--gray);
+    color: #adb5bd; /* Gris clair */
 }
 
 /* Newsletter */
@@ -689,6 +701,10 @@ button {
     color: var(--dark);
 }
 
+.newsletter-form input:focus {
+    border-color: var(--primary);
+}
+
 .privacy-note {
     font-size: 0.85rem;
     color: var(--gray);
@@ -696,7 +712,7 @@ button {
 
 /* Footer */
 .main-footer {
-    background: var(--dark);
+    background: var(--primary); /* Fond en bleu ISEP */
     color: white;
     padding: 40px 0 20px;
 }
@@ -728,11 +744,11 @@ button {
 }
 
 .footer-links a:hover {
-    color: white;
+    color: var(--secondary); /* Jaune ISEP au survol */
 }
 
 .footer-bottom {
-    border-top: 1px solid #495057;
+    border-top: 1px solid var(--primary-dark); /* Ligne de séparation bleu foncé */
     padding-top: 20px;
     text-align: center;
     color: #adb5bd;
@@ -752,7 +768,7 @@ button {
 }
 
 .legal-links a:hover {
-    color: white;
+    color: var(--secondary);
 }
 
 /* Modal */
@@ -815,7 +831,7 @@ button {
 .form-group input:focus {
     border-color: var(--primary);
     outline: none;
-    box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.1);
+    box-shadow: 0 0 0 3px rgba(var(--isep-blue-dark-rgb), 0.1);
 }
 
 .input-help {
@@ -857,8 +873,8 @@ button {
 }
 
 .notification.success {
-    background: var(--secondary);
-    color: white;
+    background: var(--secondary); /* Jaune ISEP */
+    color: var(--dark);
 }
 
 .notification.error {
@@ -970,46 +986,35 @@ button {
     border-left: 4px solid var(--primary);
     margin: 20px 0;
 }
-/* Responsive */
-/* Responsive */
 
-/* Point de rupture pour les tablettes (Max 992px) */
+/* Responsive (Reprise des corrections mobiles précédentes) */
 @media (max-width: 992px) {
     .container {
-        padding: 0 15px; /* Réduction du padding général */
+        padding: 0 15px; 
     }
-    
-    /* Hero Section: Passage de 2 colonnes à 1 */
     .hero-content {
         grid-template-columns: 1fr;
         text-align: center;
         gap: 30px; 
     }
     .hero-image {
-        order: -1; /* L'image apparaît au-dessus du texte */
+        order: -1; 
+    }
+    .stats-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .footer-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
     }
     .hero-title {
         font-size: 2.2rem;
     }
-    
-    /* Stats: Passage de 4 colonnes à 2 */
-    .stats-container {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    /* Footer: Passage de 4 colonnes à 2 */
-    .footer-content {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 30px;
-    }
 }
 
-/* Point de rupture pour les téléphones (Max 768px) */
 @media (max-width: 768px) {
-    
-    /* GLOBAL SPACING: Réduction des paddings et marges */
     .section {
-        padding: 50px 0; /* Moins de vide vertical */
+        padding: 50px 0;
     }
     .hero-section {
         padding: 40px 0; 
@@ -1017,13 +1022,7 @@ button {
     .stats-bar {
         padding: 20px 0;
     }
-    /* Sur mobile, on peut relâcher la contrainte de hauteur si nécessaire,
-       mais on garde la contrainte de largeur pour éviter le débordement. */
-    .hero-img {
-        max-height: 400px; /* Légèrement plus grande ou auto */
-        max-width: 100%; /* Peut prendre toute la largeur disponible */
-    }
-    /* Header: Empilement des éléments */
+
     .header-content {
         flex-direction: column;
         gap: 10px;
@@ -1042,19 +1041,13 @@ button {
         justify-content: center;
     }
     
-    /* Typography */
     .hero-title {
         font-size: 1.8rem;
     }
     .section-title {
         font-size: 1.6rem;
     }
-    .cta-button {
-        padding: 10px 20px;
-        font-size: 0.9rem;
-    }
     
-    /* Hero Actions: Empiler les deux boutons d'action et prendre toute la largeur */
     .hero-actions {
         justify-content: center;
         flex-direction: column; 
@@ -1063,75 +1056,55 @@ button {
         width: 100%;
         justify-content: center;
     }
-    
-    /* Trust Badges: Empilement et pleine largeur */
+
     .trust-badges {
         flex-direction: column;
         align-items: stretch;
     }
-    .trust-badge {
-        justify-content: center;
-    }
     
-    /* Grids: Passage à 1 seule colonne pour tout */
-    .td-grid, 
-    .app-grid,
-    .testimonials,
-    .telecom-features {
-        grid-template-columns: 1fr; 
-    }
-    
-    /* Cartes */
-    .td-card h3 {
-        font-size: 1.3rem;
-    }
-    .td-card p {
-        font-size: 0.95rem;
-    }
-
-    /* Newsletter: Empilement */
     .newsletter-form {
         flex-direction: column;
     }
     .newsletter-form input {
-        margin-bottom: 10px; 
+        margin-bottom: 10px;
     }
     .newsletter-form button.cta-button {
         width: 100%;
         justify-content: center;
     }
+    
+    .td-grid, .app-grid, .testimonials, .telecom-features {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-img {
+        max-width: 90%; 
+    }
 }
 
-/* Point de rupture pour les petits téléphones (Max 576px) */
 @media (max-width: 576px) {
     .container {
-        padding: 0 10px; /* Padding minimal */
+        padding: 0 10px;
     }
     
     .logo {
         font-size: 1.4rem;
     }
     
-    /* Stats: S'assurer que les stats sont bien empilées */
     .stats-container {
-        grid-template-columns: 1fr; 
+        grid-template-columns: 1fr;
     }
     
-    /* Footer: Passage à 1 colonne */
     .footer-content {
         grid-template-columns: 1fr;
     }
+    
     .legal-links {
         flex-direction: column;
         gap: 10px;
     }
-    .hero-image {
-        max-width: 95%; /* Encore plus grand sur très petits écrans si nécessaire */
-    }
-    /* Sur mobile, on peut relâcher la contrainte de hauteur si nécessaire,
-       mais on garde la contrainte de largeur pour éviter le débordement. */
+    
     .hero-img {
-        max-height: 400px; /* Légèrement plus grande ou auto */
-        max-width: 100%; /* Peut prendre toute la largeur disponible */
+        max-width: 95%; 
     }
 }
