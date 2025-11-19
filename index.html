@@ -6,6 +6,7 @@
     <title>Focus Révisions ISEP - Excellence Académique</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/music-player.css">
     
     <!-- Configuration améliorée de MathJax -->
     <script>
@@ -33,7 +34,15 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-
+    <!-- Lecteur de musique -->
+    <div class="music-player">
+        <button class="music-btn" id="playPauseBtn">
+            <i class="fas fa-play" id="playIcon"></i>
+        </button>
+        <span class="music-info">Musique d'étude</span>
+        <input type="range" class="volume-control" id="volumeControl" min="0" max="1" step="0.1" value="0.5">
+    </div>
+    
     <section id="home" class="page active">
         <header class="main-header">
             <div class="logo">FOCUS ISEP</div>
@@ -162,6 +171,8 @@
                 MathJax.typesetPromise();
             }
         }
+
+        <script src="js/music-player.js"></script>
     </script>
 </body>
 </html>
