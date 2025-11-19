@@ -5,16 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Focus Révisions ISEP - Excellence Académique</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
     
     <!-- Supabase JS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <!-- Configuration Supabase -->
     <script>
-        // Remplacez par vos vraies clés Supabase
-        const SUPABASE_URL = 'https://votre-project.supabase.co';
-        const SUPABASE_ANON_KEY = 'votre-anon-key';
+        // Configuration Supabase
+        const SUPABASE_URL = 'https://eznzfgcwbqcckkvhsdhi.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV6bnpmZ2N3YnFjY2trdmhzZGhpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ5Mjg2MTksImV4cCI6MjA1MDUwNDYxOX0.6WhkWn3e1Gdy8DTnkLmjMA_O10roVtv';
         
         // Initialisation Supabase
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -39,6 +38,713 @@
         };
     </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        /* Reset et styles de base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2c5aa0;
+            --primary-dark: #1e3d72;
+            --secondary: #4CAF50;
+            --accent: #FF6B35;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --border-radius: 8px;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--light);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .main-header {
+            background: white;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            padding: 8px 0;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .login-btn, .logout-btn {
+            background: var(--primary);
+            color: white;
+            padding: 8px 16px;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .login-btn:hover, .logout-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .logout-btn {
+            background: var(--gray);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .tagline {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent);
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .cta-button:hover {
+            background: #e55a2b;
+            transform: translateY(-2px);
+        }
+
+        .cta-button.secondary {
+            background: transparent;
+            border: 2px solid white;
+        }
+
+        .cta-button.secondary:hover {
+            background: white;
+            color: var(--primary);
+        }
+
+        .hero-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-image-placeholder {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.2) 100%);
+            border-radius: var(--border-radius);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: white;
+            padding: 40px 0;
+            box-shadow: var(--shadow);
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-weight: 500;
+        }
+
+        /* Sections */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .section-description {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        .separator {
+            border: none;
+            height: 1px;
+            background: var(--light-gray);
+            margin: 40px 0;
+        }
+
+        /* Progress Indicator */
+        .progress-indicator {
+            background: var(--light);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: var(--light-gray);
+            border-radius: 5px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--secondary);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        /* TD Grid */
+        .td-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .td-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-left: 4px solid var(--primary);
+        }
+
+        .td-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .td-card.completed {
+            border-left-color: var(--secondary);
+        }
+
+        .locked-card {
+            opacity: 0.7;
+            background: var(--light-gray);
+            cursor: not-allowed;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .td-card h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .difficulty {
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .difficulty.easy {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .difficulty.medium {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .difficulty.hard {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .card-footer {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+        }
+
+        .completion-badge {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .time-estimate {
+            color: var(--gray);
+        }
+
+        .locked-badge {
+            color: var(--gray);
+        }
+
+        /* Telecom Features */
+        .telecom-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .feature {
+            text-align: center;
+            padding: 30px 20px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .feature h4 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .secondary-cta {
+            display: block;
+            width: fit-content;
+            margin: 30px auto 0;
+            background: var(--primary);
+        }
+
+        .secondary-cta:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Testimonials */
+        .testimonials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .testimonial {
+            background: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .testimonial::before {
+            content: '"';
+            font-size: 4rem;
+            color: var(--light-gray);
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            line-height: 1;
+        }
+
+        .testimonial-content {
+            margin-bottom: 20px;
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonial-author {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .testimonial-author strong {
+            color: var(--primary);
+        }
+
+        .testimonial-author span {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        /* Newsletter */
+        .newsletter-section {
+            background: var(--light);
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .newsletter-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 10px;
+            margin: 30px 0 20px;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+
+        .privacy-note {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        /* Footer */
+        .main-footer {
+            background: var(--dark);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.1);
+        }
+
+        .input-help {
+            display: block;
+            margin-top: 5px;
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .modal-note {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 0;
+            border-radius: 8px;
+            z-index: 10000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            max-width: 400px;
+            animation: slideInRight 0.3s ease;
+        }
+
+        .notification.success {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .notification.error {
+            background: #f44336;
+            color: white;
+        }
+
+        .notification.info {
+            background: var(--primary);
+            color: white;
+        }
+
+        .notification-content {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            color: inherit;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-left: 15px;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOutRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                gap: 15px;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-actions {
+                justify-content: center;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+            }
+            
+            .td-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .testimonials {
+                grid-template-columns: 1fr;
+            }
+            
+            .telecom-features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Modal de connexion -->
@@ -48,79 +754,725 @@
             <h2>Connexion à Focus ISEP</h2>
             <form id="loginForm">
                 <div class="form-group">
-                    <label for="username">Pseudo</label>
-                    <input type="text" id="username" name="username" required>
+                    <label for="username">Pseudo *</label>
+                    <input type="text" id="username" name="username" required minlength="3">
+                    <small class="input-help">Minimum 3 caractères</small>
                 </div>
                 <div class="form-group">
-                    <label for="email">Email</label>
+                    <label for="email">Email *</label>
                     <input type="email" id="email" name="email" required>
+                    <small class="input-help">Votre email ISEP de préférence</small>
                 </div>
-                <button type="submit" class="cta-button">Se connecter / S'inscrire</button>
+                <button type="submit" class="cta-button" id="loginSubmitBtn" style="width: 100%; justify-content: center;">
+                    <span id="loginBtnText">Se connecter / S'inscrire</span>
+                    <div id="loginSpinner" class="spinner" style="display: none;"></div>
+                </button>
             </form>
-            <p class="modal-note">Pas de mot de passe requis ! Votre pseudo et email suffisent.</p>
+            <p class="modal-note">🔐 Pas de mot de passe requis ! Votre pseudo et email suffisent.</p>
         </div>
     </div>
 
-    <!-- En-tête avec état utilisateur -->
     <section id="home" class="page active">
         <header class="main-header">
-            <div class="logo">FOCUS ISEP</div>
-            <nav>
-                <a href="#home" class="nav-link active">Accueil</a>
-                <a href="#proba-tds" class="nav-link">TDs Proba</a>
-                <a href="#telecom-rev" class="nav-link">Révision Télécom</a>
-                <div id="userSection" class="user-section">
-                    <button id="loginBtn" class="login-btn">Se connecter</button>
-                    <div id="userInfo" class="user-info" style="display: none;">
-                        <span id="userGreeting">Bonjour, </span>
-                        <button id="logoutBtn" class="logout-btn">Déconnexion</button>
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">FOCUS ISEP</div>
+                    <nav class="nav-links">
+                        <a href="#home" class="nav-link active">Accueil</a>
+                        <a href="#proba-tds" class="nav-link">TDs Proba</a>
+                        <a href="#telecom-rev" class="nav-link">Révision Télécom</a>
+                    </nav>
+                    <div id="userSection" class="user-section">
+                        <button id="loginBtn" class="login-btn">
+                            <i class="fas fa-user"></i> Se connecter
+                        </button>
+                        <div id="userInfo" class="user-info" style="display: none;">
+                            <span id="userGreeting">Bonjour, </span>
+                            <button id="logoutBtn" class="logout-btn">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </nav>
+            </div>
         </header>
 
-        <!-- Votre contenu existant... -->
-
-        <section id="proba-tds" class="sub-section">
-            <h2 class="section-title">Modules de Travaux Dirigés (TD) - Probabilités</h2>
-            <p class="section-description">Cliquez sur un module pour accéder à la fiche de révision complète et aux exercices corrigés.</p>
-            
-            <!-- Indicateur de progression -->
-            <div id="progressIndicator" class="progress-indicator" style="display: none;">
-                <div class="progress-bar">
-                    <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+        <section class="hero-section">
+            <div class="container">
+                <div class="hero-content">
+                    <div>
+                        <span class="tagline">OPTIMISEZ VOTRE RÉVISION</span>
+                        <h1 class="hero-title">Maîtriser les Probabilités et les Réseaux avec Précision</h1>
+                        <p class="hero-description">Accédez à des fiches de révision structurées, des exercices corrigés pas à pas, et un résumé complet des concepts clés en Télécommunications pour une préparation ciblée et efficace.</p>
+                        <div class="hero-actions">
+                            <a href="#proba-tds" class="cta-button">Commencer les TDs Proba →</a>
+                            <a href="#newsletter" class="cta-button secondary">Recevoir des fiches gratuites</a>
+                        </div>
+                    </div>
+                    <div class="hero-image">
+                        <div class="hero-image-placeholder">
+                            <i class="fas fa-graduation-cap" style="font-size: 4rem;"></i>
+                        </div>
+                    </div>
                 </div>
-                <span id="progressText">Votre progression: 0/5 TDs complétés</span>
-            </div>
-            
-            <div class="td-grid">
-                <!-- Les cartes TD seront générées dynamiquement -->
             </div>
         </section>
 
-        <!-- Section newsletter améliorée -->
-        <section id="newsletter" class="sub-section newsletter-section">
-            <div class="newsletter-content">
-                <h2>Restez informé des nouvelles fiches</h2>
-                <p>Recevez des résumés de cours, des exercices supplémentaires et des astuces de révision.</p>
-                
-                <div id="newsletterFormContainer">
-                    <form id="newsletterForm" class="newsletter-form">
-                        <input type="email" id="newsletterEmail" placeholder="Votre adresse email" required>
-                        <button type="submit" class="cta-button">S'inscrire à la newsletter</button>
-                    </form>
+        <section class="stats-bar">
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-item">
+                        <p class="stat-number" id="totalUsers">0</p>
+                        <p class="stat-label">Étudiants inscrits</p>
+                    </div>
+                    <div class="stat-item">
+                        <p class="stat-number">5</p>
+                        <p class="stat-label">TDs de Proba</p>
+                    </div>
+                    <div class="stat-item">
+                        <p class="stat-number">1</p>
+                        <p class="stat-label">Fiche Télécom Complète</p>
+                    </div>
+                    <div class="stat-item">
+                        <p class="stat-number">100%</p>
+                        <p class="stat-label">Contenu Cible</p>
+                    </div>
                 </div>
-                
-                <div id="newsletterStatus" style="display: none;"></div>
-                <p class="privacy-note">Nous respectons votre vie privée. Désabonnez-vous à tout moment.</p>
             </div>
         </section>
+
+        <div class="container">
+            <hr class="separator">
+
+            <section id="proba-tds" class="section">
+                <h2 class="section-title">Modules de Travaux Dirigés (TD) - Probabilités</h2>
+                <p class="section-description">Cliquez sur un module pour accéder à la fiche de révision complète et aux exercices corrigés.</p>
+                
+                <div id="progressIndicator" class="progress-indicator">
+                    <div class="progress-bar">
+                        <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+                    </div>
+                    <span id="progressText">Votre progression: 0/5 TDs complétés</span>
+                </div>
+                
+                <div class="td-grid">
+                    <a href="td1.html" class="td-card">
+                        <div class="card-header">
+                            <h3>TD1</h3>
+                            <span class="difficulty easy">Facile</span>
+                        </div>
+                        <p>Probabilités Conditionnelles & Indépendance</p>
+                        <div class="card-footer">
+                            <span class="time-estimate"><i class="far fa-clock"></i> ~1.5h</span>
+                        </div>
+                    </a>
+                    <a href="td2.html" class="td-card">
+                        <div class="card-header">
+                            <h3>TD2</h3>
+                            <span class="difficulty medium">Moyen</span>
+                        </div>
+                        <p>Variables Aléatoires Discrètes : Binomiale, Poisson...</p>
+                        <div class="card-footer">
+                            <span class="time-estimate"><i class="far fa-clock"></i> ~2h</span>
+                        </div>
+                    </a>
+                    <a href="td3.html" class="td-card">
+                        <div class="card-header">
+                            <h3>TD3</h3>
+                            <span class="difficulty medium">Moyen</span>
+                        </div>
+                        <p>Variables Aléatoires Continues & Loi Normale</p>
+                        <div class="card-footer">
+                            <span class="time-estimate"><i class="far fa-clock"></i> ~2h</span>
+                        </div>
+                    </a>
+                    <a href="td4.html" class="td-card">
+                        <div class="card-header">
+                            <h3>TD4</h3>
+                            <span class="difficulty hard">Difficile</span>
+                        </div>
+                        <p>Couples de Variables Aléatoires : Loi Jointe & Marginales</p>
+                        <div class="card-footer">
+                            <span class="time-estimate"><i class="far fa-clock"></i> ~2.5h</span>
+                        </div>
+                    </a>
+                    <a href="td5.html" class="td-card">
+                        <div class="card-header">
+                            <h3>TD5</h3>
+                            <span class="difficulty hard">Difficile</span>
+                        </div>
+                        <p>Vecteurs Gaussiens & Covariance</p>
+                        <div class="card-footer">
+                            <span class="time-estimate"><i class="far fa-clock"></i> ~3h</span>
+                        </div>
+                    </a>
+                    <div class="td-card locked-card">
+                        <div class="card-header">
+                            <h3>TD6</h3>
+                            <span class="difficulty">À venir</span>
+                        </div>
+                        <p>Estimation et Théorèmes Limites (À venir)</p>
+                        <div class="card-footer">
+                            <span class="locked-badge"><i class="fas fa-lock"></i> Bientôt disponible</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <hr class="separator">
+
+            <section id="telecom-rev" class="section">
+                <h2 class="section-title">Révision Complète - Télécommunications</h2>
+                <p class="section-description">Synthèse ultra-détaillée des concepts clés : Bilan de Liaison (PIRE, $P_r$), Théorème de Shannon, SINR, Affaiblissement (LTE, Wi-Fi, Fibre).</p>
+                
+                <div class="telecom-features">
+                    <div class="feature">
+                        <i class="fas fa-chart-line"></i>
+                        <h4>Bilan de Liaison</h4>
+                        <p>Comprenez PIRE, puissance reçue et calculs d'affaiblissement</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-bolt"></i>
+                        <h4>Théorème de Shannon</h4>
+                        <p>Maîtrisez la capacité maximale d'un canal de communication</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-wifi"></i>
+                        <h4>Technologies Réseau</h4>
+                        <p>LTE, Wi-Fi, Fibre optique et leurs spécificités</p>
+                    </div>
+                </div>
+                
+                <a href="telecom.html" class="cta-button secondary-cta">Accéder à la Fiche Télécom Complète →</a>
+            </section>
+
+            <hr class="separator">
+
+            <section id="temoignages" class="section">
+                <h2 class="section-title">Ce que disent nos étudiants</h2>
+                <div class="testimonials">
+                    <div class="testimonial">
+                        <div class="testimonial-content">
+                            <p>"Grâce à ces fiches, j'ai enfin compris les probabilités conditionnelles qui me posaient problème depuis des mois. Les explications pas à pas sont incroyablement claires."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <strong>Marie L.</strong>
+                            <span>Étudiante en 2ème année</span>
+                        </div>
+                    </div>
+                    <div class="testimonial">
+                        <div class="testimonial-content">
+                            <p>"La fiche télécom m'a sauvé pour mon partiel. Tout est synthétisé de manière logique avec des exemples concrets. Je recommande à 100%!"</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <strong>Thomas D.</strong>
+                            <span>Étudiant en 3ème année</span>
+                        </div>
+                    </div>
+                    <div class="testimonial">
+                        <div class="testimonial-content">
+                            <p>"Le système de progression m'a motivé à terminer tous les TDs. J'ai amélioré ma moyenne de 2 points en probabilités!"</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <strong>Alexandre P.</strong>
+                            <span>Étudiant en 2ème année</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <hr class="separator">
+
+            <section id="newsletter" class="newsletter-section">
+                <div class="container">
+                    <div class="newsletter-content">
+                        <h2>Recevez des fiches de révision gratuites</h2>
+                        <p>Inscrivez-vous pour recevoir des résumés de cours, des exercices supplémentaires et des astuces de révision directement dans votre boîte mail.</p>
+                        
+                        <div id="newsletterFormContainer">
+                            <form id="newsletterForm" class="newsletter-form">
+                                <input type="email" id="newsletterEmail" placeholder="Votre adresse email" required>
+                                <button type="submit" class="cta-button">S'inscrire à la newsletter</button>
+                            </form>
+                        </div>
+                        
+                        <div id="newsletterStatus" style="display: none;"></div>
+                        <p class="privacy-note">Nous respectons votre vie privée. Désabonnez-vous à tout moment.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
         
         <footer class="main-footer">
-            <p>&copy; 2025 Focus ISEP Révisions. Tous droits réservés - Seydi.</p>
+            <div class="container">
+                <p>&copy; 2025 Focus ISEP Révisions. Tous droits réservés - Seydi.</p>
+            </div>
         </footer>
     </section>
 
-    <script src="js/app.js"></script>
+    <script>
+        // Gestion de l'authentification
+        class AuthManager {
+            constructor() {
+                this.currentUser = null;
+                this.init();
+            }
+
+            async init() {
+                console.log('🔧 Initialisation AuthManager avec Supabase...');
+                
+                // Vérifier la connexion Supabase
+                const { data, error } = await supabase.from('users').select('count', { count: 'exact', head: true });
+                if (error) {
+                    console.error('❌ Erreur connexion Supabase:', error);
+                } else {
+                    console.log('✅ Connexion Supabase réussie!');
+                }
+
+                // Vérifier si l'utilisateur est déjà connecté
+                const savedUser = localStorage.getItem('focusUser');
+                if (savedUser) {
+                    this.currentUser = JSON.parse(savedUser);
+                    this.updateUI();
+                    await this.loadUserProgress();
+                    await this.updateStats();
+                }
+                
+                await this.updateStats();
+            }
+
+            async login(username, email) {
+                const submitBtn = document.getElementById('loginSubmitBtn');
+                const btnText = document.getElementById('loginBtnText');
+                const spinner = document.getElementById('loginSpinner');
+                
+                // Afficher le spinner
+                btnText.textContent = 'Connexion...';
+                spinner.style.display = 'inline-block';
+                submitBtn.disabled = true;
+
+                try {
+                    console.log('🔐 Tentative de connexion:', { username, email });
+
+                    // Vérifier si l'utilisateur existe
+                    const { data: existingUser, error: checkError } = await supabase
+                        .from('users')
+                        .select('*')
+                        .eq('username', username)
+                        .eq('email', email)
+                        .single();
+
+                    let user;
+                    
+                    if (existingUser) {
+                        // Utilisateur existant - mise à jour last_login
+                        console.log('👤 Utilisateur existant trouvé');
+                        user = existingUser;
+                        const { error: updateError } = await supabase
+                            .from('users')
+                            .update({ last_login: new Date().toISOString() })
+                            .eq('id', user.id);
+                            
+                        if (updateError) throw updateError;
+                    } else {
+                        // Nouvel utilisateur - création
+                        console.log('🆕 Création nouvel utilisateur');
+                        const { data: newUser, error: insertError } = await supabase
+                            .from('users')
+                            .insert([{ 
+                                username, 
+                                email,
+                                created_at: new Date().toISOString()
+                            }])
+                            .select()
+                            .single();
+                        
+                        if (insertError) {
+                            console.error('❌ Erreur création utilisateur:', insertError);
+                            throw insertError;
+                        }
+                        user = newUser;
+                        console.log('✅ Nouvel utilisateur créé:', user);
+                    }
+
+                    this.currentUser = user;
+                    localStorage.setItem('focusUser', JSON.stringify(user));
+                    this.updateUI();
+                    await this.loadUserProgress();
+                    await this.updateStats();
+                    
+                    return { success: true, user };
+                    
+                } catch (error) {
+                    console.error('❌ Erreur de connexion:', error);
+                    
+                    let errorMessage = 'Erreur de connexion';
+                    if (error.code === '23505') {
+                        errorMessage = 'Ce pseudo ou email est déjà utilisé';
+                    } else if (error.message.includes('JWT')) {
+                        errorMessage = 'Erreur de configuration Supabase';
+                    }
+                    
+                    return { success: false, error: errorMessage };
+                } finally {
+                    btnText.textContent = 'Se connecter / S\'inscrire';
+                    spinner.style.display = 'none';
+                    submitBtn.disabled = false;
+                }
+            }
+
+            logout() {
+                this.currentUser = null;
+                localStorage.removeItem('focusUser');
+                this.updateUI();
+                userProgress = {};
+                this.updateProgressUI();
+                this.updateStats();
+                showNotification('👋 Déconnexion réussie', 'info');
+            }
+
+            updateUI() {
+                const loginBtn = document.getElementById('loginBtn');
+                const userInfo = document.getElementById('userInfo');
+                const userGreeting = document.getElementById('userGreeting');
+                const progressIndicator = document.getElementById('progressIndicator');
+
+                if (this.currentUser) {
+                    loginBtn.style.display = 'none';
+                    userInfo.style.display = 'flex';
+                    userGreeting.textContent = `Bonjour, ${this.currentUser.username}`;
+                    if (progressIndicator) progressIndicator.style.display = 'block';
+                } else {
+                    loginBtn.style.display = 'block';
+                    userInfo.style.display = 'none';
+                    if (progressIndicator) progressIndicator.style.display = 'none';
+                }
+            }
+
+            async loadUserProgress() {
+                if (!this.currentUser) return;
+
+                try {
+                    console.log('📊 Chargement progression pour:', this.currentUser.id);
+                    const { data, error } = await supabase
+                        .from('td_progress')
+                        .select('*')
+                        .eq('user_id', this.currentUser.id);
+
+                    if (error) throw error;
+
+                    userProgress = {};
+                    data.forEach(progress => {
+                        userProgress[progress.td_number] = progress;
+                    });
+
+                    console.log('✅ Progression chargée:', userProgress);
+                    this.updateProgressUI();
+                    this.updateTDCards();
+                    
+                } catch (error) {
+                    console.error('❌ Erreur chargement progression:', error);
+                }
+            }
+
+            updateProgressUI() {
+                if (!this.currentUser) return;
+
+                const completedTDs = Object.values(userProgress).filter(p => p.is_completed).length;
+                const totalTDs = 5;
+                const progressPercent = (completedTDs / totalTDs) * 100;
+
+                const progressFill = document.getElementById('progressFill');
+                const progressText = document.getElementById('progressText');
+                
+                if (progressFill && progressText) {
+                    progressFill.style.width = `${progressPercent}%`;
+                    progressText.textContent = `Votre progression: ${completedTDs}/${totalTDs} TDs complétés`;
+                }
+            }
+
+            updateTDCards() {
+                const tdCards = document.querySelectorAll('.td-card:not(.locked-card)');
+                
+                tdCards.forEach(card => {
+                    const tdNumber = this.extractTDNumber(card);
+                    if (!tdNumber) return;
+                    
+                    const progress = userProgress[tdNumber];
+                    
+                    if (progress && progress.is_completed) {
+                        card.classList.add('completed');
+                        let footer = card.querySelector('.card-footer');
+                        if (!footer) {
+                            footer = document.createElement('div');
+                            footer.className = 'card-footer';
+                            card.appendChild(footer);
+                        }
+                        footer.innerHTML = `<span class="completion-badge"><i class="fas fa-check"></i> Complété</span>`;
+                    }
+                });
+            }
+
+            extractTDNumber(card) {
+                const title = card.querySelector('h3');
+                if (!title) return null;
+                
+                const match = title.textContent.match(/TD(\d+)/);
+                return match ? parseInt(match[1]) : null;
+            }
+
+            async updateStats() {
+                try {
+                    const { count, error } = await supabase
+                        .from('users')
+                        .select('*', { count: 'exact', head: true });
+
+                    if (!error && count !== null) {
+                        const totalUsersElement = document.getElementById('totalUsers');
+                        if (totalUsersElement) {
+                            totalUsersElement.textContent = count;
+                        }
+                    }
+                } catch (error) {
+                    console.error('❌ Erreur mise à jour stats:', error);
+                }
+            }
+        }
+
+        // Gestion de la progression
+        class ProgressManager {
+            static async markTDCompleted(tdNumber, score = null, timeSpent = null) {
+                if (!authManager.currentUser) {
+                    showNotification('🔐 Veuillez vous connecter pour enregistrer votre progression.', 'info');
+                    return false;
+                }
+
+                try {
+                    const progressData = {
+                        user_id: authManager.currentUser.id,
+                        td_number: tdNumber,
+                        is_completed: true,
+                        completed_at: new Date().toISOString(),
+                        score: score,
+                        time_spent: timeSpent,
+                        last_accessed: new Date().toISOString()
+                    };
+
+                    console.log('💾 Sauvegarde progression:', progressData);
+
+                    const { data, error } = await supabase
+                        .from('td_progress')
+                        .upsert(progressData, { onConflict: 'user_id,td_number' })
+                        .select()
+                        .single();
+
+                    if (error) throw error;
+
+                    userProgress[tdNumber] = data;
+                    authManager.updateProgressUI();
+                    authManager.updateTDCards();
+                    
+                    showNotification('✅ Progression sauvegardée !', 'success');
+                    return true;
+                    
+                } catch (error) {
+                    console.error('❌ Erreur sauvegarde progression:', error);
+                    showNotification('❌ Erreur sauvegarde progression', 'error');
+                    return false;
+                }
+            }
+
+            static async updateLastAccessed(tdNumber) {
+                if (!authManager.currentUser) return;
+
+                try {
+                    await supabase
+                        .from('td_progress')
+                        .upsert({
+                            user_id: authManager.currentUser.id,
+                            td_number: tdNumber,
+                            last_accessed: new Date().toISOString()
+                        }, { onConflict: 'user_id,td_number' });
+                        
+                } catch (error) {
+                    console.error('❌ Erreur mise à jour accès:', error);
+                }
+            }
+        }
+
+        // Gestion newsletter
+        class NewsletterManager {
+            static async subscribe(email, userId = null) {
+                try {
+                    const { data: existing, error: checkError } = await supabase
+                        .from('newsletter_subscriptions')
+                        .select('*')
+                        .eq('email', email)
+                        .eq('is_active', true)
+                        .single();
+
+                    if (existing) {
+                        return { success: false, error: 'Vous êtes déjà inscrit à la newsletter' };
+                    }
+
+                    const subscriptionData = {
+                        email: email,
+                        user_id: userId,
+                        subscribed_at: new Date().toISOString(),
+                        is_active: true
+                    };
+
+                    console.log('📧 Inscription newsletter:', subscriptionData);
+
+                    const { data, error } = await supabase
+                        .from('newsletter_subscriptions')
+                        .insert([subscriptionData])
+                        .select()
+                        .single();
+
+                    if (error) throw error;
+                    
+                    console.log('✅ Inscription newsletter réussie');
+                    return { success: true, data };
+                    
+                } catch (error) {
+                    console.error('❌ Erreur inscription newsletter:', error);
+                    return { success: false, error: error.message };
+                }
+            }
+        }
+
+        // Initialisation
+        const authManager = new AuthManager();
+
+        // Événements DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Initialisation de Focus ISEP...');
+
+            // Modal de connexion
+            const loginModal = document.getElementById('loginModal');
+            const loginBtn = document.getElementById('loginBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const closeModal = document.querySelector('.close-modal');
+            const loginForm = document.getElementById('loginForm');
+
+            loginBtn.addEventListener('click', () => loginModal.style.display = 'block');
+            logoutBtn.addEventListener('click', () => authManager.logout());
+            
+            closeModal.addEventListener('click', () => loginModal.style.display = 'none');
+
+            // Fermer modal en cliquant à l'extérieur
+            window.addEventListener('click', (e) => {
+                if (e.target === loginModal) {
+                    loginModal.style.display = 'none';
+                }
+            });
+
+            // Connexion
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const username = document.getElementById('username').value.trim();
+                const email = document.getElementById('email').value.trim();
+
+                if (username.length < 3) {
+                    showNotification('❌ Le pseudo doit faire au moins 3 caractères', 'error');
+                    return;
+                }
+
+                const result = await authManager.login(username, email);
+                
+                if (result.success) {
+                    loginModal.style.display = 'none';
+                    loginForm.reset();
+                    showNotification(`🎉 Bienvenue ${username} !`, 'success');
+                } else {
+                    showNotification('❌ ' + result.error, 'error');
+                }
+            });
+
+            // Newsletter
+            const newsletterForm = document.getElementById('newsletterForm');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const email = document.getElementById('newsletterEmail').value.trim();
+                    
+                    const result = await NewsletterManager.subscribe(email, authManager.currentUser?.id);
+                    
+                    if (result.success) {
+                        showNotification('✅ Inscription à la newsletter réussie !', 'success');
+                        newsletterForm.reset();
+                    } else {
+                        showNotification('❌ ' + result.error, 'error');
+                    }
+                });
+            }
+
+            // Gestion des clics sur les TDs
+            document.querySelectorAll('.td-card:not(.locked-card)').forEach(card => {
+                card.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    const tdNumber = authManager.extractTDNumber(card);
+                    if (!tdNumber) return;
+                    
+                    if (!authManager.currentUser) {
+                        showNotification('🔐 Connectez-vous pour accéder aux TDs', 'info');
+                        loginModal.style.display = 'block';
+                        return;
+                    }
+
+                    await ProgressManager.updateLastAccessed(tdNumber);
+                    
+                    const href = card.getAttribute('href');
+                    if (href && href !== '#') {
+                        window.location.href = href;
+                    }
+                });
+            });
+
+            // Navigation smooth scroll
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            console.log('✅ Focus ISEP initialisé avec succès!');
+        });
+
+        // Fonction utilitaire pour les notifications
+        function showNotification(message, type = 'info') {
+            document.querySelectorAll('.notification').forEach(n => n.remove());
+
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <span class="notification-message">${message}</span>
+                    <button class="notification-close">&times;</button>
+                </div>
+            `;
+
+            document.body.appendChild(notification);
+
+            notification.querySelector('.notification-close').addEventListener('click', () => {
+                notification.remove();
+            });
+
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.style.animation = 'slideOutRight 0.3s ease';
+                    setTimeout(() => notification.remove(), 300);
+                }
+            }, 4000);
+        }
+    </script>
 </body>
 </html>
