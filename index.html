@@ -9,38 +9,8 @@
     <!-- Supabase JS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- Configuration Supabase -->
-    <script>
-        // Configuration Supabase
-        const SUPABASE_URL = 'https://eznzfgcwbqcckkvhsdhi.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV6bnpmZ2N3YnFjY2trdmhzZGhpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ5Mjg2MTksImV4cCI6MjA1MDUwNDYxOX0.6WhkWn3e1Gdy8DTnkLmjMA_O10roVtv';
-        
-        // Initialisation Supabase
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        
-        // Gestion de l'état utilisateur
-        let currentUser = null;
-        let userProgress = {};
-    </script>
-    
-    <!-- Configuration MathJax -->
-    <script>
-        window.MathJax = {
-            tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$', '$$'], ['\\[', '\\]']],
-                processEscapes: true,
-                tags: 'ams'
-            },
-            svg: {
-                fontCache: 'global'
-            }
-        };
-    </script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    
     <style>
-        /* Reset et styles de base */
+        /* RESET ET STYLES DE BASE */
         * {
             margin: 0;
             padding: 0;
@@ -86,7 +56,7 @@
             padding: 0 20px;
         }
 
-        /* Header */
+        /* HEADER */
         .main-header {
             background: white;
             box-shadow: var(--shadow);
@@ -166,7 +136,7 @@
             gap: 10px;
         }
 
-        /* Hero Section */
+        /* HERO SECTION */
         .hero-section {
             padding: 80px 0;
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
@@ -253,7 +223,7 @@
             color: rgba(255,255,255,0.7);
         }
 
-        /* Stats Bar */
+        /* STATS BAR */
         .stats-bar {
             background: white;
             padding: 40px 0;
@@ -283,7 +253,7 @@
             font-weight: 500;
         }
 
-        /* Sections */
+        /* SECTIONS */
         .section {
             padding: 80px 0;
         }
@@ -311,7 +281,7 @@
             margin: 40px 0;
         }
 
-        /* Progress Indicator */
+        /* PROGRESS INDICATOR */
         .progress-indicator {
             background: var(--light);
             padding: 20px;
@@ -335,7 +305,7 @@
             transition: width 0.5s ease;
         }
 
-        /* TD Grid */
+        /* TD GRID */
         .td-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -349,6 +319,7 @@
             box-shadow: var(--shadow);
             transition: var(--transition);
             border-left: 4px solid var(--primary);
+            cursor: pointer;
         }
 
         .td-card:hover {
@@ -420,7 +391,7 @@
             color: var(--gray);
         }
 
-        /* Telecom Features */
+        /* TELECOM FEATURES */
         .telecom-features {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -464,7 +435,7 @@
             background: var(--primary-dark);
         }
 
-        /* Testimonials */
+        /* TESTIMONIALS */
         .testimonials {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -512,7 +483,7 @@
             color: var(--gray);
         }
 
-        /* Newsletter */
+        /* NEWSLETTER */
         .newsletter-section {
             background: var(--light);
             padding: 60px 0;
@@ -543,7 +514,7 @@
             color: var(--gray);
         }
 
-        /* Footer */
+        /* FOOTER */
         .main-footer {
             background: var(--dark);
             color: white;
@@ -551,7 +522,7 @@
             text-align: center;
         }
 
-        /* Modal */
+        /* MODAL */
         .modal {
             display: none;
             position: fixed;
@@ -638,7 +609,7 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Notifications */
+        /* NOTIFICATIONS */
         .notification {
             position: fixed;
             top: 20px;
@@ -692,7 +663,7 @@
             to { transform: translateX(100%); opacity: 0; }
         }
 
-        /* Responsive */
+        /* RESPONSIVE */
         @media (max-width: 992px) {
             .hero-content {
                 grid-template-columns: 1fr;
@@ -856,7 +827,7 @@
                 </div>
                 
                 <div class="td-grid">
-                    <a href="td1.html" class="td-card">
+                    <div class="td-card" data-td="1">
                         <div class="card-header">
                             <h3>TD1</h3>
                             <span class="difficulty easy">Facile</span>
@@ -865,8 +836,8 @@
                         <div class="card-footer">
                             <span class="time-estimate"><i class="far fa-clock"></i> ~1.5h</span>
                         </div>
-                    </a>
-                    <a href="td2.html" class="td-card">
+                    </div>
+                    <div class="td-card" data-td="2">
                         <div class="card-header">
                             <h3>TD2</h3>
                             <span class="difficulty medium">Moyen</span>
@@ -875,8 +846,8 @@
                         <div class="card-footer">
                             <span class="time-estimate"><i class="far fa-clock"></i> ~2h</span>
                         </div>
-                    </a>
-                    <a href="td3.html" class="td-card">
+                    </div>
+                    <div class="td-card" data-td="3">
                         <div class="card-header">
                             <h3>TD3</h3>
                             <span class="difficulty medium">Moyen</span>
@@ -885,8 +856,8 @@
                         <div class="card-footer">
                             <span class="time-estimate"><i class="far fa-clock"></i> ~2h</span>
                         </div>
-                    </a>
-                    <a href="td4.html" class="td-card">
+                    </div>
+                    <div class="td-card" data-td="4">
                         <div class="card-header">
                             <h3>TD4</h3>
                             <span class="difficulty hard">Difficile</span>
@@ -895,8 +866,8 @@
                         <div class="card-footer">
                             <span class="time-estimate"><i class="far fa-clock"></i> ~2.5h</span>
                         </div>
-                    </a>
-                    <a href="td5.html" class="td-card">
+                    </div>
+                    <div class="td-card" data-td="5">
                         <div class="card-header">
                             <h3>TD5</h3>
                             <span class="difficulty hard">Difficile</span>
@@ -905,7 +876,7 @@
                         <div class="card-footer">
                             <span class="time-estimate"><i class="far fa-clock"></i> ~3h</span>
                         </div>
-                    </a>
+                    </div>
                     <div class="td-card locked-card">
                         <div class="card-header">
                             <h3>TD6</h3>
@@ -1050,10 +1021,15 @@
                 // Vérifier si l'utilisateur est déjà connecté
                 const savedUser = localStorage.getItem('focusUser');
                 if (savedUser) {
-                    this.currentUser = JSON.parse(savedUser);
-                    this.updateUI();
-                    await this.loadUserProgress();
-                    await this.updateStats();
+                    try {
+                        this.currentUser = JSON.parse(savedUser);
+                        this.updateUI();
+                        await this.loadUserProgress();
+                        await this.updateStats();
+                    } catch (e) {
+                        console.error('Erreur parsing saved user:', e);
+                        localStorage.removeItem('focusUser');
+                    }
                 }
                 
                 await this.updateStats();
@@ -1076,17 +1052,17 @@
                     const { data: existingUser, error: checkError } = await supabase
                         .from('users')
                         .select('*')
-                        .eq('username', username)
-                        .eq('email', email)
-                        .maybeSingle(); // Utiliser maybeSingle au lieu de single
+                        .or(`username.eq.${username},email.eq.${email}`)
+                        .maybeSingle();
 
                     let user;
                     
                     if (existingUser) {
-                        // Utilisateur existant - mise à jour last_login
+                        // Utilisateur existant
                         console.log('👤 Utilisateur existant trouvé');
                         user = existingUser;
                         
+                        // Mettre à jour last_login
                         const { error: updateError } = await supabase
                             .from('users')
                             .update({ last_login: new Date().toISOString() })
@@ -1111,28 +1087,10 @@
                         
                         if (insertError) {
                             console.error('❌ Erreur création utilisateur:', insertError);
-                            
-                            // Si c'est une erreur de contrainte unique, essayer de récupérer l'utilisateur existant
-                            if (insertError.code === '23505') {
-                                const { data: existingUserByEmail } = await supabase
-                                    .from('users')
-                                    .select('*')
-                                    .eq('email', email)
-                                    .single();
-                                
-                                if (existingUserByEmail) {
-                                    user = existingUserByEmail;
-                                    console.log('✅ Utilisateur récupéré par email:', user);
-                                } else {
-                                    throw new Error('Ce pseudo ou email est déjà utilisé');
-                                }
-                            } else {
-                                throw insertError;
-                            }
-                        } else {
-                            user = newUser;
-                            console.log('✅ Nouvel utilisateur créé:', user);
+                            throw insertError;
                         }
+                        user = newUser;
+                        console.log('✅ Nouvel utilisateur créé:', user);
                     }
 
                     this.currentUser = user;
@@ -1148,7 +1106,7 @@
                     
                     let errorMessage = 'Erreur de connexion';
                     
-                    if (error.message.includes('23505')) {
+                    if (error.code === '23505') {
                         errorMessage = 'Ce pseudo ou email est déjà utilisé';
                     } else if (error.message.includes('JWT')) {
                         errorMessage = 'Erreur de configuration Supabase';
@@ -1248,7 +1206,7 @@
                 const tdCards = document.querySelectorAll('.td-card:not(.locked-card)');
                 
                 tdCards.forEach(card => {
-                    const tdNumber = this.extractTDNumber(card);
+                    const tdNumber = parseInt(card.getAttribute('data-td'));
                     if (!tdNumber) return;
                     
                     const progress = userProgress[tdNumber];
@@ -1264,14 +1222,6 @@
                         footer.innerHTML = `<span class="completion-badge"><i class="fas fa-check"></i> Complété</span>`;
                     }
                 });
-            }
-
-            extractTDNumber(card) {
-                const title = card.querySelector('h3');
-                if (!title) return null;
-                
-                const match = title.textContent.match(/TD(\d+)/);
-                return match ? parseInt(match[1]) : null;
             }
 
             async updateStats() {
@@ -1298,61 +1248,255 @@
                     console.error('❌ Erreur mise à jour stats:', error);
                 }
             }
+
+            isLoggedIn() {
+                return this.currentUser !== null;
+            }
+        }
+
+        // Gestion de la progression
+        class ProgressManager {
+            static async markTDCompleted(tdNumber, score = null, timeSpent = null) {
+                if (!authManager.currentUser) {
+                    showNotification('🔐 Veuillez vous connecter pour enregistrer votre progression.', 'info');
+                    return false;
+                }
+
+                try {
+                    const progressData = {
+                        user_id: authManager.currentUser.id,
+                        td_number: tdNumber,
+                        is_completed: true,
+                        completed_at: new Date().toISOString(),
+                        score: score,
+                        time_spent: timeSpent,
+                        last_accessed: new Date().toISOString()
+                    };
+
+                    console.log('💾 Sauvegarde progression:', progressData);
+
+                    const { data, error } = await supabase
+                        .from('td_progress')
+                        .upsert(progressData, { onConflict: 'user_id,td_number' })
+                        .select()
+                        .single();
+
+                    if (error) throw error;
+
+                    userProgress[tdNumber] = data;
+                    authManager.updateProgressUI();
+                    authManager.updateTDCards();
+                    
+                    showNotification('✅ Progression sauvegardée !', 'success');
+                    return true;
+                    
+                } catch (error) {
+                    console.error('❌ Erreur sauvegarde progression:', error);
+                    showNotification('❌ Erreur sauvegarde progression', 'error');
+                    return false;
+                }
+            }
+
+            static async updateLastAccessed(tdNumber) {
+                if (!authManager.currentUser) return;
+
+                try {
+                    await supabase
+                        .from('td_progress')
+                        .upsert({
+                            user_id: authManager.currentUser.id,
+                            td_number: tdNumber,
+                            last_accessed: new Date().toISOString()
+                        }, { onConflict: 'user_id,td_number' });
+                        
+                } catch (error) {
+                    console.error('❌ Erreur mise à jour accès:', error);
+                }
+            }
+        }
+
+        // Gestion newsletter
+        class NewsletterManager {
+            static async subscribe(email, userId = null) {
+                try {
+                    const { data: existing, error: checkError } = await supabase
+                        .from('newsletter_subscriptions')
+                        .select('*')
+                        .eq('email', email)
+                        .eq('is_active', true)
+                        .single();
+
+                    if (existing) {
+                        return { success: false, error: 'Vous êtes déjà inscrit à la newsletter' };
+                    }
+
+                    const subscriptionData = {
+                        email: email,
+                        user_id: userId,
+                        subscribed_at: new Date().toISOString(),
+                        is_active: true
+                    };
+
+                    console.log('📧 Inscription newsletter:', subscriptionData);
+
+                    const { data, error } = await supabase
+                        .from('newsletter_subscriptions')
+                        .insert([subscriptionData])
+                        .select()
+                        .single();
+
+                    if (error) throw error;
+                    
+                    console.log('✅ Inscription newsletter réussie');
+                    return { success: true, data };
+                    
+                } catch (error) {
+                    console.error('❌ Erreur inscription newsletter:', error);
+                    return { success: false, error: error.message };
+                }
+            }
         }
 
         // Initialisation
         const authManager = new AuthManager();
 
-        // Événements DOM
+        // Événements DOM - VERSION CORRIGÉE
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 Initialisation de Focus ISEP...');
 
-            // Modal de connexion
+            // Modal de connexion - CORRECTION DES ÉVÉNEMENTS
             const loginModal = document.getElementById('loginModal');
             const loginBtn = document.getElementById('loginBtn');
             const logoutBtn = document.getElementById('logoutBtn');
             const closeModal = document.querySelector('.close-modal');
             const loginForm = document.getElementById('loginForm');
 
-            loginBtn.addEventListener('click', () => loginModal.style.display = 'block');
-            logoutBtn.addEventListener('click', () => authManager.logout());
+            // CORRECTION : S'assurer que le bouton login fonctionne
+            if (loginBtn) {
+                loginBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('🎯 Bouton connexion cliqué');
+                    loginModal.style.display = 'block';
+                });
+            }
+
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    authManager.logout();
+                });
+            }
             
-            closeModal.addEventListener('click', () => loginModal.style.display = 'none');
+            if (closeModal) {
+                closeModal.addEventListener('click', function() {
+                    loginModal.style.display = 'none';
+                });
+            }
 
             // Fermer modal en cliquant à l'extérieur
-            window.addEventListener('click', (e) => {
+            window.addEventListener('click', function(e) {
                 if (e.target === loginModal) {
                     loginModal.style.display = 'none';
                 }
             });
 
             // Connexion
-            loginForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const username = document.getElementById('username').value.trim();
-                const email = document.getElementById('email').value.trim();
+            if (loginForm) {
+                loginForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const username = document.getElementById('username').value.trim();
+                    const email = document.getElementById('email').value.trim();
 
-                if (username.length < 3) {
-                    showNotification('❌ Le pseudo doit faire au moins 3 caractères', 'error');
-                    return;
-                }
+                    if (username.length < 3) {
+                        showNotification('❌ Le pseudo doit faire au moins 3 caractères', 'error');
+                        return;
+                    }
 
-                const result = await authManager.login(username, email);
-                
-                if (result.success) {
-                    loginModal.style.display = 'none';
-                    loginForm.reset();
-                    showNotification(`🎉 Bienvenue ${username} !`, 'success');
-                } else {
-                    showNotification('❌ ' + result.error, 'error');
-                }
+                    const result = await authManager.login(username, email);
+                    
+                    if (result.success) {
+                        loginModal.style.display = 'none';
+                        loginForm.reset();
+                        showNotification(`🎉 Bienvenue ${username} !`, 'success');
+                    } else {
+                        showNotification('❌ ' + result.error, 'error');
+                    }
+                });
+            }
+
+            // Newsletter
+            const newsletterForm = document.getElementById('newsletterForm');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const email = document.getElementById('newsletterEmail').value.trim();
+                    
+                    const result = await NewsletterManager.subscribe(email, authManager.currentUser?.id);
+                    
+                    if (result.success) {
+                        showNotification('✅ Inscription à la newsletter réussie !', 'success');
+                        newsletterForm.reset();
+                    } else {
+                        showNotification('❌ ' + result.error, 'error');
+                    }
+                });
+            }
+
+            // CORRECTION : Gestion des clics sur les TDs avec vérification de connexion
+            document.querySelectorAll('.td-card:not(.locked-card)').forEach(card => {
+                card.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    const tdNumber = parseInt(this.getAttribute('data-td'));
+                    console.log('🎯 Clic sur TD:', tdNumber);
+                    
+                    if (!authManager.isLoggedIn()) {
+                        showNotification('🔐 Veuillez vous connecter pour accéder aux TDs', 'info');
+                        loginModal.style.display = 'block';
+                        return;
+                    }
+
+                    // Mettre à jour le dernier accès
+                    await ProgressManager.updateLastAccessed(tdNumber);
+                    
+                    // Rediriger vers la page du TD
+                    const tdPages = {
+                        1: 'td1.html',
+                        2: 'td2.html',
+                        3: 'td3.html',
+                        4: 'td4.html',
+                        5: 'td5.html'
+                    };
+                    
+                    const tdPage = tdPages[tdNumber];
+                    if (tdPage) {
+                        console.log('🔗 Redirection vers:', tdPage);
+                        window.location.href = tdPage;
+                    } else {
+                        showNotification('❌ Page TD non trouvée', 'error');
+                    }
+                });
             });
 
-            console.log('✅ Focus ISEP initialisé!');
+            // Navigation smooth scroll
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            console.log('✅ Focus ISEP initialisé avec succès!');
         });
 
         // Fonction utilitaire pour les notifications
         function showNotification(message, type = 'info') {
+            // Supprimer les notifications existantes
             document.querySelectorAll('.notification').forEach(n => n.remove());
 
             const notification = document.createElement('div');
@@ -1364,7 +1508,7 @@
                 </div>
             `;
 
-            // Styles de notification
+            // Appliquer les styles
             Object.assign(notification.style, {
                 position: 'fixed',
                 top: '20px',
@@ -1390,14 +1534,20 @@
 
             document.body.appendChild(notification);
 
-            notification.querySelector('.notification-close').addEventListener('click', () => {
+            // Bouton de fermeture
+            notification.querySelector('.notification-close').addEventListener('click', function() {
                 notification.remove();
             });
 
-            setTimeout(() => {
+            // Fermeture automatique
+            setTimeout(function() {
                 if (notification.parentNode) {
                     notification.style.animation = 'slideOutRight 0.3s ease';
-                    setTimeout(() => notification.remove(), 300);
+                    setTimeout(function() {
+                        if (notification.parentNode) {
+                            notification.remove();
+                        }
+                    }, 300);
                 }
             }, 4000);
         }
