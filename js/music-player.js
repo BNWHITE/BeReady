@@ -14,7 +14,7 @@ class MusicPlayer {
     }
 
     createAudioElement() {
-        this.audio = new Audio('audio/music.mp3');
+        this.audio = new Audio('../music.mp3');
         this.audio.loop = true;
         this.audio.volume = this.volume;
         
