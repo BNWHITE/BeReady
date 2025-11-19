@@ -6,9 +6,25 @@
     <title>Focus Révisions ISEP - Excellence Académique</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="css/music-player.css">
     
-    <!-- Configuration améliorée de MathJax -->
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Configuration Supabase -->
+    <script>
+        // Remplacez par vos vraies clés Supabase
+        const SUPABASE_URL = 'https://votre-project.supabase.co';
+        const SUPABASE_ANON_KEY = 'votre-anon-key';
+        
+        // Initialisation Supabase
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        // Gestion de l'état utilisateur
+        let currentUser = null;
+        let userProgress = {};
+    </script>
+    
+    <!-- Configuration MathJax -->
     <script>
         window.MathJax = {
             tex: {
@@ -19,30 +35,33 @@
             },
             svg: {
                 fontCache: 'global'
-            },
-            startup: {
-                ready: function() {
-                    console.log('MathJax is ready!');
-                    MathJax.startup.defaultReady();
-                    // Re-process math after page load
-                    MathJax.typesetPromise();
-                }
             }
         };
     </script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-    <!-- Lecteur de musique -->
-    <div class="music-player">
-        <button class="music-btn" id="playPauseBtn">
-            <i class="fas fa-play" id="playIcon"></i>
-        </button>
-        <span class="music-info">Musique d'étude</span>
-        <input type="range" class="volume-control" id="volumeControl" min="0" max="1" step="0.1" value="0.5">
+    <!-- Modal de connexion -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Connexion à Focus ISEP</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Pseudo</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <button type="submit" class="cta-button">Se connecter / S'inscrire</button>
+            </form>
+            <p class="modal-note">Pas de mot de passe requis ! Votre pseudo et email suffisent.</p>
+        </div>
     </div>
-    
+
+    <!-- En-tête avec état utilisateur -->
     <section id="home" class="page active">
         <header class="main-header">
             <div class="logo">FOCUS ISEP</div>
@@ -50,262 +69,58 @@
                 <a href="#home" class="nav-link active">Accueil</a>
                 <a href="#proba-tds" class="nav-link">TDs Proba</a>
                 <a href="#telecom-rev" class="nav-link">Révision Télécom</a>
-                <a href="#temoignages" class="nav-link">Témoignages</a>
+                <div id="userSection" class="user-section">
+                    <button id="loginBtn" class="login-btn">Se connecter</button>
+                    <div id="userInfo" class="user-info" style="display: none;">
+                        <span id="userGreeting">Bonjour, </span>
+                        <button id="logoutBtn" class="logout-btn">Déconnexion</button>
+                    </div>
+                </div>
             </nav>
         </header>
 
-        <div class="hero-section">
-            <div class="hero-content">
-                <span class="tagline">OPTIMISEZ VOTRE RÉVISION</span>
-                <h1>Maîtriser les Probabilités et les Réseaux avec Précision</h1>
-                <p>Accédez à des fiches de révision structurées, des exercices corrigés pas à pas, et un résumé complet des concepts clés en Télécommunications pour une préparation ciblée et efficace.</p>
-                <div class="hero-actions">
-                    <a href="#proba-tds" class="cta-button">Commencer les TDs Proba →</a>
-                    <a href="#newsletter" class="cta-button secondary">Recevoir des fiches gratuites</a>
-                </div>
-            </div>
-            <div class="hero-image-placeholder" style="background-image: url('University.jpg'); background-size: cover; background-position: center;"> </div>
-        </div>
-
-        <div class="stats-bar">
-            <div class="stat-item">
-                <p class="stat-number">5</p>
-                <p class="stat-label">TDs de Proba</p>
-            </div>
-            <div class="stat-item">
-                <p class="stat-number">1</p>
-                <p class="stat-label">Fiche Télécom Complète</p>
-            </div>
-            <div class="stat-item">
-                <p class="stat-number">100%</p>
-                <p class="stat-label">Contenu Cible</p>
-            </div>
-            <div class="stat-item">
-                <p class="stat-number">95%</p>
-                <p class="stat-label">Satisfaction</p>
-            </div>
-        </div>
-        
-        <hr class="separator">
+        <!-- Votre contenu existant... -->
 
         <section id="proba-tds" class="sub-section">
             <h2 class="section-title">Modules de Travaux Dirigés (TD) - Probabilités</h2>
             <p class="section-description">Cliquez sur un module pour accéder à la fiche de révision complète et aux exercices corrigés.</p>
-            <div class="progress-indicator">
+            
+            <!-- Indicateur de progression -->
+            <div id="progressIndicator" class="progress-indicator" style="display: none;">
                 <div class="progress-bar">
-                    <div class="progress-fill" style="width: 60%"></div>
+                    <div id="progressFill" class="progress-fill" style="width: 0%"></div>
                 </div>
-                <span>Votre progression: 3/5 TDs complétés</span>
+                <span id="progressText">Votre progression: 0/5 TDs complétés</span>
             </div>
+            
             <div class="td-grid">
-                <a href="td1.html" class="td-card completed">
-                    <div class="card-header">
-                        <h3>TD1</h3>
-                        <span class="difficulty easy">Facile</span>
-                    </div>
-                    <p>Probabilités Conditionnelles & Indépendance</p>
-                    <div class="card-footer">
-                        <span class="completion-badge"><i class="fas fa-check"></i> Complété</span>
-                    </div>
-                </a>
-                <a href="td2.html" class="td-card completed">
-                    <div class="card-header">
-                        <h3>TD2</h3>
-                        <span class="difficulty medium">Moyen</span>
-                    </div>
-                    <p>Variables Aléatoires Discrètes : Binomiale, Poisson...</p>
-                    <div class="card-footer">
-                        <span class="completion-badge"><i class="fas fa-check"></i> Complété</span>
-                    </div>
-                </a>
-                <a href="td3.html" class="td-card completed">
-                    <div class="card-header">
-                        <h3>TD3</h3>
-                        <span class="difficulty medium">Moyen</span>
-                    </div>
-                    <p>Variables Aléatoires Continues & Loi Normale</p>
-                    <div class="card-footer">
-                        <span class="completion-badge"><i class="fas fa-check"></i> Complété</span>
-                    </div>
-                </a>
-                <a href="td4.html" class="td-card">
-                    <div class="card-header">
-                        <h3>TD4</h3>
-                        <span class="difficulty hard">Difficile</span>
-                    </div>
-                    <p>Couples de Variables Aléatoires : Loi Jointe & Marginales</p>
-                    <div class="card-footer">
-                        <span class="time-estimate"><i class="far fa-clock"></i> ~2h</span>
-                    </div>
-                </a>
-                <a href="td5.html" class="td-card">
-                    <div class="card-header">
-                        <h3>TD5</h3>
-                        <span class="difficulty hard">Difficile</span>
-                    </div>
-                    <p>Vecteurs Gaussiens & Covariance</p>
-                    <div class="card-footer">
-                        <span class="time-estimate"><i class="far fa-clock"></i> ~2.5h</span>
-                    </div>
-                </a>
-                <div class="td-card locked-card">
-                    <div class="card-header">
-                        <h3>TD6</h3>
-                        <span class="difficulty">À venir</span>
-                    </div>
-                    <p>Estimation et Théorèmes Limites (À venir)</p>
-                    <div class="card-footer">
-                        <span class="locked-badge"><i class="fas fa-lock"></i> Bientôt disponible</span>
-                    </div>
-                </div>
+                <!-- Les cartes TD seront générées dynamiquement -->
             </div>
         </section>
 
-        <hr class="separator">
-
-        <section id="telecom-rev" class="sub-section">
-            <h2 class="section-title">Révision Complète - Télécommunications</h2>
-            <p class="section-description">Synthèse ultra-détaillée des concepts clés : Bilan de Liaison (PIRE, $P_r$), Théorème de Shannon, SINR, Affaiblissement (LTE, Wi-Fi, Fibre).</p>
-            <div class="telecom-features">
-                <div class="feature">
-                    <i class="fas fa-chart-line"></i>
-                    <h4>Bilan de Liaison</h4>
-                    <p>Comprenez PIRE, puissance reçue et calculs d'affaiblissement</p>
-                </div>
-                <div class="feature">
-                    <i class="fas fa-bolt"></i>
-                    <h4>Théorème de Shannon</h4>
-                    <p>Maîtrisez la capacité maximale d'un canal de communication</p>
-                </div>
-                <div class="feature">
-                    <i class="fas fa-wifi"></i>
-                    <h4>Technologies Réseau</h4>
-                    <p>LTE, Wi-Fi, Fibre optique et leurs spécificités</p>
-                </div>
-            </div>
-            <a href="telecom.html" class="cta-button secondary-cta">Accéder à la Fiche Télécom Complète →</a>
-        </section>
-
-        <hr class="separator">
-
-        <section id="temoignages" class="sub-section">
-            <h2 class="section-title">Ce que disent nos étudiants</h2>
-            <div class="testimonials">
-                <div class="testimonial">
-                    <div class="testimonial-content">
-                        <p>"Grâce à ces fiches, j'ai enfin compris les probabilités conditionnelles qui me posaient problème depuis des mois. Les explications pas à pas sont incroyablement claires."</p>
-                    </div>
-                    <div class="testimonial-author">
-                        <strong>Marie L.</strong>
-                        <span>Étudiante en 2ème année</span>
-                    </div>
-                </div>
-                <div class="testimonial">
-                    <div class="testimonial-content">
-                        <p>"La fiche télécom m'a sauvé pour mon partiel. Tout est synthétisé de manière logique avec des exemples concrets. Je recommande à 100%!"</p>
-                    </div>
-                    <div class="testimonial-author">
-                        <strong>Thomas D.</strong>
-                        <span>Étudiant en 3ème année</span>
-                    </div>
-                </div>
-                <div class="testimonial">
-                    <div class="testimonial-content">
-                        <p>"Le système de progression m'a motivé à terminer tous les TDs. J'ai amélioré ma moyenne de 2 points en probabilités!"</p>
-                    </div>
-                    <div class="testimonial-author">
-                        <strong>Alexandre P.</strong>
-                        <span>Étudiant en 2ème année</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <hr class="separator">
-
+        <!-- Section newsletter améliorée -->
         <section id="newsletter" class="sub-section newsletter-section">
             <div class="newsletter-content">
-                <h2>Recevez des fiches de révision gratuites</h2>
-                <p>Inscrivez-vous pour recevoir des résumés de cours, des exercices supplémentaires et des astuces de révision directement dans votre boîte mail.</p>
-                <form class="newsletter-form">
-                    <input type="email" placeholder="Votre adresse email" required>
-                    <button type="submit" class="cta-button">S'inscrire</button>
-                </form>
+                <h2>Restez informé des nouvelles fiches</h2>
+                <p>Recevez des résumés de cours, des exercices supplémentaires et des astuces de révision.</p>
+                
+                <div id="newsletterFormContainer">
+                    <form id="newsletterForm" class="newsletter-form">
+                        <input type="email" id="newsletterEmail" placeholder="Votre adresse email" required>
+                        <button type="submit" class="cta-button">S'inscrire à la newsletter</button>
+                    </form>
+                </div>
+                
+                <div id="newsletterStatus" style="display: none;"></div>
                 <p class="privacy-note">Nous respectons votre vie privée. Désabonnez-vous à tout moment.</p>
             </div>
         </section>
         
         <footer class="main-footer">
-            <p>&copy; 2025 Focus ISEP Révisions. Tous droits réservés - Seydi</p>
+            <p>&copy; 2025 Focus ISEP Révisions. Tous droits réservés - Seydi.</p>
         </footer>
     </section>
 
-    <script>
-        // Animation des cartes TD au défilement
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        // Observer les cartes TD
-        document.querySelectorAll('.td-card').forEach(card => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            observer.observe(card);
-        });
-
-        // Observer les témoignages
-        document.querySelectorAll('.testimonial').forEach(testimonial => {
-            testimonial.style.opacity = '0';
-            testimonial.style.transform = 'translateY(20px)';
-            testimonial.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            observer.observe(testimonial);
-        });
-
-        // Navigation active
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function() {
-                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-
-        // Gestion du formulaire newsletter
-        document.querySelector('.newsletter-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = this.querySelector('input[type="email"]').value;
-            // Simulation d'envoi
-            alert(`Merci! Vous recevrez bientôt des fiches de révision à ${email}`);
-            this.reset();
-        });
-
-        // Re-process MathJax après le chargement de la page
-        document.addEventListener('DOMContentLoaded', function() {
-            if (window.MathJax) {
-                MathJax.typesetPromise().catch((err) => {
-                    console.log('MathJax typeset error:', err);
-                });
-            }
-        });
-
-        // Re-process MathJax après le chargement dynamique de contenu
-        function refreshMathJax() {
-            if (window.MathJax) {
-                MathJax.typesetPromise();
-            }
-        }
-
-    </script>
-    <script src="js/music-player.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
