@@ -1,22 +1,23 @@
-// Fonction utilitaire de base pour les notifications, si elle n'est pas définie ailleurs
-// (Cette fonction est utilisée par auth-manager.js)
+// Fonction utilitaire de base pour les notifications (si non définie ailleurs)
 const showNotification = (message, type) => {
     console.log(`[Notification ${type}]: ${message}`);
-    // Implémentation visuelle de la notification si elle n'est pas fournie (ici on utilise juste alert)
+    // Implémentation visuelle simple (utilisée pour l'erreur de connexion ou le blocage d'accès)
     if (type === 'error') {
         alert(`Erreur: ${message}`);
-    } else {
-        // Pour les messages de succès/info, on peut se contenter d'un console.log ou d'une notification discrète
+    } else if (type === 'info' && message.includes('connecter')) {
+        // Alerte douce pour l'accès refusé
+        alert(message);
     }
+    // Note: Le message de bienvenue est géré directement par alert() dans AuthManager
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-
     // --- 1. FONCTIONS ET NAVIGATION ORIGINALES ---
 
     // Fonction pour ajouter les écouteurs pour les boutons "Voir la solution"
     const addSolutionTogglers = () => {
         document.querySelectorAll('.toggle-solution').forEach(button => {
+            // S'assurer qu'on n'ajoute pas l'écouteur deux fois
             if (button.hasAttribute('data-listener-added')) return;
             
             button.onclick = function() {
@@ -41,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    // --- 2. INITIALISATION DES MANAGERS (CORRECTION) ---
+    // --- 2. INITIALISATION DES MANAGERS (CORRECTION DU THÈME ET AUTH) ---
 
     // Initialisation du gestionnaire de Thème (bouton sombre/clair)
     if (typeof ThemeManager !== 'undefined') {
@@ -49,11 +50,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Initialisation du gestionnaire d'Authentification
+    let authManager;
     if (typeof AuthManager !== 'undefined') {
-        // Stocker l'instance globalement pour y accéder facilement
         window.authManager = new AuthManager(); 
+        authManager = window.authManager;
         
-        // --- 3. LOGIQUE MODALE DE CONNEXION (CORRECTION) ---
+        // --- 3. LOGIQUE MODALE DE CONNEXION ---
         
         const loginModal = document.getElementById('loginModal');
         const loginBtn = document.getElementById('loginBtn');
@@ -65,12 +67,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (loginBtn && loginModal) {
             loginBtn.addEventListener('click', () => {
                 loginModal.style.display = 'block';
-                // Optionnel : Réinitialiser le formulaire
                 loginForm.reset(); 
             });
         }
         
-        // Fermer la modale avec le bouton 'x'
+        // Fermer la modale
         if (closeBtn && loginModal) {
             closeBtn.addEventListener('click', () => {
                 loginModal.style.display = 'none';
@@ -91,11 +92,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const username = document.getElementById('username').value;
                 const email = document.getElementById('email').value;
                 
-                const result = await window.authManager.login(username, email);
+                const result = await authManager.login(username, email);
                 
                 if (result.success) {
                     loginModal.style.display = 'none';
-                    showNotification(`Bienvenue, ${result.user.username}!`, 'success');
                 } else {
                     showNotification(result.error || 'Erreur inconnue lors de la connexion.', 'error');
                 }
@@ -105,24 +105,57 @@ document.addEventListener('DOMContentLoaded', () => {
         // Gérer la déconnexion
         if (logoutBtn) {
             logoutBtn.addEventListener('click', () => {
-                window.authManager.logout();
+                authManager.logout();
             });
         }
+        
+        // --- 4. LOGIQUE D'ACCÈS CONDITIONNEL (BLOQUE LES RESSOURCES SI DÉCONNECTÉ) ---
+        
+        // Cibler les cartes TD (.td-card) et les boutons d'accès APP (a.cta-button dans .app-card)
+        document.querySelectorAll('.td-card, .app-card a.cta-button').forEach(element => {
+            
+            // On récupère l'URL soit depuis data-resource-url (TDs), soit depuis href (liens APP)
+            const resourceUrl = element.getAttribute('data-resource-url') || element.getAttribute('href');
+
+            // On ne bloque pas les ancres locales (#maths, #faq, etc.)
+            if (!resourceUrl || resourceUrl.startsWith('#')) {
+                return; 
+            }
+
+            element.addEventListener('click', function(e) {
+                
+                if (!authManager.isLoggedIn()) {
+                    e.preventDefault(); // Bloque la navigation
+                    
+                    // Affiche la modale de connexion
+                    if (loginModal) {
+                        loginModal.style.display = 'block';
+                    }
+                    
+                    showNotification('🔒 Veuillez vous connecter pour accéder à cette ressource.', 'info');
+                } else if (resourceUrl && element.classList.contains('td-card')) {
+                    // Si l'utilisateur est connecté et que c'est une carte TD (dont le href a été retiré), on navigue manuellement
+                    e.preventDefault(); 
+                    window.location.href = resourceUrl;
+                }
+                // Si l'utilisateur est connecté et que c'est un lien APP (<a> avec href), la navigation se fait par défaut.
+            });
+        });
     }
 
-    // --- 4. GESTION NEWSLETTER (AJOUT) ---
+
+    // --- 5. GESTION NEWSLETTER (existante) ---
     const newsletterForm = document.getElementById('newsletterForm');
     const newsletterStatus = document.getElementById('newsletterStatus');
     
-    if (newsletterForm && newsletterStatus) {
+    // S'assurer que securityManager est disponible (il est dans le script.js d'index.html)
+    if (newsletterForm && newsletterStatus && typeof securityManager !== 'undefined') {
         newsletterForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const email = document.getElementById('newsletterEmail').value;
             
-            // Logique de soumission de la newsletter (simulée ici car le script n'est pas fourni)
             console.log(`Inscription newsletter pour: ${email}`);
             
-            // Masquer le formulaire et afficher un message de succès
             const formContainer = document.getElementById('newsletterFormContainer');
             if (formContainer) formContainer.style.display = 'none';
             
@@ -132,6 +165,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Initialisation des togglers (à la fin pour s'assurer que tout est chargé)
+    // Initialisation
     addSolutionTogglers();
 });
