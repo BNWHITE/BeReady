@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TD2 - Variables Aléatoires Discrètes</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/music-player.css">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
@@ -696,5 +697,15 @@
             observer.observe(el);
         });
     </script>
+        <!-- Lecteur de musique (identique sur toutes les pages) -->
+        <div class="music-player">
+            <button class="music-btn" id="playPauseBtn">
+                <i class="fas fa-play" id="playIcon"></i>
+            </button>
+            <span class="music-info">Musique d'étude</span>
+            <input type="range" class="volume-control" id="volumeControl" min="0" max="1" step="0.1" value="0.5">
+        </div>
+        
+        <script src="js/music-player.js"></script>
 </body>
 </html>
