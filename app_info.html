@@ -3,42 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APP Info & BDD - Focus ISEP</title>
+    <title>Prépa Partiel BDD - Focus ISEP</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id="exam-timer" class="exam-timer hidden">
+        <span class="timer-icon"><i class="fas fa-hourglass-half"></i></span>
+        <span id="timer-display">40:00</span>
+        <button onclick="toggleTimer()" class="timer-btn"><i class="fas fa-pause"></i></button>
+        <button onclick="resetTimer()" class="timer-btn"><i class="fas fa-sync"></i></button>
+    </div>
+
     <header class="main-header">
         <div class="container">
             <div class="header-content">
-                <a href="index.html" class="logo">FOCUS ISEP</a>
+                <a href="index.html" class="logo">FOCUS BDD</a>
                 <nav class="nav-links">
-                    <a href="index.html" class="nav-link">Accueil</a>
-                    <a href="index.html#app" class="nav-link active">APP Info & BDD</a>
-                    <a href="index.html#maths" class="nav-link">Mathématiques</a>
+                    <a href="index.html" class="nav-link">Retour Accueil</a>
                 </nav>
                 <div class="user-section">
-                    <button id="themeToggle" class="theme-toggle" title="Changer le thème">
-                        <i class="fas fa-moon"></i>
-                    </button>
+                    <button id="themeToggle" class="theme-toggle"><i class="fas fa-moon"></i></button>
                 </div>
             </div>
         </div>
     </header>
 
-    <section class="hero-section" style="background: linear-gradient(135deg, var(--isep-blue-dark) 0%, #1a2a6c 100%);">
+    <section class="hero-section exam-mode">
         <div class="container">
-            <div class="hero-content" style="text-align: center; display: block;">
-                <h1 class="hero-title">🎯 Objectif : Majeure BDD</h1>
-                <p class="hero-description" style="margin: 0 auto 30px; max-width: 700px;">
-                    Tout pour réussir le partiel : Modèle Conceptuel, Mapping Relationnel et SQL.
-                    Basé sur les cours officiels.
+            <div class="hero-content centered">
+                <div class="alert-badge"><i class="fas fa-exclamation-circle"></i> EXAMEN VENDREDI</div>
+                <h1 class="hero-title">Modèle E/R & Mapping</h1>
+                <p class="hero-description">
+                    Objectif : 2 Exercices en 40 minutes. Pas de documents. <br>
+                    <strong>Sujets :</strong> Modélisation Conceptuelle + Passage au Relationnel.
                 </p>
-                <div class="hero-actions" style="justify-content: center;">
-                    <button class="cta-button" onclick="showTab('quiz')"><i class="fas fa-gamepad"></i> Lancer le Quiz</button>
-                    <button class="cta-button secondary" onclick="showTab('cheatsheet')"><i class="fas fa-file-code"></i> Cheat Sheet SQL</button>
+                <div class="hero-actions centered">
+                    <button class="cta-button" onclick="startExamMode()"><i class="fas fa-play"></i> Lancer Mode Exam (40')</button>
+                    <button class="cta-button secondary" onclick="showTab('mapping')"><i class="fas fa-exchange-alt"></i> Réviser le Mapping</button>
                 </div>
             </div>
         </div>
@@ -46,188 +49,205 @@
 
     <div class="container main-content-area">
         <div class="tabs-container">
-            <button class="tab-btn active" onclick="showTab('cours')"><i class="fas fa-book"></i> Cours & Méthode</button>
-            <button class="tab-btn" onclick="showTab('cheatsheet')"><i class="fas fa-bolt"></i> Fiches Mémo</button>
-            <button class="tab-btn" onclick="showTab('quiz')"><i class="fas fa-brain"></i> Entraînement</button>
+            <button class="tab-btn active" onclick="showTab('conceptuel')">1. Modèle Conceptuel</button>
+            <button class="tab-btn" onclick="showTab('mapping')">2. Mapping (Le Piège)</button>
+            <button class="tab-btn" onclick="showTab('exercices')">3. Exercices Types</button>
         </div>
 
-        <div id="cours" class="tab-content active">
-            <div class="content-grid">
-                
-                <div class="content-card">
-                    <div class="card-header-colored">
-                        <i class="fas fa-sitemap"></i>
-                        <h3>1. Modèle Conceptuel (MCD)</h3>
-                    </div>
-                    <div class="accordion">
-                        <div class="accordion-item">
-                            <button class="accordion-header">Entités & Attributs <i class="fas fa-chevron-down"></i></button>
-                            <div class="accordion-body">
-                                <p><strong>Entité :</strong> Un objet ayant une existence propre (ex: <em>Personne, Livre</em>). Elle devient une <strong>Table</strong>.</p>
-                                <p><strong>Attribut :</strong> Donnée élémentaire (ex: <em>Nom, Prénom</em>). Devient une <strong>Colonne</strong>.</p>
-                                <p><strong>Identifiant :</strong> Attribut souligné unique (ex: <em>N°Sécu</em>). Devient la <strong>Clé Primaire</strong>.</p>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <button class="accordion-header">Les Cardinalités <i class="fas fa-chevron-down"></i></button>
-                            <div class="accordion-body">
-                                <ul>
-                                    <li><strong>1..1 (One-to-One) :</strong> Une entité est liée à une et une seule autre.</li>
-                                    <li><strong>1..n (One-to-Many) :</strong> Une entité peut être liée à plusieurs autres (ex: Un auteur écrit plusieurs livres).</li>
-                                    <li><strong>n..n (Many-to-Many) :</strong> Plusieurs entités liées à plusieurs autres (ex: Un élève suit plusieurs cours, un cours a plusieurs élèves).</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="content-card">
-                    <div class="card-header-colored" style="background: var(--isep-blue-medium);">
-                        <i class="fas fa-project-diagram"></i>
-                        <h3>2. Mapping (MCD vers MLD)</h3>
-                    </div>
-                    <div class="accordion">
-                        <div class="accordion-item">
-                            <button class="accordion-header">Règle du 1..n (Clé Étrangère) <i class="fas fa-chevron-down"></i></button>
-                            <div class="accordion-body">
-                                <p>On prend la clé primaire de l'entité côté "1" et on l'ajoute comme <strong>Clé Étrangère</strong> dans la table côté "n".</p>
-                                <div class="code-snippet">
-                                    Pilote(1) ---- (n)Vol<br>
-                                    => Table Vol contient "id_Pilote"
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <button class="accordion-header">Règle du n..n (Table de Jointure) <i class="fas fa-chevron-down"></i></button>
-                            <div class="accordion-body">
-                                <p>On crée une <strong>Nouvelle Table</strong> qui contient les clés primaires des deux entités comme clés étrangères.</p>
-                                <div class="code-snippet">
-                                    Etudiant(n) --- (n)Cours<br>
-                                    => Table "Suit"(id_Etudiant, id_Cours, note)
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="content-card">
-                    <div class="card-header-colored" style="background: #2c3e50;">
-                        <i class="fas fa-database"></i>
-                        <h3>3. Langage SQL</h3>
-                    </div>
-                    <div class="accordion">
-                        <div class="accordion-item">
-                            <button class="accordion-header">DDL : Création <i class="fas fa-chevron-down"></i></button>
-                            <div class="accordion-body">
-                                <p>Commandes de structure :</p>
-                                <ul>
-                                    <li><code>CREATE TABLE</code> : Créer une table.</li>
-                                    <li><code>ALTER TABLE</code> : Modifier (ajouter colonne).</li>
-                                    <li><code>DROP TABLE</code> : Supprimer.</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <button class="accordion-header">Contraintes d'Intégrité <i class="fas fa-chevron-down"></i></button>
-                            <div class="accordion-body">
-                                <ul>
-                                    <li><code>PRIMARY KEY</code> : Unique et non nul.</li>
-                                    <li><code>FOREIGN KEY ... REFERENCES</code> : Lien vers une autre table.</li>
-                                    <li><code>NOT NULL</code> : Obligatoire.</li>
-                                    <li><code>ON DELETE CASCADE</code> : Si le parent est supprimé, l'enfant l'est aussi.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <div id="cheatsheet" class="tab-content">
-            <h2 class="section-title">⚡ La Feuille de Triche Ultime</h2>
-            
-            <div class="cheat-sheet-container">
-                <div class="code-block-wrapper">
-                    <h4>Création de Table (Template)</h4>
-                    <pre><code class="language-sql">
-CREATE TABLE Etudiant (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    nom VARCHAR(50) NOT NULL,
-    email VARCHAR(100) UNIQUE,
-    date_naissance DATE,
-    promo_id INT,
-    FOREIGN KEY (promo_id) REFERENCES Promo(id) 
-        ON DELETE SET NULL
-);
-                    </code></pre>
-                </div>
-
-                <div class="code-block-wrapper">
-                    <h4>Requêtes de Base</h4>
-                    <pre><code class="language-sql">
--- Insérer
-INSERT INTO Etudiant (nom, email) VALUES ('Dupont', 'd@isep.fr');
-
--- Modifier
-UPDATE Etudiant SET nom = 'Durand' WHERE id = 1;
-
--- Supprimer
-DELETE FROM Etudiant WHERE id = 1;
-
--- Sélectionner
-SELECT nom, email FROM Etudiant WHERE date_naissance > '2000-01-01';
-                    </code></pre>
+        <div id="conceptuel" class="tab-content active">
+            <div class="revision-grid">
+                <div class="concept-card">
+                    <h3><i class="fas fa-sitemap"></i> Les 3 Piliers</h3>
+                    <ul class="check-list">
+                        <li><strong>Entité :</strong> Un objet (Ex: <em>Avion, Pilote</em>). Devient une Table.</li>
+                        <li><strong>Attribut :</strong> Une info (Ex: <em>Nom, Date</em>). Devient une Colonne.</li>
+                        <li><strong>Identifiant :</strong> Souligné (Ex: <em><u>Num_Vol</u></em>). Devient la Clé Primaire (PK).</li>
+                    </ul>
                 </div>
                 
-                <div class="info-box warning">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <p><strong>Attention aux types :</strong> <code>VARCHAR</code> pour le texte, <code>INT</code> pour les entiers, <code>DATE</code> (AAAA-MM-JJ). Ne jamais oublier le <code>;</code> à la fin !</p>
+                <div class="concept-card warning">
+                    <h3><i class="fas fa-bomb"></i> Attention aux Cardinalités</h3>
+                    <div class="cardinality-visual">
+                        <div class="card-row">
+                            <span>0..1</span>
+                            <small>Zéro ou un (Optionnel)</small>
+                        </div>
+                        <div class="card-row">
+                            <span>1..1</span>
+                            <small>Un et un seul (Obligatoire)</small>
+                        </div>
+                        <div class="card-row">
+                            <span>0..n</span>
+                            <small>Zéro ou plusieurs</small>
+                        </div>
+                        <div class="card-row">
+                            <span>1..n</span>
+                            <small>Au moins un</small>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div id="quiz" class="tab-content">
-            <div class="quiz-container">
-                <div class="quiz-header">
-                    <h2><i class="fas fa-stopwatch"></i> Test Rapide BDD</h2>
-                    <div class="score-display">Score: <span id="score">0</span>/5</div>
-                </div>
-                
-                <div id="quiz-box">
-                    </div>
+        <div id="mapping" class="tab-content">
+            <h2 class="section-title">Les 3 Règles d'Or du Mapping</h2>
+            <p class="section-subtitle">C'est ici que tout le monde perd des points. Apprends ça par cœur.</p>
 
-                <div id="quiz-result" class="hidden">
-                    <h3>Résultat Final</h3>
-                    <p id="result-message"></p>
-                    <button class="cta-button" onclick="resetQuiz()">Recommencer</button>
+            <div class="rules-container">
+                <div class="rule-card">
+                    <div class="rule-header">Règle 1 : Relation (1,1) - (1,1) ou (0,1)</div>
+                    <div class="rule-visual">
+                        <div class="er-view">Entité A (1..1) ---- (1..1) Entité B</div>
+                        <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
+                        <div class="relational-view">
+                            <strong>Une seule Table !</strong><br>
+                            On fusionne tout.<br>
+                            <code>Table_AB (<u>ID_A</u>, Nom_A, Nom_B, ...)</code>
+                        </div>
+                    </div>
                 </div>
+
+                <div class="rule-card highlight">
+                    <div class="rule-header">Règle 2 : Relation (1,n) - (1,1) <span class="badge">LA PLUS FRÉQUENTE</span></div>
+                    <div class="rule-visual">
+                        <div class="er-view">
+                            Client (1..n) <-----> (1..1) Commande
+                        </div>
+                        <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
+                        <div class="relational-view">
+                            La clé part vers le <strong>(1,1)</strong> (le fils).<br>
+                            La table <em>Commande</em> reçoit <code>#id_Client</code>.<br>
+                            <code>Commande (<u>NumCmd</u>, Date, #id_Client)</code>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rule-card">
+                    <div class="rule-header">Règle 3 : Relation (0,n) - (0,n)</div>
+                    <div class="rule-visual">
+                        <div class="er-view">Etudiant (0..n) ---- (0..n) Cours</div>
+                        <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
+                        <div class="relational-view">
+                            <strong>Création d'une Table de Jointure !</strong><br>
+                            La table porte les deux clés en PK composite.<br>
+                            <code>Participer (<u>#id_Etud, #id_Cours</u>, Note)</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="exercices" class="tab-content">
+            <div class="exercises-wrapper">
+                
+                <div class="exercise-card">
+                    <div class="ex-header">
+                        <span class="tag">Modélisation</span>
+                        <h3>Exercice 1 : Gestion des Vols (Slide 30)</h3>
+                    </div>
+                    <div class="ex-body">
+                        <p><strong>Énoncé :</strong> Une compagnie aérienne propose des vols. Un vol a un numéro, départ, arrivée. Un aéroport dessert une ou plusieurs villes. Un vol peut comporter des escales.</p>
+                        <button class="reveal-btn" onclick="toggleCorrection('corr-1')">Voir la Correction Type</button>
+                        <div id="corr-1" class="correction hidden">
+                            <img src="https://mermaid.ink/img/pako:eNp1kk9rwjAQxb9KyGkL9SCLB70IHjx72cMeQjab1EBtnCQlFfHdNx_9w4K3JDPvzez3JgNypwQyUE-WrzJSoa-VlshHq7V4F1JIoXq9oZz7Q-l0f_N9cO_iW-e7k2C-M9Z_4i-sJ7YyY7130_uN3421hTfWf-I3Y205yVjvg_U903b7wVjbDcaC_aH2iZ-MtWV3xtp88L1x3o21eR9k4Bw4gWzJ-YQyUigpG3KRSVkoB5mS25xLoQeD3FCo81Y0yL25lJ0Vp2V0L8n_gN3LCNk3sT43oPj8Bq0550qD61M7q0oT-25W6E426l5C2cR-L2GgWk9h-P6J2c0D1K24Lg?type=png" alt="Correction ER Vols">
+                            <ul class="correction-points">
+                                <li><strong>Entités :</strong> Vol, Aéroport, Ville, Compagnie, Escale.</li>
+                                <li><strong>Associations :</strong> "Proposer" (Compagnie-Vol), "Desserver" (Aéroport-Ville), "Comporter" (Vol-Escale).</li>
+                                <li><strong>Piège :</strong> L'escale est souvent modélisée comme une entité faible ou une association n-aire.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-card">
+                    <div class="ex-header">
+                        <span class="tag">Mapping</span>
+                        <h3>Exercice 2 : Conducteur & Voiture (Slide 11)</h3>
+                    </div>
+                    <div class="ex-body">
+                        <p><strong>Énoncé :</strong>
+                        <br>Conducteur (1..*) --- (1..*) Voiture (Propriété)
+                        <br>Voiture (1..1) --- (1..1) Usine (Fabrication) [Attention piège 1-1]</p>
+                        
+                        <button class="reveal-btn" onclick="toggleCorrection('corr-2')">Voir le Schéma Relationnel</button>
+                        <div id="corr-2" class="correction hidden">
+                            <div class="code-block">
+                                <p><strong>1. Conducteur / Voiture (Many-to-Many) :</strong></p>
+                                <code>Conducteur (<u>id_cond</u>, nom, prenom)</code><br>
+                                <code>Voiture (<u>id_voit</u>, marque, modele)</code><br>
+                                <code>Posseder (<u>#id_cond, #id_voit</u>, date_achat)</code> <span class="comment">// Nouvelle table !</span>
+                                
+                                <p style="margin-top:15px;"><strong>2. Voiture / Usine (One-to-One) :</strong></p>
+                                <p><em>Si on considère qu'une voiture sort d'une seule usine :</em></p>
+                                <code>Voiture (<u>id_voit</u>, ..., #id_usine)</code> <span class="comment">// FK dans Voiture</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-card">
+                    <div class="ex-header">
+                        <span class="tag">Complet</span>
+                        <h3>Exercice 3 : Cinéma (Slide 31)</h3>
+                    </div>
+                    <div class="ex-body">
+                        <p><strong>Énoncé :</strong> Salles, Films, Spectateurs. "Une salle ne projette qu'un seul film à une heure donnée". "Chaque spectateur émet une appréciation".</p>
+                        <button class="reveal-btn" onclick="toggleCorrection('corr-3')">Voir les Points Clés</button>
+                        <div id="corr-3" class="correction hidden">
+                            <ul class="correction-points">
+                                <li><strong>Entité Spectateur :</strong> id, nom, prénom...</li>
+                                <li><strong>Association "Visionner" :</strong> Entre Spectateur et Film. <br>Attribut de l'association : <em>Appréciation</em> (Bien, Nul...). C'est du n..n !</li>
+                                <li><strong>Association "Projeter" :</strong> Entre Salle et Film. Avec attribut <em>Heure</em>.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
     </div>
 
-    <footer class="main-footer">
-        <div class="container">
-            <div class="footer-bottom">
-                <p>&copy; 2025 Focus ISEP. Prêt pour le partiel !</p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
-    <script>hljs.highlightAll();</script>
-    <script src="app_info.js"></script> 
+    <script src="app_info.js"></script>
     <script>
-        // Script simple pour le thème (gardé de ton fichier original)
-        const themeToggle = document.getElementById('themeToggle');
-        const currentTheme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', currentTheme);
-        themeToggle.addEventListener('click', () => {
-            const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-        });
+        // Script inline rapide pour le toggle timer
+        let timeLeft = 40 * 60;
+        let timerId = null;
+        
+        function startExamMode() {
+            document.getElementById('exam-timer').classList.remove('hidden');
+            showTab('exercices');
+            if(!timerId) toggleTimer();
+            alert("C'est parti ! 40 minutes. Fais l'exercice 1 et 2 sans regarder la correction d'abord.");
+        }
+
+        function toggleTimer() {
+            if(timerId) {
+                clearInterval(timerId);
+                timerId = null;
+            } else {
+                timerId = setInterval(() => {
+                    timeLeft--;
+                    updateTimerDisplay();
+                    if(timeLeft <= 0) {
+                        clearInterval(timerId);
+                        alert("Temps écoulé ! Pose les stylos.");
+                    }
+                }, 1000);
+            }
+        }
+
+        function updateTimerDisplay() {
+            const m = Math.floor(timeLeft / 60);
+            const s = timeLeft % 60;
+            document.getElementById('timer-display').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+        }
+
+        function resetTimer() {
+            timeLeft = 40 * 60;
+            updateTimerDisplay();
+            if(timerId) toggleTimer(); // Stop if running
+        }
     </script>
 </body>
 </html>
