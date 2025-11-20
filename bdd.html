@@ -3,432 +3,415 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module BDD - Focus ISEP</title>
+    <title>BDD - Entraînement Intensif</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="style.css">
+    
     <style>
-        :root {
-            --primary: #004E92;
-            --primary-dark: #000428;
-            --accent: #FFD700;
-            --text: #2d3436;
-            --bg: #f4f6f8;
-            --white: #ffffff;
-            --shadow: 0 10px 30px rgba(0,0,0,0.08);
-            --radius: 16px;
-        }
+        /* Styles spécifiques pour cette page (complémentaires au style.css existant) */
+        body { background-color: #f4f6f8; color: #333; font-family: 'Segoe UI', sans-serif; }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
-        body { background: var(--bg); color: var(--text); padding-bottom: 80px; }
-
-        /* --- HEADER & NAV MOBILE --- */
+        /* --- HEADER CLASSIQUE (Style Index/App) --- */
         .main-header {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            padding: 1rem 1.5rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky; top: 0; z-index: 1000;
+            padding: 15px 0;
         }
-
-        .logo { font-weight: 900; font-size: 1.4rem; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
-        .logo i { color: var(--accent); }
-
-        .nav-desktop { display: flex; gap: 20px; }
-        .nav-link { color: rgba(255,255,255,0.8); text-decoration: none; font-weight: 600; transition: 0.3s; font-size: 0.95rem; }
-        .nav-link:hover, .nav-link.active { color: white; }
-        .nav-link.active { border-bottom: 2px solid var(--accent); }
-
-        /* Hamburger Menu (Mobile) */
-        .menu-toggle { display: none; font-size: 1.5rem; cursor: pointer; }
-        .mobile-menu {
-            position: fixed; top: 60px; left: 0; width: 100%; background: white;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1); transform: translateY(-150%); transition: 0.4s;
-            padding: 20px; z-index: 99;
-        }
-        .mobile-menu.open { transform: translateY(0); }
-        .mobile-link { display: block; padding: 12px; color: var(--text); text-decoration: none; font-weight: 600; border-bottom: 1px solid #eee; }
-        .mobile-link i { width: 25px; color: var(--primary); }
-
-        /* --- HERO SECTION --- */
-        .hero {
-            background: white;
-            padding: 30px 20px;
-            text-align: center;
-            border-bottom-left-radius: 30px;
-            border-bottom-right-radius: 30px;
-            box-shadow: var(--shadow);
-            margin-bottom: 30px;
-        }
-        .hero h1 { font-size: 2rem; margin-bottom: 10px; color: var(--primary-dark); }
-        .hero p { color: #636e72; max-width: 600px; margin: 0 auto 20px; }
-        
-        /* --- NAVIGATION TABS --- */
-        .tabs-wrapper { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 30px; padding: 0 20px; }
-        .tab-btn {
-            background: white; border: 2px solid transparent; padding: 12px 25px;
-            border-radius: 50px; font-weight: 700; color: #636e72; cursor: pointer;
-            transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 8px;
-        }
-        .tab-btn.active { background: var(--primary); color: white; box-shadow: 0 8px 20px rgba(0, 78, 146, 0.3); }
-        .tab-btn:hover:not(.active) { transform: translateY(-2px); background: #f8f9fa; }
-
-        /* --- CONTENT CARDS --- */
-        .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
-        .tab-content { display: none; animation: slideUp 0.4s ease; }
-        .tab-content.active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* MAPPING SECTION STYLE */
-        .mapping-guide { display: grid; gap: 25px; }
-        .rule-card {
-            background: white; border-radius: var(--radius); overflow: hidden;
-            box-shadow: var(--shadow); border: 1px solid rgba(0,0,0,0.05);
-        }
-        .rule-header {
-            background: #f8f9fa; padding: 15px 20px; font-weight: 800; color: var(--primary);
+        .header-content {
+            max-width: 1200px; margin: 0 auto; padding: 0 20px;
             display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid #eee;
         }
-        .rule-body { padding: 20px; }
-        
-        .visual-row { display: flex; align-items: center; justify-content: center; gap: 15px; margin: 20px 0; flex-wrap: wrap; }
-        .mcd-entity { border: 2px solid var(--primary); padding: 8px 15px; border-radius: 6px; font-weight: bold; font-size: 0.9rem; }
-        .mcd-rel { background: #fff3e0; color: #d35400; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; border: 1px solid #d35400; font-weight: bold; }
-        .arrow-down { text-align: center; font-size: 1.5rem; color: var(--accent); margin: 10px 0; }
-        
-        .code-box {
-            background: #2d3436; color: #dfe6e9; padding: 15px; border-radius: 8px;
-            font-family: 'Courier New', monospace; font-size: 0.9rem; line-height: 1.5;
-            border-left: 4px solid var(--accent);
+        .logo { font-size: 1.5rem; font-weight: 800; color: #004E92; text-decoration: none; }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-link { text-decoration: none; color: #555; font-weight: 600; transition: 0.3s; }
+        .nav-link:hover, .nav-link.active { color: #004E92; }
+
+        /* --- CONTENU --- */
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+
+        .section-title {
+            text-align: center; margin-bottom: 40px;
+            font-size: 2rem; color: #004E92;
         }
-        .pk { text-decoration: underline; color: #74b9ff; }
-        .fk { color: #fab1a0; font-style: italic; }
+        
+        /* ONGLETS */
+        .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
+        .tab-btn {
+            padding: 10px 25px; border: 1px solid #ddd; background: white;
+            border-radius: 30px; cursor: pointer; font-weight: bold; color: #555;
+            transition: 0.3s;
+        }
+        .tab-btn.active { background: #004E92; color: white; border-color: #004E92; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
 
         /* EXERCICES STYLE */
-        .exo-card { background: white; border-radius: var(--radius); margin-bottom: 25px; box-shadow: var(--shadow); overflow: hidden; }
-        .exo-head {
-            padding: 20px; background: white; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
-            transition: 0.2s; border-bottom: 1px solid #f1f1f1;
+        .exo-block {
+            background: white; border-radius: 8px; padding: 25px;
+            margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-left: 5px solid #004E92;
         }
-        .exo-head:hover { background: #fcfcfc; }
-        .exo-title { font-weight: 700; font-size: 1.05rem; display: flex; gap: 10px; align-items: center; }
-        .badge { font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; font-weight: 800; text-transform: uppercase; }
-        .badge.easy { background: #e0f2f1; color: #00695c; }
-        .badge.medium { background: #fff3e0; color: #e65100; }
-        .badge.hard { background: #ffebee; color: #c62828; }
         
-        .exo-body { padding: 25px; display: none; background: #fafafa; }
-        .exo-text { margin-bottom: 20px; line-height: 1.7; color: #444; text-align: justify; }
+        .exo-title { font-size: 1.3rem; color: #2c3e50; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .badge { background: #f1c40f; color: #333; padding: 3px 10px; border-radius: 10px; font-size: 0.8rem; text-transform: uppercase; }
         
-        .btn-action {
-            width: 100%; padding: 12px; background: var(--primary); color: white; border: none;
-            border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s;
-            display: flex; justify-content: center; align-items: center; gap: 8px;
+        .scenario-text {
+            background: #f8f9fa; padding: 20px; border-radius: 5px;
+            line-height: 1.8; text-align: justify; border: 1px solid #eee;
+            margin-bottom: 20px; font-size: 1.05rem;
         }
-        .btn-action:hover { background: var(--primary-dark); }
 
-        .correction-panel {
-            margin-top: 20px; border-top: 2px dashed #ddd; padding-top: 20px; display: none;
-            animation: fadeIn 0.5s;
+        .btn-reveal {
+            background: #004E92; color: white; border: none; padding: 12px 20px;
+            border-radius: 5px; cursor: pointer; font-size: 1rem; font-weight: 600;
+            width: 100%; text-align: center; transition: 0.3s;
         }
-        .analysis-block { background: #e3f2fd; padding: 15px; border-radius: 8px; margin-bottom: 15px; font-size: 0.9rem; }
-        .analysis-block ul { margin-left: 20px; margin-top: 5px; }
+        .btn-reveal:hover { background: #003366; }
 
-        /* FOOTER MOBILE */
-        .bottom-nav {
-            display: none; position: fixed; bottom: 0; width: 100%; background: white;
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.1); justify-content: space-around; padding: 12px; z-index: 999;
+        .correction {
+            margin-top: 20px; display: none; border-top: 2px dashed #ddd; padding-top: 20px;
         }
-        .bottom-item { text-align: center; color: #b2bec3; font-size: 0.7rem; text-decoration: none; }
-        .bottom-item i { display: block; font-size: 1.2rem; margin-bottom: 4px; }
-        .bottom-item.active { color: var(--primary); }
 
-        @media (max-width: 768px) {
-            .nav-desktop { display: none; }
-            .menu-toggle { display: block; }
-            .bottom-nav { display: flex; }
-            .hero h1 { font-size: 1.6rem; }
-            .container { padding-bottom: 20px; }
-            .mcd-entity { font-size: 0.8rem; padding: 5px 10px; }
+        /* TABLEAUX DE MAPPING */
+        .db-schema {
+            font-family: 'Consolas', monospace; background: #282c34; color: #abb2bf;
+            padding: 20px; border-radius: 5px; overflow-x: auto;
         }
+        .table-name { color: #e06c75; font-weight: bold; }
+        .pk { color: #61afef; text-decoration: underline; }
+        .fk { color: #98c379; font-style: italic; }
+        .col { color: #abb2bf; }
+
+        /* EXERCICE INVERSE */
+        .reverse-exo .db-schema { margin-bottom: 20px; }
+        .interpretation { background: #e8f6f3; color: #135946; padding: 15px; border-radius: 5px; border: 1px solid #a9dfbf; }
+
     </style>
 </head>
 <body>
 
     <header class="main-header">
-        <a href="app_info.html" class="logo"><i class="fas fa-cube"></i> FOCUS BDD</a>
-        
-        <nav class="nav-desktop">
-            <a href="index.html" class="nav-link">Accueil</a>
-            <a href="app_info.html" class="nav-link active">APP Info Hub</a>
-            <a href="codage.html" class="nav-link">Codage</a>
-            <a href="#" class="nav-link" title="Connexion"><i class="fas fa-user-circle"></i></a>
-            <a href="#" class="nav-link" id="themeToggle"><i class="fas fa-moon"></i></a>
-        </nav>
-
-        <div class="menu-toggle" onclick="toggleMobileMenu()">
-            <i class="fas fa-bars"></i>
+        <div class="header-content">
+            <a href="index.html" class="logo">FOCUS ISEP</a>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link">Accueil</a>
+                <a href="app_info.html" class="nav-link active">APP Info</a>
+                <a href="app_elec.html" class="nav-link">APP Elec</a>
+                <a href="app_signal.html" class="nav-link">APP Signal</a>
+            </nav>
         </div>
     </header>
 
-    <div id="mobileMenu" class="mobile-menu">
-        <a href="index.html" class="mobile-link"><i class="fas fa-home"></i> Accueil</a>
-        <a href="app_info.html" class="mobile-link"><i class="fas fa-layer-group"></i> APP Info Hub</a>
-        <a href="codage.html" class="mobile-link"><i class="fas fa-code"></i> Fiches Code</a>
-        <a href="#" class="mobile-link"><i class="fas fa-user"></i> Connexion</a>
-        <a href="#" class="mobile-link"><i class="fas fa-cog"></i> Paramètres</a>
-        <a href="#" class="mobile-link" style="border:none;"><i class="fas fa-adjust"></i> Mode Sombre/Clair</a>
-    </div>
-
-    <section class="hero">
-        <h1><i class="fas fa-database"></i> Entraînement Intensif</h1>
-        <p>6 Exercices Types Exam (MCD & Mapping) + Fiches de Révision</p>
-        <div class="tabs-wrapper">
-            <button class="tab-btn active" onclick="showTab('exos')"><i class="fas fa-pen"></i> Exercices</button>
-            <button class="tab-btn" onclick="showTab('mapping')"><i class="fas fa-sitemap"></i> Rappels Mapping</button>
-        </div>
-    </section>
-
     <div class="container">
+        <h1 class="section-title">Entraînement BDD : Niveau Examen</h1>
         
-        <div id="exos" class="tab-content active">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('sens1')">1. Texte vers Tables (Classique)</button>
+            <button class="tab-btn" onclick="openTab('sens2')">2. Tables vers Texte (Inverse)</button>
+        </div>
+
+        <div id="sens1" class="tab-content active">
             
-            <div class="exo-card">
-                <div class="exo-head" onclick="toggleExo(this)">
-                    <div class="exo-title"><span class="badge medium">Moyen</span> #1 Gestion Hôpital</div>
-                    <i class="fas fa-chevron-down"></i>
+            <div class="exo-block">
+                <div class="exo-title">
+                    <span>#1 Gestion des Vols Aériens</span>
+                    <span class="badge">Complexe</span>
                 </div>
-                <div class="exo-body">
-                    <p class="exo-text">
-                        Le centre hospitalier est découpé en plusieurs <strong>Services</strong>. Chaque service est dirigé par un unique <strong>Médecin</strong> chef, et un médecin ne peut diriger qu'un seul service. Les médecins sont rattachés à un service principal. Les <strong>Patients</strong> sont admis dans un service à une date donnée. On veut l'historique des admissions.
+                <div class="scenario-text">
+                    <p>
+                        On souhaite gérer les vols d'une agence de voyage. Plusieurs Compagnies aériennes (Air France, EasyJet...) proposent des vols. Une compagnie est identifiée par un code IATA et possède un nom. 
+                        Un Vol est défini par un numéro unique, une heure de départ et une durée. Attention : un vol est opéré par une seule compagnie, mais part d'un Aéroport précis et arrive dans un autre Aéroport. Chaque aéroport a un trigramme (CDG, ORY), un nom et une superficie.
                     </p>
-                    <button class="btn-action" onclick="revealCorr(this)">Voir Analyse & Mapping</button>
-                    <div class="correction-panel">
-                        <div class="analysis-block">
-                            <strong><i class="fas fa-lightbulb"></i> Analyse :</strong>
-                            <ul>
-                                <li>Chef de Service : Relation (1,1)-(1,1). On choisit de mettre la FK dans Service.</li>
-                                <li>Admission : Relation n..n avec attribut "Date". C'est une historique.</li>
-                            </ul>
-                        </div>
-                        <div class="code-box">
-                            Service (<span class="pk">code_s</span>, nom, <span class="fk">#id_chef</span>)<br>
-                            Medecin (<span class="pk">id_med</span>, nom, <span class="fk">#code_s</span>)<br>
-                            Admission (<span class="pk fk">#id_pat</span>, <span class="pk fk">#code_s</span>, <span class="pk">date_entree</span>)
-                        </div>
+                    <p>
+                        Il faut savoir que les aéroports desservent des Villes. Un aéroport peut desservir plusieurs villes (ex: Orly dessert Paris et Wissous) et une ville peut être desservie par plusieurs aéroports. Une ville a un nom et un nombre d'habitants.
+                        Enfin, un vol peut comporter des Escales. Une escale se fait dans un aéroport donné, avec une heure d'arrivée et une heure de redépart. Un même vol peut avoir plusieurs escales, et un aéroport accueille plein d'escales.
+                    </p>
+                </div>
+                <button class="btn-reveal" onclick="toggleCorr(this)">Voir le Mapping Relationnel</button>
+                <div class="correction">
+                    <div class="db-schema">
+                        <span class="table-name">Compagnie</span> (<span class="pk">code_comp</span>, nom)<br>
+                        <span class="table-name">Ville</span> (<span class="pk">id_ville</span>, nom, nb_habitants)<br>
+                        <span class="table-name">Aeroport</span> (<span class="pk">trigramme</span>, nom, surface)<br>
+                        <br>
+                        <span class="table-name">Desservir</span> (<span class="pk fk">#trigramme</span>, <span class="pk fk">#id_ville</span>, distance_centre) <span class="col">// Table N:N</span><br>
+                        <br>
+                        <span class="table-name">Vol</span> (<span class="pk">num_vol</span>, heure_dep, duree, <span class="fk">#code_comp</span>, <span class="fk">#trigramme_depart</span>, <span class="fk">#trigramme_arrivee</span>)<br>
+                        <br>
+                        <span class="table-name">Escale</span> (<span class="pk fk">#num_vol</span>, <span class="pk fk">#trigramme_escale</span>, heure_arr, heure_redep) <span class="col">// Table N:N avec attributs</span>
                     </div>
                 </div>
             </div>
 
-            <div class="exo-card">
-                <div class="exo-head" onclick="toggleExo(this)">
-                    <div class="exo-title"><span class="badge hard">Difficile</span> #2 Bibliothèque & Exemplaires</div>
-                    <i class="fas fa-chevron-down"></i>
+            <div class="exo-block">
+                <div class="exo-title">
+                    <span>#2 Festival de Musique</span>
+                    <span class="badge">N:N Multiple</span>
                 </div>
-                <div class="exo-body">
-                    <p class="exo-text">
-                        Une bibliothèque gère des <strong>Œuvres</strong> (ex: Harry Potter). Une œuvre a plusieurs <strong>Exemplaires</strong> physiques. Une œuvre est écrite par plusieurs <strong>Auteurs</strong>. Un <strong>Abonné</strong> emprunte un exemplaire précis (pas l'œuvre abstraite) à une date donnée.
+                <div class="scenario-text">
+                    <p>
+                        Nous gérons un grand festival. Des groupes de musique viennent jouer. Un groupe a un nom, un style musical principal et une date de création. Chaque groupe est composé de plusieurs Membres (Musiciens). Un membre a un nom, un prénom et joue d'un Instrument. Attention, un membre peut jouer de plusieurs instruments, et un instrument est joué par pleins de membres. De plus, un musicien peut faire partie de plusieurs groupes (projets parallèles).
                     </p>
-                    <button class="btn-action" onclick="revealCorr(this)">Voir Analyse & Mapping</button>
-                    <div class="correction-panel">
-                        <div class="code-box">
-                            Oeuvre (<span class="pk">isbn</span>, titre)<br>
-                            Exemplaire (<span class="pk">id_ex</span>, etat, <span class="fk">#isbn</span>)<br>
-                            Ecrire (<span class="pk fk">#id_auteur</span>, <span class="pk fk">#isbn</span>)<br>
-                            Emprunter (<span class="pk fk">#id_abonne</span>, <span class="pk fk">#id_ex</span>, <span class="pk">date_emprunt</span>)
-                        </div>
+                    <p>
+                        Les groupes se produisent lors de Concerts. Un concert a lieu à une date précise, dans une Salle spécifique du festival (Main Stage, Chapiteau...). Une salle a une capacité et un nom. Un concert peut voir défiler plusieurs groupes (une soirée à thème), et un groupe joue évidemment plusieurs concerts. Pour chaque participation d'un groupe à un concert, on veut noter l'heure de passage et la durée du set.
+                    </p>
+                </div>
+                <button class="btn-reveal" onclick="toggleCorr(this)">Voir le Mapping Relationnel</button>
+                <div class="correction">
+                    <div class="db-schema">
+                        <span class="table-name">Instrument</span> (<span class="pk">id_instru</span>, nom)<br>
+                        <span class="table-name">Salle</span> (<span class="pk">id_salle</span>, nom, capacite)<br>
+                        <span class="table-name">Membre</span> (<span class="pk">id_membre</span>, nom, prenom)<br>
+                        <span class="table-name">Groupe</span> (<span class="pk">id_groupe</span>, nom, style, date_crea)<br>
+                        <br>
+                        <span class="table-name">Jouer_Instru</span> (<span class="pk fk">#id_membre</span>, <span class="pk fk">#id_instru</span>) <span class="col">// Qui joue de quoi</span><br>
+                        <span class="table-name">Appartenir</span> (<span class="pk fk">#id_membre</span>, <span class="pk fk">#id_groupe</span>, role) <span class="col">// Qui est dans quel groupe</span><br>
+                        <br>
+                        <span class="table-name">Concert</span> (<span class="pk">id_concert</span>, date_event, <span class="fk">#id_salle</span>) <span class="col">// 1 Concert = 1 Salle</span><br>
+                        <span class="table-name">Programmation</span> (<span class="pk fk">#id_concert</span>, <span class="pk fk">#id_groupe</span>, heure_passage, duree)
                     </div>
                 </div>
             </div>
 
-            <div class="exo-card">
-                <div class="exo-head" onclick="toggleExo(this)">
-                    <div class="exo-title"><span class="badge hard">Piège</span> #3 Projets & Consultants</div>
-                    <i class="fas fa-chevron-down"></i>
+            <div class="exo-block">
+                <div class="exo-title">
+                    <span>#3 Clinique & Ordonnances</span>
+                    <span class="badge">Ternaire Cachée</span>
                 </div>
-                <div class="exo-body">
-                    <p class="exo-text">
-                        Un <strong>Consultant</strong> travaille sur un <strong>Projet</strong> pour un <strong>Client</strong>. Le tarif journalier dépend spécifiquement de ces trois éléments réunis (ex: Alice sur le Projet Web pour Coca-Cola coûte 500€, mais Alice sur le Projet Web pour Pepsi coûte 600€).
+                <div class="scenario-text">
+                    <p>
+                        Une clinique souhaite numériser ses dossiers. Les Patients (SSN, Nom, Adresse) viennent consulter des Médecins (Matricule, Spécialité, Tarif).
+                        Lors d'une consultation, le médecin rédige une Ordonnance unique. Cette ordonnance est datée. Sur une même ordonnance, le médecin peut prescrire plusieurs Médicaments. 
                     </p>
-                    <button class="btn-action" onclick="revealCorr(this)">Voir Analyse & Mapping</button>
-                    <div class="correction-panel">
-                        <div class="analysis-block">
-                            C'est une <strong>Association Ternaire</strong>. Si on sépare en binaires, on perd la connexion du prix.
-                        </div>
-                        <div class="code-box">
-                            Mission (<span class="pk fk">#id_consultant</span>, <span class="pk fk">#id_projet</span>, <span class="pk fk">#id_client</span>, tarif)
-                        </div>
+                    <p>
+                        Un médicament est défini par un code barre et un libellé. Pour chaque médicament prescrit sur une ordonnance, on doit préciser la posologie (ex: "3 fois par jour") et la durée du traitement.
+                        Par ailleurs, les patients sont hébergés dans des Chambres. Une chambre a un numéro et un étage. Un patient occupe une seule chambre à la fois, mais une chambre peut accueillir plusieurs patients (chambre double). On doit savoir depuis quelle date le patient est dans la chambre.
+                    </p>
+                </div>
+                <button class="btn-reveal" onclick="toggleCorr(this)">Voir le Mapping Relationnel</button>
+                <div class="correction">
+                    <div class="db-schema">
+                        <span class="table-name">Medicament</span> (<span class="pk">code_barre</span>, libelle)<br>
+                        <span class="table-name">Chambre</span> (<span class="pk">num_chambre</span>, etage)<br>
+                        <span class="table-name">Medecin</span> (<span class="pk">matricule</span>, specialite, tarif)<br>
+                        <br>
+                        <span class="table-name">Patient</span> (<span class="pk">ssn</span>, nom, adresse, <span class="fk">#num_chambre</span>, date_entree_chambre)<br>
+                        <br>
+                        <span class="table-name">Ordonnance</span> (<span class="pk">num_ordo</span>, date_ordo, <span class="fk">#matricule_medecin</span>, <span class="fk">#ssn_patient</span>)<br>
+                        <span class="col">// Ordonnance lie Medecin et Patient (1,N chacun)</span><br>
+                        <br>
+                        <span class="table-name">Prescrire</span> (<span class="pk fk">#num_ordo</span>, <span class="pk fk">#code_barre</span>, posologie, duree)<br>
+                        <span class="col">// Lien N:N entre Ordonnance et Medicament</span>
                     </div>
                 </div>
             </div>
 
-             <div class="exo-card">
-                <div class="exo-head" onclick="toggleExo(this)">
-                    <div class="exo-title"><span class="badge medium">Technique</span> #4 Nomenclature (Vélo)</div>
-                    <i class="fas fa-chevron-down"></i>
+            <div class="exo-block">
+                <div class="exo-title">
+                    <span>#4 Amazon-Like (Logistique)</span>
+                    <span class="badge">Gestion Stocks</span>
                 </div>
-                <div class="exo-body">
-                    <p class="exo-text">
-                        On gère des <strong>Pièces</strong>. Une pièce peut être composée d'autres pièces (ex: une Roue est composée de Rayons et d'une Jante). On doit stocker la quantité nécessaire pour la composition.
+                <div class="scenario-text">
+                    <p>
+                        Une plateforme de vente en ligne gère des Clients(id, email, solde). Les clients passent des Commandes. Une commande a une date, un statut et une adresse de livraison. Une commande contient plusieurs Produits. Pour chaque produit dans une commande, on note la quantité achetée et le prix au moment de l'achat (car le prix change !).
                     </p>
-                    <button class="btn-action" onclick="revealCorr(this)">Voir Analyse & Mapping</button>
-                    <div class="correction-panel">
-                        <div class="analysis-block">
-                            C'est une <strong>Réflexive n..n</strong>. Une pièce est "Père" et "Fils" à la fois.
-                        </div>
-                        <div class="code-box">
-                            Piece (<span class="pk">ref_piece</span>, libelle)<br>
-                            Composition (<span class="pk fk">#ref_compose</span>, <span class="pk fk">#ref_composant</span>, qte)<br>
-                            <span style="color:#888">// Les 2 FK pointent vers la table Piece</span>
-                        </div>
+                    <p>
+                        Les produits (ref, nom, description) sont stockés dans des Entrepôts. Un entrepôt a une localisation. Attention : un même produit peut être stocké dans plusieurs entrepôts différents (ex: iPhone à Paris et à Lyon), et on doit connaître la quantité de stock disponible pour ce produit dans chaque entrepôt.
+                        Enfin, les produits sont fournis par des Fournisseurs. Un produit vient d'un seul fournisseur principal.
+                    </p>
+                </div>
+                <button class="btn-reveal" onclick="toggleCorr(this)">Voir le Mapping Relationnel</button>
+                <div class="correction">
+                    <div class="db-schema">
+                        <span class="table-name">Client</span> (<span class="pk">id_client</span>, email, solde)<br>
+                        <span class="table-name">Fournisseur</span> (<span class="pk">id_fourn</span>, nom_societe)<br>
+                        <span class="table-name">Entrepot</span> (<span class="pk">id_entrepot</span>, ville)<br>
+                        <br>
+                        <span class="table-name">Produit</span> (<span class="pk">ref_prod</span>, nom, prix_actuel, <span class="fk">#id_fourn</span>)<br>
+                        <br>
+                        <span class="table-name">Stocker</span> (<span class="pk fk">#ref_prod</span>, <span class="pk fk">#id_entrepot</span>, qte_stock)<br>
+                        <span class="col">// Gestion du stock par entrepôt</span><br>
+                        <br>
+                        <span class="table-name">Commande</span> (<span class="pk">num_cmd</span>, date, statut, <span class="fk">#id_client</span>)<br>
+                        <span class="table-name">Ligne_Commande</span> (<span class="pk fk">#num_cmd</span>, <span class="pk fk">#ref_prod</span>, qte_achat, prix_fixe)<br>
                     </div>
                 </div>
             </div>
 
-             <div class="exo-card">
-                <div class="exo-head" onclick="toggleExo(this)">
-                    <div class="exo-title"><span class="badge easy">Classique</span> #5 Agence Immo (0..1)</div>
-                    <i class="fas fa-chevron-down"></i>
+             <div class="exo-block">
+                <div class="exo-title">
+                    <span>#5 Gestion Scolarité ISEP</span>
+                    <span class="badge">Classique</span>
                 </div>
-                <div class="exo-body">
-                    <p class="exo-text">
-                        Une agence gère des <strong>Biens</strong>. Un bien se trouve dans une <strong>Ville</strong>. Un bien est géré par un <strong>Agent</strong>, mais parfois un bien n'a pas encore d'agent (nouveau dossier).
+                <div class="scenario-text">
+                    <p>
+                        On gère une école. Il y a des Elèves (id, nom, promo). Ils suivent des Cours(Maths, Info, Elec...). Un cours est défini par un code et un nombre de crédits ECTS. 
+                        A la fin du semestre, un élève obtient une note pour un cours.
+                        Les cours sont enseignés par des Professeurs. Un cours peut être enseigné par plusieurs profs (plusieurs groupes), et un prof enseigne plusieurs matières. On veut savoir combien d'heures chaque prof a fait pour chaque matière.
                     </p>
-                    <button class="btn-action" onclick="revealCorr(this)">Voir Analyse & Mapping</button>
-                    <div class="correction-panel">
-                        <div class="analysis-block">
-                            La relation Bien-Agent est (0,1). La clé étrangère est dans Bien, mais elle accepte NULL.
-                        </div>
-                        <div class="code-box">
-                            Bien (<span class="pk">id_bien</span>, prix, <span class="fk">#code_ville</span>, <span class="fk">#id_agent NULL</span>)
-                        </div>
+                    <p>
+                        Les cours ont lieu dans des Salles de classe. Pour simplifier, on considère qu'un cours est affecté principalement à une salle spécifique (ex: le labo d'élec).
+                        Enfin, chaque élève appartient à une Association(BDE, JE, Sport...). Un élève ne peut être que dans une seule asso principale, mais une asso a plein de membres.
+                    </p>
+                </div>
+                <button class="btn-reveal" onclick="toggleCorr(this)">Voir le Mapping Relationnel</button>
+                <div class="correction">
+                    <div class="db-schema">
+                        <span class="table-name">Salle</span> (<span class="pk">num_salle</span>, capacite)<br>
+                        <span class="table-name">Asso</span> (<span class="pk">id_asso</span>, nom_asso, budget)<br>
+                        <br>
+                        <span class="table-name">Cours</span> (<span class="pk">code_cours</span>, titre, ects, <span class="fk">#num_salle</span>)<br>
+                        <span class="table-name">Eleve</span> (<span class="pk">id_eleve</span>, nom, <span class="fk">#id_asso</span>)<br>
+                        <span class="table-name">Prof</span> (<span class="pk">id_prof</span>, nom)<br>
+                        <br>
+                        <span class="table-name">Bulletin</span> (<span class="pk fk">#id_eleve</span>, <span class="pk fk">#code_cours</span>, note_finale)<br>
+                        <span class="table-name">Enseignement</span> (<span class="pk fk">#id_prof</span>, <span class="pk fk">#code_cours</span>, heures_effectuees)<br>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="sens2" class="tab-content">
+            <div style="background: #e3f2fd; padding: 15px; border-left: 4px solid #2196F3; margin-bottom: 20px;">
+                <i class="fas fa-info-circle"></i> <strong>Consigne :</strong> Analyse les tables ci-dessous (Clés Primaires et Etrangères) et déduis-en l'histoire et les règles de gestion (les cardinalités).
+            </div>
+
+            <div class="exo-block reverse-exo">
+                <div class="exo-title">#6 Analyse Immobilière</div>
+                <div class="db-schema">
+                    Proprio (<span class="pk">id_p</span>, nom, tel)<br>
+                    Agence (<span class="pk">id_ag</span>, ville, directeur)<br>
+                    Bien (<span class="pk">ref_bien</span>, adresse, prix, <span class="fk">#id_ag</span>)<br>
+                    Posseder (<span class="pk fk">#ref_bien</span>, <span class="pk fk">#id_p</span>, pourcentage)
+                </div>
+                <button class="btn-reveal" onclick="toggleCorr(this)">Révéler l'Histoire</button>
+                <div class="correction">
+                    <div class="interpretation">
+                        <ul>
+                            <li><strong>Bien -> Agence (FK simple) :</strong> Un bien est géré par UNE SEULE agence (1,1). Une agence gère plusieurs biens (1,N).</li>
+                            <li><strong>Posseder (Table de jointure) :</strong> Un bien peut appartenir à PLUSIEURS propriétaires (Indivision). Un propriétaire possède plusieurs biens.</li>
+                            <li><strong>Attribut pourcentage :</strong> Comme il est dans la jointure, chaque propriétaire possède une part différente du bien (ex: 50% / 50%).</li>
+                        </ul>
                     </div>
                 </div>
             </div>
 
-             <div class="exo-card">
-                <div class="exo-head" onclick="toggleExo(this)">
-                    <div class="exo-title"><span class="badge hard">Exam</span> #6 Uber Eats (Complet)</div>
-                    <i class="fas fa-chevron-down"></i>
+            <div class="exo-block reverse-exo">
+                <div class="exo-title">#7 Analyse Restaurant</div>
+                <div class="db-schema">
+                    Serveur (<span class="pk">id_serv</span>, nom)<br>
+                    TableResto (<span class="pk">num_table</span>, nb_places, <span class="fk">#id_serv</span>)<br>
+                    Plat (<span class="pk">id_plat</span>, nom, prix)<br>
+                    Commande (<span class="pk">id_cmd</span>, heure, <span class="fk">#num_table</span>)<br>
+                    ContenuCmd (<span class="pk fk">#id_cmd</span>, <span class="pk fk">#id_plat</span>, cuisson)
                 </div>
-                <div class="exo-body">
-                    <p class="exo-text">
-                        Un <strong>Client</strong> passe une <strong>Commande</strong>. La commande contient plusieurs <strong>Plats</strong> avec une quantité. La commande est livrée par un unique <strong>Livreur</strong>.
-                    </p>
-                    <button class="btn-action" onclick="revealCorr(this)">Voir Analyse & Mapping</button>
-                    <div class="correction-panel">
-                        <div class="code-box">
-                            Commande (<span class="pk">id_cmd</span>, date, <span class="fk">#id_client</span>, <span class="fk">#id_livreur</span>)<br>
-                            Contenir (<span class="pk fk">#id_cmd</span>, <span class="pk fk">#id_plat</span>, qte)
-                        </div>
+                <button class="btn-reveal" onclick="toggleCorr(this)">Révéler l'Histoire</button>
+                <div class="correction">
+                    <div class="interpretation">
+                        <ul>
+                            <li><strong>Table -> Serveur :</strong> Une table est gérée par un seul serveur (c'est son rang). Un serveur gère plusieurs tables.</li>
+                            <li><strong>Commande -> Table :</strong> Une commande est liée à une seule table. Une table peut passer plusieurs commandes (entrée, puis plat...).</li>
+                            <li><strong>ContenuCmd :</strong> Une commande contient plusieurs plats. Un plat peut être dans plusieurs commandes. L'attribut "cuisson" (saignant, à point) dépend du plat DANS la commande.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+             <div class="exo-block reverse-exo">
+                <div class="exo-title">#8 Analyse Bibliothèque</div>
+                <div class="db-schema">
+                    Auteur (<span class="pk">id_aut</span>, nom)<br>
+                    Livre (<span class="pk">isbn</span>, titre, <span class="fk">#id_aut</span>)<br>
+                    Exemplaire (<span class="pk">code_barre</span>, etat, <span class="fk">#isbn</span>)<br>
+                    Abonne (<span class="pk">num_carte</span>, nom)<br>
+                    Emprunt (<span class="pk fk">#code_barre</span>, <span class="pk fk">#num_carte</span>, date_pret)
+                </div>
+                <button class="btn-reveal" onclick="toggleCorr(this)">Révéler l'Histoire</button>
+                <div class="correction">
+                    <div class="interpretation">
+                        <ul>
+                            <li><strong>Livre -> Auteur :</strong> Simplification ici : Un livre est écrit par UN SEUL auteur (FK dans Livre).</li>
+                            <li><strong>Exemplaire -> Livre :</strong> Un livre (Harry Potter) a plusieurs exemplaires physiques sur les étagères. Un exemplaire correspond à un seul livre.</li>
+                            <li><strong>Emprunt :</strong> C'est l'Exemplaire qui est emprunté, pas le Livre abstrait ! Un abonné emprunte un exemplaire à une date donnée.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+             <div class="exo-block reverse-exo">
+                <div class="exo-title">#9 Analyse Championnat Foot</div>
+                <div class="db-schema">
+                    Stade (<span class="pk">id_stade</span>, nom, ville)<br>
+                    Equipe (<span class="pk">id_team</span>, nom, <span class="fk">#id_stade</span>)<br>
+                    Joueur (<span class="pk">id_joueur</span>, nom, <span class="fk">#id_team</span>)<br>
+                    Match (<span class="pk">id_match</span>, date, <span class="fk">#id_team_domicile</span>, <span class="fk">#id_team_exterieur</span>, score)
+                </div>
+                <button class="btn-reveal" onclick="toggleCorr(this)">Révéler l'Histoire</button>
+                <div class="correction">
+                    <div class="interpretation">
+                        <ul>
+                            <li><strong>Equipe -> Stade :</strong> Une équipe a UN stade attitré (Stade résident). Un stade peut héberger plusieurs équipes (ou une seule).</li>
+                            <li><strong>Joueur -> Equipe :</strong> Un joueur joue pour une seule équipe.</li>
+                            <li><strong>Match (Double FK) :</strong> C'est le piège ! Un match oppose DEUX équipes. Il y a donc deux clés étrangères pointant vers la table Equipe (Domicile et Extérieur).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+             <div class="exo-block reverse-exo">
+                <div class="exo-title">#10 Analyse Hotel</div>
+                <div class="db-schema">
+                    Hotel (<span class="pk">id_hotel</span>, nom, etiles)<br>
+                    Chambre (<span class="pk">num_chambre</span>, etage, <span class="fk">#id_hotel</span>)<br>
+                    Client (<span class="pk">id_cli</span>, nom)<br>
+                    Reservation (<span class="pk">ref_resa</span>, date_debut, date_fin, <span class="fk">#id_cli</span>, <span class="fk">#num_chambre</span>)
+                </div>
+                <button class="btn-reveal" onclick="toggleCorr(this)">Révéler l'Histoire</button>
+                <div class="correction">
+                    <div class="interpretation">
+                        <ul>
+                            <li><strong>Chambre -> Hotel :</strong> Une chambre appartient à un seul hôtel. L'hôtel a plusieurs chambres.</li>
+                            <li><strong>Reservation :</strong> Une réservation est faite par UN client pour UNE chambre spécifique (simplification).</li>
+                            <li><strong>Cardinalité Reservation :</strong> Une réservation concerne une seule chambre. Une chambre peut avoir plusieurs réservations (à des dates différentes).</li>
+                        </ul>
                     </div>
                 </div>
             </div>
 
         </div>
-
-        <div id="mapping" class="tab-content">
-            <div class="mapping-guide">
-                
-                <div class="rule-card">
-                    <div class="rule-header">1. La Règle du Père et du Fils (1..n)</div>
-                    <div class="rule-body">
-                        <p>C'est la règle la plus courante (90% des cas).<br><strong>"La clé migre vers celui qui a le 1,1"</strong>.</p>
-                        
-                        <div class="visual-row">
-                            <div class="mcd-entity">CLIENT (0,n)</div>
-                            <div class="mcd-rel">PASSER</div>
-                            <div class="mcd-entity">COMMANDE (1,1)</div>
-                        </div>
-                        <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
-                        <div class="code-box">
-                            Client (<span class="pk">id_client</span>, nom)<br>
-                            Commande (<span class="pk">id_cmd</span>, date, <span class="fk">#id_client</span>)
-                        </div>
-                    </div>
-                </div>
-
-                <div class="rule-card">
-                    <div class="rule-header">2. La Règle de la Jointure (n..n)</div>
-                    <div class="rule-body">
-                        <p>Quand il y a "Plusieurs" des deux côtés.<br><strong>"Création d'une nouvelle table"</strong>.</p>
-                        
-                        <div class="visual-row">
-                            <div class="mcd-entity">ETUDIANT (0,n)</div>
-                            <div class="mcd-rel">SUIVRE (note)</div>
-                            <div class="mcd-entity">COURS (0,n)</div>
-                        </div>
-                        <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
-                        <div class="code-box">
-                            Suivre (<span class="pk fk">#id_etudiant</span>, <span class="pk fk">#id_cours</span>, note)
-                        </div>
-                    </div>
-                </div>
-
-                <div class="rule-card">
-                    <div class="rule-header">3. La Règle de la Fusion (1..1)</div>
-                    <div class="rule-body">
-                        <p>Rare. Un Stade a 1 Adresse, Une Adresse est pour 1 Stade.<br><strong>"Tout dans la même table"</strong>.</p>
-                        <div class="code-box">
-                            Stade (<span class="pk">id</span>, nom, rue, ville, cp)
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
     </div>
 
-    <nav class="bottom-nav">
-        <a href="index.html" class="bottom-item"><i class="fas fa-home"></i>Accueil</a>
-        <a href="app_info.html" class="bottom-item active"><i class="fas fa-database"></i>BDD</a>
-        <a href="codage.html" class="bottom-item"><i class="fas fa-code"></i>Code</a>
-        <a href="#" class="bottom-item"><i class="fas fa-user"></i>Profil</a>
-    </nav>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
     <script>
-        // Gestion des Onglets
-        function showTab(id) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            // Trouver le bouton correspondant via event.target ou une logique simple
-            const btns = document.querySelectorAll('.tab-btn');
-            if(id === 'exos') btns[0].classList.add('active');
-            if(id === 'mapping') btns[1].classList.add('active');
-        }
+        hljs.highlightAll();
 
-        // Menu Mobile
-        function toggleMobileMenu() {
-            document.getElementById('mobileMenu').classList.toggle('open');
-        }
-
-        // Accordéon Exos
-        function toggleExo(element) {
-            const body = element.nextElementSibling;
-            const icon = element.querySelector('.fa-chevron-down');
+        function openTab(tabId) {
+            // Cacher tous les contenus
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            // Désactiver tous les boutons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
             
-            if (body.style.display === "block") {
-                body.style.display = "none";
-                element.style.background = "white";
-                icon.style.transform = "rotate(0deg)";
-            } else {
-                body.style.display = "block";
-                element.style.background = "#fcfcfc";
-                icon.style.transform = "rotate(180deg)";
-            }
+            // Activer le bon
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
         }
 
-        // Révéler correction
-        function revealCorr(btn) {
-            const panel = btn.nextElementSibling;
-            panel.style.display = "block";
-            btn.style.display = "none";
+        function toggleCorr(btn) {
+            const corr = btn.nextElementSibling;
+            if (corr.style.display === "block") {
+                corr.style.display = "none";
+                btn.innerText = btn.innerText.replace("Cacher", "Voir");
+            } else {
+                corr.style.display = "block";
+                btn.innerText = btn.innerText.replace("Voir", "Cacher") || "Cacher la correction";
+            }
         }
     </script>
 </body>
