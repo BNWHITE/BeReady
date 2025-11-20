@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Focus ISEP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Styles spécifiques pour la FAQ */
+        .faq-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            text-align: center;
+            color: #004E92;
+            margin-bottom: 40px;
+            font-size: 2rem;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            overflow: hidden;
+            border: 1px solid #eee;
+        }
+
+        /* Style Accordéon (Optionnel mais joli) */
+        .faq-question {
+            padding: 20px;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f9f9f9;
+            transition: background 0.3s;
+        }
+
+        .faq-question:hover {
+            background: #f1f1f1;
+            color: #004E92;
+        }
+
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease;
+            background: white;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .faq-answer.open {
+            padding: 20px;
+            max-height: 500px; /* Hauteur arbitraire suffisante */
+            border-top: 1px solid #eee;
+        }
+
+        .icon-toggle {
+            transition: transform 0.3s;
+            color: #004E92;
+        }
+
+        .faq-question.active .icon-toggle {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="header-content">
+            <a href="index.html" class="logo">FOCUS ISEP</a>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link">Accueil</a>
+                <a href="app_info.html" class="nav-link">APP Info</a>
+                <a href="app_elec.html" class="nav-link">APP Elec</a>
+                <a href="app_signal.html" class="nav-link">APP Signal</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="faq-container">
+        <h1 class="page-title">Foire Aux Questions</h1>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+                <span>Ce site est-il officiel ?</span>
+                <i class="fas fa-chevron-down icon-toggle"></i>
+            </div>
+            <div class="faq-answer">
+                <p>Non, Focus ISEP est un projet étudiant indépendant. Il n'est pas géré par l'administration de l'ISEP. Les contenus sont créés par des élèves pour s'entraider.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+                <span>Les corrections sont-elles vérifiées ?</span>
+                <i class="fas fa-chevron-down icon-toggle"></i>
+            </div>
+            <div class="faq-answer">
+                <p>Nous faisons notre maximum pour fournir des corrections justes, basées sur les cours officiels. Cependant, des erreurs peuvent subsister. N'hésitez pas à vérifier avec vos propres notes de cours.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+                <span>Comment contribuer ou signaler une erreur ?</span>
+                <i class="fas fa-chevron-down icon-toggle"></i>
+            </div>
+            <div class="faq-answer">
+                <p>Si vous trouvez une erreur ou souhaitez ajouter un exercice, vous pouvez nous contacter via l'adresse email indiquée dans les mentions légales ou faire une "Pull Request" si vous avez accès au dépôt GitHub.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+                <span>Le site est-il gratuit ?</span>
+                <i class="fas fa-chevron-down icon-toggle"></i>
+            </div>
+            <div class="faq-answer">
+                <p>Oui, totalement gratuit et open-source. L'objectif est le partage de connaissances.</p>
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+                <span>Mon score aux quiz est-il enregistré ?</span>
+                <i class="fas fa-chevron-down icon-toggle"></i>
+            </div>
+            <div class="faq-answer">
+                <p>Votre progression est sauvegardée localement sur votre navigateur (LocalStorage). Si vous changez d'ordinateur ou videz votre cache, votre historique sera réinitialisé.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <footer style="background: #333; color: white; padding: 40px 0; margin-top: 60px;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; text-align: center;">
+            <div style="margin-bottom: 20px;">
+                <h4 style="color: #FFD700; margin-bottom: 15px;">Focus ISEP</h4>
+                <p style="font-size: 0.9rem; color: #ccc;">La plateforme de révision faite par les étudiants, pour les étudiants.</p>
+            </div>
+            <div style="border-top: 1px solid #555; padding-top: 20px; margin-top: 20px; font-size: 0.8rem; color: #888;">
+                <p>&copy; 2025 Focus ISEP. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Petit script pour l'accordéon
+        function toggleFaq(element) {
+            // Basculer la classe active sur la question (pour la flèche)
+            element.classList.toggle('active');
+            
+            // Ouvrir/Fermer la réponse
+            const answer = element.nextElementSibling;
+            answer.classList.toggle('open');
+        }
+    </script>
+
+</body>
+</html>
