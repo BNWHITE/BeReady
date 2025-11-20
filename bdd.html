@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Module BDD - Focus ISEP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="style_hub.css">
+</head>
+<body>
+    <nav class="top-nav">
+        <a href="app_info.html" class="back-link"><i class="fas fa-arrow-left"></i> HUB</a>
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="openTab('mcd')">1. Conceptuel & Mapping</button>
+            <button class="tab-btn" onclick="openTab('sql')">2. SQL & Outils</button>
+            <button class="tab-btn" onclick="openTab('exos')">3. Exercices & Exam</button>
+        </div>
+    </nav>
+
+    <main class="container">
+        
+        <div id="mcd" class="tab-content active">
+            <div class="alert-box">
+                <i class="fas fa-exclamation-triangle"></i>
+                <strong>Rappel Exam :</strong> Vendredi = Papier/Crayon. Pas de PC. Concentre-toi sur les schémas et les flèches de mapping.
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3><i class="fas fa-sitemap"></i> Règles d'Or du Mapping</h3>
+                    <table class="clean-table">
+                        <thead><tr><th>Cardinalités</th><th>Action</th><th>Résultat</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td><code>(1,1) - (1,n)</code></td>
+                                <td>Clé part vers le (1,1)</td>
+                                <td>FK dans la table "fils"</td>
+                            </tr>
+                            <tr>
+                                <td><code>(0,n) - (0,n)</code></td>
+                                <td>Table de Jointure</td>
+                                <td>Nouvelle table avec 2 FK</td>
+                            </tr>
+                            <tr>
+                                <td><code>(1,1) - (1,1)</code></td>
+                                <td>Fusion</td>
+                                <td>Une seule table géante</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card">
+                    <h3><i class="fas fa-lightbulb"></i> Tips de Modélisation</h3>
+                    <ul class="tips-list">
+                        <li><strong>Association Ternaire :</strong> Si tu as 3 entités reliées par une association, c'est FORCÉMENT une table de jointure avec 3 clés étrangères.</li>
+                        <li><strong>L'entité Faible :</strong> Une entité qui n'a pas d'ID propre (dépend d'une autre). Dans le mapping, sa PK est composée (Son ID + ID du Père).</li>
+                        <li><strong>Date :</strong> Si une association a une propriété "Date", vérifie si c'est une historique (n..n) ou une date unique.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="sql" class="tab-content">
+            
+            <div class="tools-section">
+                <h2><i class="fas fa-toolbox"></i> L'Écosystème BDD Moderne</h2>
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-header"><i class="fas fa-dolphin"></i> MySQL / MariaDB</div>
+                        <p>Le classique. Utilisé à l'ISEP avec WAMP/XAMPP.</p>
+                        <span class="tag">Syntaxe Standard</span>
+                    </div>
+                    <div class="tool-card postgres">
+                        <div class="tool-header"><i class="fas fa-elephant"></i> PostgreSQL</div>
+                        <p>Le plus puissant. Gère le JSON, les tableaux. C'est le standard industriel actuel.</p>
+                        <span class="tag">Robuste</span>
+                    </div>
+                    <div class="tool-card supabase">
+                        <div class="tool-header"><i class="fas fa-bolt"></i> Supabase</div>
+                        <p>Alternative Open Source à Firebase. C'est du PostgreSQL hébergé avec une API toute prête.</p>
+                        <div class="code-mini">
+                            <code>supabase.from('users').select('*')</code>
+                        </div>
+                        <span class="tag">Futur</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sql-cheat-sheet">
+                <h2><i class="fas fa-code"></i> Syntaxe SQL : Le Récap'</h2>
+                
+                <div class="split-view">
+                    <div class="code-block">
+                        <h4>DDL (Structure)</h4>
+                        <pre><code class="language-sql">
+-- Création propre (Postgres/MySQL)
+CREATE TABLE Etudiant (
+    id SERIAL PRIMARY KEY, -- 'AUTO_INCREMENT' sur MySQL
+    nom VARCHAR(50) NOT NULL,
+    promo INT,
+    FOREIGN KEY (promo) REFERENCES Promo(id)
+        ON DELETE CASCADE -- Important !
+);
+
+-- Modification
+ALTER TABLE Etudiant ADD COLUMN email VARCHAR(100);
+                        </code></pre>
+                    </div>
+                    <div class="code-block">
+                        <h4>DML (Données) & Jointures</h4>
+                        <pre><code class="language-sql">
+-- La Jointure Classique (INNER)
+SELECT E.nom, C.titre 
+FROM Etudiant E
+JOIN Suivre S ON E.id = S.id_etud
+JOIN Cours C ON S.id_cours = C.id
+WHERE C.titre LIKE 'BDD%';
+
+-- Group By & Having (Le piège)
+SELECT promo, COUNT(*) as nb_etudiants
+FROM Etudiant
+GROUP BY promo
+HAVING COUNT(*) > 10; -- Filtrer sur le groupe !
+                        </code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="exos" class="tab-content">
+            <h2><i class="fas fa-dumbbell"></i> Entraînement Intensif</h2>
+            
+            <div class="exercise-box">
+                <div class="exo-header" onclick="toggleExo('ex1')">
+                    <span>Exercice 1 : Le Festival de Musique (SQL)</span>
+                    <span class="badge-diff">Moyen</span>
+                </div>
+                <div id="ex1" class="exo-body hidden">
+                    <p><strong>Contexte :</strong> Tables <code>Groupe(id, nom)</code>, <code>Concert(id, date, #id_salle)</code>, <code>Jouer(#id_groupe, #id_concert)</code>.</p>
+                    <p><strong>Question :</strong> Lister les groupes qui n'ont jamais joué dans la salle "Zenith".</p>
+                    <button class="btn-reveal" onclick="toggleAns('ans1')">Voir la requête</button>
+                    <div id="ans1" class="answer hidden">
+                        <pre><code class="language-sql">
+-- Méthode avec sous-requête (plus simple à comprendre)
+SELECT nom FROM Groupe
+WHERE id NOT IN (
+    SELECT J.id_groupe 
+    FROM Jouer J
+    JOIN Concert C ON J.id_concert = C.id
+    JOIN Salle S ON C.id_salle = S.id
+    WHERE S.nom = 'Zenith'
+);
+                        </code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-box">
+                <div class="exo-header" onclick="toggleExo('ex2')">
+                    <span>Exercice 2 : Modélisation Uber (MCD)</span>
+                    <span class="badge-diff">Difficile</span>
+                </div>
+                <div id="ex2" class="exo-body hidden">
+                    <p><strong>Sujet :</strong> Un chauffeur conduit une voiture. Une voiture appartient à un chauffeur (ou une flotte). Un client réserve une course. Une course a lieu à une date, un prix, un départ, une arrivée. A la fin, le client note le chauffeur ET la voiture.</p>
+                    <p><strong>Piège :</strong> L'association de notation.</p>
+                    <button class="btn-reveal" onclick="toggleAns('ans2')">Voir Analyse</button>
+                    <div id="ans2" class="answer hidden">
+                        <ul>
+                            <li><strong>Entités :</strong> Client, Chauffeur, Voiture, Course.</li>
+                            <li><strong>Notation :</strong> C'est une association ternaire ou liée à la "Course" ?</li>
+                            <li><strong>Solution idéale :</strong> Lier la note à la "Course". Comme la course est liée au chauffeur et à la voiture, on retrouve tout.</li>
+                            <li>Mapping : Table <code>Course (id, date, prix, #id_client, #id_chauffeur, #id_voiture, note_client)</code>.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+        hljs.highlightAll();
+        function openTab(id) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            event.target.classList.add('active');
+        }
+        function toggleExo(id) { document.getElementById(id).classList.toggle('hidden'); }
+        function toggleAns(id) { document.getElementById(id).classList.toggle('hidden'); }
+    </script>
+</body>
+</html>
