@@ -3,251 +3,656 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prépa Partiel BDD - Focus ISEP</title>
-    
+    <title>Révision BDD - ISEP Ultimate</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        :root {
+            --primary: #004E92; /* Bleu ISEP */
+            --secondary: #FFD700; /* Jaune ISEP */
+            --accent: #e74c3c; /* Rouge Erreur/Attention */
+            --success: #27ae60;
+            --dark: #2c3e50;
+            --light: #f8f9fa;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+            --border-radius: 12px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        body {
+            background-color: #ecf0f1;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* --- HEADER & TIMER --- */
+        header {
+            background: linear-gradient(135deg, var(--primary), #000428);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .exam-info {
+            background: rgba(255,255,255,0.1);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            border: 1px solid var(--secondary);
+        }
+
+        h1 { font-size: 2.2rem; margin-bottom: 0.5rem; }
+        
+        .timer-box {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            color: var(--accent);
+            padding: 10px 20px;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            font-weight: bold;
+            font-size: 1.2rem;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 2px solid var(--accent);
+        }
+
+        /* --- NAVIGATION --- */
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: -25px auto 30px;
+            padding: 0 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            color: var(--dark);
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn.active {
+            background: var(--secondary);
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .nav-btn:hover:not(.active) {
+            transform: translateY(-2px);
+            background: #f1f1f1;
+        }
+
+        /* --- CONTENU --- */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto 50px;
+            padding: 0 20px;
+        }
+
+        .tab-content { display: none; animation: fadeIn 0.5s ease; }
+        .tab-content.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        h2 {
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* --- DESSINS SCHEMAS MCD (CSS ONLY) --- */
+        .mcd-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .entity {
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+            min-width: 120px;
+            text-align: center;
+            box-shadow: 3px 3px 0 rgba(0,78,146,0.2);
+        }
+
+        .entity-header {
+            background: var(--primary);
+            color: white;
+            padding: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .entity-body {
+            padding: 10px;
+            font-size: 0.85rem;
+            text-align: left;
+        }
+
+        .relation {
+            background: #fff3e0;
+            border: 2px solid #e67e22;
+            border-radius: 50px; /* Oval for relation */
+            padding: 10px 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: #d35400;
+            position: relative;
+            min-width: 100px;
+        }
+
+        .link-line {
+            height: 2px;
+            background: #95a5a6;
+            width: 50px;
+            position: relative;
+        }
+
+        .cardinality {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #eee;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* --- VISUAL MAPPING --- */
+        .mapping-visual {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .arrow-down {
+            text-align: center;
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin: -10px 0;
+        }
+
+        .db-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            background: white;
+        }
+
+        .db-table th {
+            background: var(--dark);
+            color: white;
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #34495e;
+        }
+
+        .db-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            color: #333;
+        }
+
+        .pk { text-decoration: underline; font-weight: bold; color: var(--primary); }
+        .fk { font-style: italic; color: #e67e22; }
+        .fk::before { content: '#'; }
+
+        /* --- EXERCICES --- */
+        .exo-block {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .exo-header {
+            background: #f1f2f6;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .exo-header:hover { background: #e2e6ea; }
+        
+        .exo-title { font-weight: bold; font-size: 1.1rem; display: flex; align-items: center; gap: 10px;}
+        .difficulty { font-size: 0.8rem; padding: 3px 8px; border-radius: 10px; color: white; }
+        .diff-1 { background: #2ecc71; }
+        .diff-2 { background: #f1c40f; color: black; }
+        .diff-3 { background: #e74c3c; }
+
+        .exo-content {
+            padding: 20px;
+            display: none;
+            border-top: 1px solid #ddd;
+        }
+        
+        .exo-content.open { display: block; }
+
+        .correction-box {
+            margin-top: 20px;
+            padding: 20px;
+            background: #e8f6f3;
+            border: 1px solid #a2d9ce;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .correction-box.visible { display: block; animation: fadeIn 0.5s; }
+
+        .btn-reveal {
+            background: var(--dark);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-reveal:hover { background: #34495e; }
+
+        /* --- PIED DE PAGE --- */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .mcd-diagram { flex-direction: column; }
+            .link-line { width: 2px; height: 30px; }
+            .cardinality { top: 50%; left: 10px; transform: translateY(-50%); }
+        }
+    </style>
 </head>
 <body>
-    <div id="exam-timer" class="exam-timer hidden">
-        <span class="timer-icon"><i class="fas fa-hourglass-half"></i></span>
-        <span id="timer-display">40:00</span>
-        <button onclick="toggleTimer()" class="timer-btn"><i class="fas fa-pause"></i></button>
-        <button onclick="resetTimer()" class="timer-btn"><i class="fas fa-sync"></i></button>
+
+    <div id="timer" class="timer-box" style="display:none;">
+        <i class="fas fa-stopwatch"></i> <span id="time">40:00</span>
     </div>
 
-    <header class="main-header">
-        <div class="container">
-            <div class="header-content">
-                <a href="index.html" class="logo">FOCUS BDD</a>
-                <nav class="nav-links">
-                    <a href="index.html" class="nav-link">Retour Accueil</a>
-                </nav>
-                <div class="user-section">
-                    <button id="themeToggle" class="theme-toggle"><i class="fas fa-moon"></i></button>
-                </div>
-            </div>
-        </div>
+    <header>
+        <div class="exam-info">Vendredi - 40 min - 2 Exercices</div>
+        <h1><i class="fas fa-database"></i> REVISION BDD ULTIMATE</h1>
+        <p>MCD (Entité/Association) & Mapping Relationnel</p>
+        <button onclick="startTimer()" style="margin-top:15px; padding:10px 20px; background:var(--secondary); border:none; border-radius:20px; cursor:pointer; font-weight:bold; color:var(--primary);">
+            <i class="fas fa-play"></i> Lancer Mode Examen
+        </button>
     </header>
 
-    <section class="hero-section exam-mode">
-        <div class="container">
-            <div class="hero-content centered">
-                <div class="alert-badge"><i class="fas fa-exclamation-circle"></i> EXAMEN VENDREDI</div>
-                <h1 class="hero-title">Modèle E/R & Mapping</h1>
-                <p class="hero-description">
-                    Objectif : 2 Exercices en 40 minutes. Pas de documents. <br>
-                    <strong>Sujets :</strong> Modélisation Conceptuelle + Passage au Relationnel.
-                </p>
-                <div class="hero-actions centered">
-                    <button class="cta-button" onclick="startExamMode()"><i class="fas fa-play"></i> Lancer Mode Exam (40')</button>
-                    <button class="cta-button secondary" onclick="showTab('mapping')"><i class="fas fa-exchange-alt"></i> Réviser le Mapping</button>
+    <div class="nav-container">
+        <button class="nav-btn active" onclick="switchTab('fiches')"><i class="fas fa-book"></i> Fiches Premium</button>
+        <button class="nav-btn" onclick="switchTab('exos')"><i class="fas fa-dumbbell"></i> 5 Exercices Types</button>
+    </div>
+
+    <div class="container">
+
+        <div id="fiches" class="tab-content active">
+            
+            <div class="card">
+                <h2><i class="fas fa-sitemap"></i> 1. Le Modèle Conceptuel (MCD)</h2>
+                <p>Le schéma "Bulle et Patate". Il décrit le QUOI.</p>
+                
+                <div class="mcd-diagram">
+                    <div class="entity">
+                        <div class="entity-header">CLIENT</div>
+                        <div class="entity-body">
+                            <u>id_client</u><br>
+                            nom<br>
+                            email
+                        </div>
+                    </div>
+                    
+                    <div class="link-line"><span class="cardinality">0,n</span></div>
+                    
+                    <div class="relation">
+                        PASSER
+                    </div>
+                    
+                    <div class="link-line"><span class="cardinality">1,1</span></div>
+                    
+                    <div class="entity">
+                        <div class="entity-header">COMMANDE</div>
+                        <div class="entity-body">
+                            <u>num_cmd</u><br>
+                            date<br>
+                            montant
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </section>
 
-    <div class="container main-content-area">
-        <div class="tabs-container">
-            <button class="tab-btn active" onclick="showTab('conceptuel')">1. Modèle Conceptuel</button>
-            <button class="tab-btn" onclick="showTab('mapping')">2. Mapping (Le Piège)</button>
-            <button class="tab-btn" onclick="showTab('exercices')">3. Exercices Types</button>
-        </div>
-
-        <div id="conceptuel" class="tab-content active">
-            <div class="revision-grid">
-                <div class="concept-card">
-                    <h3><i class="fas fa-sitemap"></i> Les 3 Piliers</h3>
-                    <ul class="check-list">
-                        <li><strong>Entité :</strong> Un objet (Ex: <em>Avion, Pilote</em>). Devient une Table.</li>
-                        <li><strong>Attribut :</strong> Une info (Ex: <em>Nom, Date</em>). Devient une Colonne.</li>
-                        <li><strong>Identifiant :</strong> Souligné (Ex: <em><u>Num_Vol</u></em>). Devient la Clé Primaire (PK).</li>
+                <div style="background:#fffde7; padding:15px; border-left:5px solid #fbc02d; margin-top:15px;">
+                    <strong><i class="fas fa-exclamation-triangle"></i> Les Cardinalités (Le point critique)</strong>
+                    <ul style="margin-left:20px; margin-top:10px;">
+                        <li><strong>0,1</strong> : Au maximum 1 fois (optionnel).</li>
+                        <li><strong>1,1</strong> : Exactement 1 fois (obligatoire).</li>
+                        <li><strong>0,n</strong> : De 0 à plusieurs.</li>
+                        <li><strong>1,n</strong> : Au moins 1.</li>
                     </ul>
                 </div>
-                
-                <div class="concept-card warning">
-                    <h3><i class="fas fa-bomb"></i> Attention aux Cardinalités</h3>
-                    <div class="cardinality-visual">
-                        <div class="card-row">
-                            <span>0..1</span>
-                            <small>Zéro ou un (Optionnel)</small>
-                        </div>
-                        <div class="card-row">
-                            <span>1..1</span>
-                            <small>Un et un seul (Obligatoire)</small>
-                        </div>
-                        <div class="card-row">
-                            <span>0..n</span>
-                            <small>Zéro ou plusieurs</small>
-                        </div>
-                        <div class="card-row">
-                            <span>1..n</span>
-                            <small>Au moins un</small>
-                        </div>
+            </div>
+
+            <div class="card">
+                <h2><i class="fas fa-exchange-alt"></i> 2. Le Mapping (MCD -> Tables)</h2>
+                <p>C'est là que tu gagnes ou perds les points. Il y a 3 règles absolues.</p>
+
+                <div class="mapping-visual">
+                    <h4>Cas 1 : Relation (1,n) ou (0,n) <---> (1,1) ou (0,1)</h4>
+                    <p><em>"Le père donne sa clé au fils".</em> La clé part vers le coté "1".</p>
+                    
+                    <div class="mcd-diagram" style="margin:10px 0; transform:scale(0.8);">
+                        <div class="entity"><div class="entity-header">CLIENT</div></div>
+                        <div class="link-line"><span class="cardinality">0,n</span></div>
+                        <div class="relation">PASSER</div>
+                        <div class="link-line"><span class="cardinality">1,1</span></div>
+                        <div class="entity"><div class="entity-header">COMMANDE</div></div>
                     </div>
+                    
+                    <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
+
+                    <table class="db-table">
+                        <thead>
+                            <tr><th>Nom Table</th><th>Colonnes</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Client</td>
+                                <td><span class="pk">id_client</span>, nom, email</td>
+                            </tr>
+                            <tr style="background:#e8f6f3;">
+                                <td>Commande</td>
+                                <td><span class="pk">num_cmd</span>, date, montant, <span class="fk">id_client</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mapping-visual" style="margin-top:20px;">
+                    <h4>Cas 2 : Relation (0,n) <---> (0,n)</h4>
+                    <p><em>"Création d'une table de jointure".</em></p>
+                    
+                    <div class="mcd-diagram" style="margin:10px 0; transform:scale(0.8);">
+                        <div class="entity"><div class="entity-header">ETUDIANT</div></div>
+                        <div class="link-line"><span class="cardinality">0,n</span></div>
+                        <div class="relation">SUIVRE<br><small>note</small></div>
+                        <div class="link-line"><span class="cardinality">0,n</span></div>
+                        <div class="entity"><div class="entity-header">COURS</div></div>
+                    </div>
+                    
+                    <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
+
+                    <table class="db-table">
+                        <thead>
+                            <tr><th>Nom Table</th><th>Colonnes</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Etudiant</td><td><span class="pk">id_etud</span>, nom</td></tr>
+                            <tr><td>Cours</td><td><span class="pk">code_cours</span>, titre</td></tr>
+                            <tr style="background:#e8f6f3;">
+                                <td>Suivre (Table Jointe)</td>
+                                <td><span class="pk fk">id_etud</span>, <span class="pk fk">code_cours</span>, note</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
 
-        <div id="mapping" class="tab-content">
-            <h2 class="section-title">Les 3 Règles d'Or du Mapping</h2>
-            <p class="section-subtitle">C'est ici que tout le monde perd des points. Apprends ça par cœur.</p>
+        <div id="exos" class="tab-content">
+            
+            <div class="card">
+                <h2><i class="fas fa-pencil-alt"></i> Entraînement Intensif</h2>
+                <p>Prends une feuille et un stylo. Ne regarde pas la correction avant d'avoir fini le schéma.</p>
+            </div>
 
-            <div class="rules-container">
-                <div class="rule-card">
-                    <div class="rule-header">Règle 1 : Relation (1,1) - (1,1) ou (0,1)</div>
-                    <div class="rule-visual">
-                        <div class="er-view">Entité A (1..1) ---- (1..1) Entité B</div>
-                        <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
-                        <div class="relational-view">
-                            <strong>Une seule Table !</strong><br>
-                            On fusionne tout.<br>
-                            <code>Table_AB (<u>ID_A</u>, Nom_A, Nom_B, ...)</code>
-                        </div>
-                    </div>
+            <div class="exo-block">
+                <div class="exo-header" onclick="toggleExo('exo1')">
+                    <div class="exo-title"><i class="fas fa-chevron-right"></i> Exercice 1 : La Bibliothèque</div>
+                    <span class="difficulty diff-1">Facile</span>
                 </div>
-
-                <div class="rule-card highlight">
-                    <div class="rule-header">Règle 2 : Relation (1,n) - (1,1) <span class="badge">LA PLUS FRÉQUENTE</span></div>
-                    <div class="rule-visual">
-                        <div class="er-view">
-                            Client (1..n) <-----> (1..1) Commande
-                        </div>
-                        <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
-                        <div class="relational-view">
-                            La clé part vers le <strong>(1,1)</strong> (le fils).<br>
-                            La table <em>Commande</em> reçoit <code>#id_Client</code>.<br>
-                            <code>Commande (<u>NumCmd</u>, Date, #id_Client)</code>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="rule-card">
-                    <div class="rule-header">Règle 3 : Relation (0,n) - (0,n)</div>
-                    <div class="rule-visual">
-                        <div class="er-view">Etudiant (0..n) ---- (0..n) Cours</div>
-                        <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
-                        <div class="relational-view">
-                            <strong>Création d'une Table de Jointure !</strong><br>
-                            La table porte les deux clés en PK composite.<br>
-                            <code>Participer (<u>#id_Etud, #id_Cours</u>, Note)</code>
-                        </div>
+                <div id="exo1" class="exo-content">
+                    <p><strong>Scénario :</strong> Un <strong>Auteur</strong> écrit des <strong>Livres</strong>. Un livre est écrit par un seul auteur (pour simplifier). Un livre possède un titre et un ISBN. L'auteur a un nom.</p>
+                    <p><strong>Mission :</strong> Fais le MCD puis le Mapping.</p>
+                    
+                    <button class="btn-reveal" onclick="toggleCorrection('corr1')"><i class="fas fa-eye"></i> Voir Correction</button>
+                    
+                    <div id="corr1" class="correction-box">
+                        <h4>MCD :</h4>
+                        <p>Auteur (0,n) ---- ECRIRE ---- (1,1) Livre</p>
+                        <h4>Mapping (Tables) :</h4>
+                        <table class="db-table">
+                            <tr><td>Auteur</td><td><span class="pk">id_auteur</span>, nom</td></tr>
+                            <tr><td>Livre</td><td><span class="pk">isbn</span>, titre, <span class="fk">id_auteur</span></td></tr>
+                        </table>
+                        <p class="note">Note : La clé étrangère va dans Livre car c'est lui qui a la cardinalité (1,1).</p>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div id="exercices" class="tab-content">
-            <div class="exercises-wrapper">
-                
-                <div class="exercise-card">
-                    <div class="ex-header">
-                        <span class="tag">Modélisation</span>
-                        <h3>Exercice 1 : Gestion des Vols (Slide 30)</h3>
-                    </div>
-                    <div class="ex-body">
-                        <p><strong>Énoncé :</strong> Une compagnie aérienne propose des vols. Un vol a un numéro, départ, arrivée. Un aéroport dessert une ou plusieurs villes. Un vol peut comporter des escales.</p>
-                        <button class="reveal-btn" onclick="toggleCorrection('corr-1')">Voir la Correction Type</button>
-                        <div id="corr-1" class="correction hidden">
-                            <img src="https://mermaid.ink/img/pako:eNp1kk9rwjAQxb9KyGkL9SCLB70IHjx72cMeQjab1EBtnCQlFfHdNx_9w4K3JDPvzez3JgNypwQyUE-WrzJSoa-VlshHq7V4F1JIoXq9oZz7Q-l0f_N9cO_iW-e7k2C-M9Z_4i-sJ7YyY7130_uN3421hTfWf-I3Y205yVjvg_U903b7wVjbDcaC_aH2iZ-MtWV3xtp88L1x3o21eR9k4Bw4gWzJ-YQyUigpG3KRSVkoB5mS25xLoQeD3FCo81Y0yL25lJ0Vp2V0L8n_gN3LCNk3sT43oPj8Bq0550qD61M7q0oT-25W6E426l5C2cR-L2GgWk9h-P6J2c0D1K24Lg?type=png" alt="Correction ER Vols">
-                            <ul class="correction-points">
-                                <li><strong>Entités :</strong> Vol, Aéroport, Ville, Compagnie, Escale.</li>
-                                <li><strong>Associations :</strong> "Proposer" (Compagnie-Vol), "Desserver" (Aéroport-Ville), "Comporter" (Vol-Escale).</li>
-                                <li><strong>Piège :</strong> L'escale est souvent modélisée comme une entité faible ou une association n-aire.</li>
-                            </ul>
-                        </div>
+            <div class="exo-block">
+                <div class="exo-header" onclick="toggleExo('exo2')">
+                    <div class="exo-title"><i class="fas fa-chevron-right"></i> Exercice 2 : Les Projets (Many-to-Many)</div>
+                    <span class="difficulty diff-2">Moyen</span>
+                </div>
+                <div id="exo2" class="exo-content">
+                    <p><strong>Scénario :</strong> Des <strong>Ingénieurs</strong> travaillent sur des <strong>Projets</strong>. Un ingénieur peut travailler sur plusieurs projets, et un projet mobilise plusieurs ingénieurs. On veut savoir le nombre d'heures passées par chaque ingénieur sur chaque projet.</p>
+                    
+                    <button class="btn-reveal" onclick="toggleCorrection('corr2')"><i class="fas fa-eye"></i> Voir Correction</button>
+                    
+                    <div id="corr2" class="correction-box">
+                        <h4>MCD :</h4>
+                        <p>Ingenieur (0,n) ---- TRAVAILLER(nb_heures) ---- (0,n) Projet</p>
+                        <h4>Mapping :</h4>
+                        <p>Création obligatoire d'une 3ème table !</p>
+                        <table class="db-table">
+                            <tr><td>Ingenieur</td><td><span class="pk">id_ing</span>, nom</td></tr>
+                            <tr><td>Projet</td><td><span class="pk">code_prj</span>, nom_projet</td></tr>
+                            <tr><td>Travailler</td><td><span class="pk fk">id_ing</span>, <span class="pk fk">code_prj</span>, nb_heures</td></tr>
+                        </table>
                     </div>
                 </div>
+            </div>
 
-                <div class="exercise-card">
-                    <div class="ex-header">
-                        <span class="tag">Mapping</span>
-                        <h3>Exercice 2 : Conducteur & Voiture (Slide 11)</h3>
+            <div class="exo-block">
+                <div class="exo-header" onclick="toggleExo('exo3')">
+                    <div class="exo-title"><i class="fas fa-chevron-right"></i> Exercice 3 : Le Piège du 1-1</div>
+                    <span class="difficulty diff-2">Moyen</span>
+                </div>
+                <div id="exo3" class="exo-content">
+                    <p><strong>Scénario :</strong> Une <strong>Voiture</strong> possède un <strong>Moteur</strong>. Une voiture a un seul moteur, et un moteur appartient à une seule voiture. </p>
+                    
+                    <button class="btn-reveal" onclick="toggleCorrection('corr3')"><i class="fas fa-eye"></i> Voir Correction</button>
+                    
+                    <div id="corr3" class="correction-box">
+                        <h4>MCD :</h4>
+                        <p>Voiture (1,1) ---- POSSEDER ---- (1,1) Moteur</p>
+                        <h4>Mapping :</h4>
+                        <p>Fusion des tables ! On ne fait qu'une seule table.</p>
+                        <table class="db-table">
+                            <tr><td>Voiture_Moteur</td><td><span class="pk">id_voiture</span>, modele, numero_serie_moteur, puissance</td></tr>
+                        </table>
                     </div>
-                    <div class="ex-body">
-                        <p><strong>Énoncé :</strong>
-                        <br>Conducteur (1..*) --- (1..*) Voiture (Propriété)
-                        <br>Voiture (1..1) --- (1..1) Usine (Fabrication) [Attention piège 1-1]</p>
+                </div>
+            </div>
+
+             <div class="exo-block">
+                <div class="exo-header" onclick="toggleExo('exo4')">
+                    <div class="exo-title"><i class="fas fa-chevron-right"></i> Exercice 4 : L'Association Réflexive</div>
+                    <span class="difficulty diff-3">Difficile</span>
+                </div>
+                <div id="exo4" class="exo-content">
+                    <p><strong>Scénario :</strong> Dans une entreprise, un <strong>Employé</strong> peut avoir un chef qui est aussi un employé. Un chef dirige plusieurs employés.</p>
+                    
+                    <button class="btn-reveal" onclick="toggleCorrection('corr4')"><i class="fas fa-eye"></i> Voir Correction</button>
+                    
+                    <div id="corr4" class="correction-box">
+                        <h4>MCD :</h4>
+                        <p>Une seule entité "Employé". Une association "DIRIGER" qui boucle sur l'entité.</p>
+                        <p>Employé (0,1 côté subordonné) ---- DIRIGER ---- (0,n côté chef) Employé</p>
+                        <h4>Mapping :</h4>
+                        <table class="db-table">
+                            <tr><td>Employe</td><td><span class="pk">id_emp</span>, nom, <span class="fk">id_chef</span></td></tr>
+                        </table>
+                        <p>La clé étrangère <code>id_chef</code> référence <code>id_emp</code> de la même table.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exo-block">
+                <div class="exo-header" onclick="toggleExo('exo5')">
+                    <div class="exo-title"><i class="fas fa-chevron-right"></i> Exercice 5 : Le Cinéma (Complet)</div>
+                    <span class="difficulty diff-3">Exam</span>
+                </div>
+                <div id="exo5" class="exo-content">
+                    <p><strong>Scénario :</strong> Un <strong>Cinéma</strong> a plusieurs <strong>Salles</strong>. Une salle appartient à un seul cinéma. Un <strong>Film</strong> est projeté dans une salle à une certaine <strong>Heure</strong>.</p>
+                    
+                    <button class="btn-reveal" onclick="toggleCorrection('corr5')"><i class="fas fa-eye"></i> Voir Correction</button>
+                    
+                    <div id="corr5" class="correction-box">
+                        <h4>1. Cinéma - Salle :</h4>
+                        <p>Cinema(1) --- (n)Salle. La salle a une FK <code>#id_cinema</code>.</p>
                         
-                        <button class="reveal-btn" onclick="toggleCorrection('corr-2')">Voir le Schéma Relationnel</button>
-                        <div id="corr-2" class="correction hidden">
-                            <div class="code-block">
-                                <p><strong>1. Conducteur / Voiture (Many-to-Many) :</strong></p>
-                                <code>Conducteur (<u>id_cond</u>, nom, prenom)</code><br>
-                                <code>Voiture (<u>id_voit</u>, marque, modele)</code><br>
-                                <code>Posseder (<u>#id_cond, #id_voit</u>, date_achat)</code> <span class="comment">// Nouvelle table !</span>
-                                
-                                <p style="margin-top:15px;"><strong>2. Voiture / Usine (One-to-One) :</strong></p>
-                                <p><em>Si on considère qu'une voiture sort d'une seule usine :</em></p>
-                                <code>Voiture (<u>id_voit</u>, ..., #id_usine)</code> <span class="comment">// FK dans Voiture</span>
-                            </div>
-                        </div>
+                        <h4>2. Salle - Film (Projection) :</h4>
+                        <p>C'est du n..n (Une salle passe plusieurs films, un film passe dans plusieurs salles). MAIS il y a l'attribut <strong>Heure</strong>.</p>
+                        <p>Salle (0,n) --- PROJETER(Heure) --- (0,n) Film</p>
+                        
+                        <h4>Mapping Final :</h4>
+                        <table class="db-table">
+                            <tr><td>Cinema</td><td><span class="pk">id_cine</span>, nom, adresse</td></tr>
+                            <tr><td>Salle</td><td><span class="pk">id_salle</span>, capacite, <span class="fk">id_cine</span></td></tr>
+                            <tr><td>Film</td><td><span class="pk">id_film</span>, titre, duree</td></tr>
+                            <tr><td>Projection</td><td><span class="pk fk">id_salle</span>, <span class="pk fk">id_film</span>, heure_projection</td></tr>
+                        </table>
                     </div>
                 </div>
-
-                <div class="exercise-card">
-                    <div class="ex-header">
-                        <span class="tag">Complet</span>
-                        <h3>Exercice 3 : Cinéma (Slide 31)</h3>
-                    </div>
-                    <div class="ex-body">
-                        <p><strong>Énoncé :</strong> Salles, Films, Spectateurs. "Une salle ne projette qu'un seul film à une heure donnée". "Chaque spectateur émet une appréciation".</p>
-                        <button class="reveal-btn" onclick="toggleCorrection('corr-3')">Voir les Points Clés</button>
-                        <div id="corr-3" class="correction hidden">
-                            <ul class="correction-points">
-                                <li><strong>Entité Spectateur :</strong> id, nom, prénom...</li>
-                                <li><strong>Association "Visionner" :</strong> Entre Spectateur et Film. <br>Attribut de l'association : <em>Appréciation</em> (Bien, Nul...). C'est du n..n !</li>
-                                <li><strong>Association "Projeter" :</strong> Entre Salle et Film. Avec attribut <em>Heure</em>.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
             </div>
+
         </div>
 
     </div>
 
-    <script src="app_info.js"></script>
+    <footer>
+        &copy; 2025 Focus BDD ISEP. Prêt pour le 20/20.
+    </footer>
+
     <script>
-        // Script inline rapide pour le toggle timer
-        let timeLeft = 40 * 60;
-        let timerId = null;
-        
-        function startExamMode() {
-            document.getElementById('exam-timer').classList.remove('hidden');
-            showTab('exercices');
-            if(!timerId) toggleTimer();
-            alert("C'est parti ! 40 minutes. Fais l'exercice 1 et 2 sans regarder la correction d'abord.");
+        // GESTION DES ONGLETS
+        function switchTab(tabId) {
+            // Cacher les contenus
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+            
+            // Montrer le bon
+            document.getElementById(tabId).classList.add('active');
+            
+            // Activer le bouton
+            const btns = document.querySelectorAll('.nav-btn');
+            if(tabId === 'fiches') btns[0].classList.add('active');
+            if(tabId === 'exos') btns[1].classList.add('active');
         }
 
-        function toggleTimer() {
-            if(timerId) {
-                clearInterval(timerId);
-                timerId = null;
-            } else {
-                timerId = setInterval(() => {
-                    timeLeft--;
-                    updateTimerDisplay();
-                    if(timeLeft <= 0) {
-                        clearInterval(timerId);
-                        alert("Temps écoulé ! Pose les stylos.");
-                    }
-                }, 1000);
-            }
+        // ACCORDEON EXERCICES
+        function toggleExo(exoId) {
+            const content = document.getElementById(exoId);
+            const allContents = document.querySelectorAll('.exo-content');
+            
+            // Fermer les autres pour garder propre
+            allContents.forEach(el => {
+                if(el.id !== exoId) el.classList.remove('open');
+            });
+
+            content.classList.toggle('open');
         }
 
-        function updateTimerDisplay() {
-            const m = Math.floor(timeLeft / 60);
-            const s = timeLeft % 60;
-            document.getElementById('timer-display').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+        // AFFICHER CORRECTION
+        function toggleCorrection(corrId) {
+            const box = document.getElementById(corrId);
+            box.classList.toggle('visible');
         }
 
-        function resetTimer() {
-            timeLeft = 40 * 60;
-            updateTimerDisplay();
-            if(timerId) toggleTimer(); // Stop if running
+        // TIMER
+        let timerInterval;
+        let time = 40 * 60; // 40 minutes
+
+        function startTimer() {
+            document.getElementById('timer').style.display = 'flex';
+            switchTab('exos'); // Force vers les exos
+            
+            if (timerInterval) clearInterval(timerInterval);
+            
+            timerInterval = setInterval(() => {
+                const minutes = Math.floor(time / 60);
+                let seconds = time % 60;
+                
+                seconds = seconds < 10 ? '0' + seconds : seconds;
+                
+                document.getElementById('time').innerHTML = `${minutes}:${seconds}`;
+                time--;
+                
+                if (time < 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById('time').innerHTML = "FINI !";
+                    alert("Temps écoulé ! Pose les stylos !");
+                }
+            }, 1000);
         }
     </script>
+
 </body>
 </html>
