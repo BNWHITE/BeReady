@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Codage - Focus ISEP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark-reasonable.min.css">
+    
+    <style>
+        :root {
+            --primary: #004E92;
+            --primary-dark: #000428;
+            --accent: #FFD700;
+            --text: #2d3436;
+            --bg: #f4f6f8;
+            --white: #ffffff;
+            --sidebar-width: 260px;
+            --radius: 12px;
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background: var(--bg); color: var(--text); padding-bottom: 80px; }
+        
+        /* --- HEADER (Copie conforme BDD) --- */
+        .main-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo { font-weight: 900; font-size: 1.4rem; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; color: white; text-decoration: none; }
+        .logo i { color: var(--accent); }
+
+        .nav-desktop { display: flex; gap: 20px; }
+        .nav-link { color: rgba(255,255,255,0.8); text-decoration: none; font-weight: 600; transition: 0.3s; font-size: 0.95rem; }
+        .nav-link:hover, .nav-link.active { color: white; }
+        .nav-link.active { border-bottom: 2px solid var(--accent); }
+
+        .menu-toggle { display: none; font-size: 1.5rem; cursor: pointer; color: white; }
+        
+        /* MOBILE MENU OVERLAY */
+        .mobile-menu {
+            position: fixed; top: 60px; left: 0; width: 100%; background: white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1); transform: translateY(-150%); transition: 0.4s;
+            padding: 20px; z-index: 99;
+        }
+        .mobile-menu.open { transform: translateY(0); }
+        .mobile-link { display: block; padding: 12px; color: var(--text); text-decoration: none; font-weight: 600; border-bottom: 1px solid #eee; }
+        .mobile-link i { width: 25px; color: var(--primary); }
+
+        /* --- LAYOUT MAIN --- */
+        .layout-wrapper {
+            display: flex;
+            max-width: 1200px;
+            margin: 30px auto;
+            gap: 30px;
+            padding: 0 20px;
+        }
+
+        /* SIDEBAR (DESKTOP) */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+            box-shadow: var(--shadow);
+        }
+        
+        .sidebar h3 { font-size: 0.85rem; color: #b2bec3; text-transform: uppercase; margin-bottom: 10px; margin-top: 20px; letter-spacing: 1px; }
+        .sidebar h3:first-child { margin-top: 0; }
+
+        .lang-btn {
+            display: flex; align-items: center; gap: 10px; width: 100%;
+            padding: 12px 15px; border: none; background: transparent;
+            color: var(--text); font-weight: 600; cursor: pointer;
+            border-radius: 8px; transition: 0.2s; text-align: left; font-size: 0.95rem;
+        }
+        .lang-btn:hover { background: #f1f2f6; color: var(--primary); }
+        .lang-btn.active { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(0, 78, 146, 0.2); }
+        .lang-btn i { width: 20px; text-align: center; }
+
+        /* MOBILE HORIZONTAL NAV */
+        .mobile-lang-nav {
+            display: none; /* Hidden on Desktop */
+            overflow-x: auto;
+            white-space: nowrap;
+            background: white;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 60px; /* Juste sous le header */
+            z-index: 90;
+        }
+        .mob-pill {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 8px 20px; background: #f1f2f6; border-radius: 20px;
+            margin-right: 10px; color: var(--text); font-weight: 600; font-size: 0.9rem;
+            cursor: pointer; border: 1px solid transparent;
+        }
+        .mob-pill.active { background: var(--primary); color: white; border-color: var(--primary-dark); }
+
+        /* CONTENT AREA */
+        .content-area { flex: 1; min-width: 0; } /* min-width 0 for pre tag overflow fix */
+
+        .lang-section { display: none; animation: fadeIn 0.3s ease; }
+        .lang-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .section-title { font-size: 2rem; margin-bottom: 20px; color: var(--primary-dark); display: flex; align-items: center; gap: 15px; }
+        .section-title i { color: var(--accent); }
+
+        /* CODE CARDS */
+        .code-card {
+            background: white; border-radius: var(--radius);
+            overflow: hidden; box-shadow: var(--shadow); margin-bottom: 25px;
+        }
+        .card-header {
+            background: #f8f9fa; padding: 12px 20px; font-weight: 700; color: #636e72;
+            border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;
+        }
+        .badge-pro { background: var(--accent); color: var(--primary-dark); padding: 3px 8px; border-radius: 4px; font-size: 0.7rem; text-transform: uppercase; }
+        
+        .code-block { padding: 0; margin: 0; }
+        pre { margin: 0; }
+        code { font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.9rem; line-height: 1.5; }
+
+        /* TIP BOX */
+        .tip-box {
+            background: #e3f2fd; border-left: 4px solid var(--primary);
+            padding: 15px; margin-bottom: 25px; border-radius: 4px;
+            font-size: 0.95rem; display: flex; gap: 15px; align-items: start;
+        }
+        .tip-box i { color: var(--primary); font-size: 1.2rem; margin-top: 3px; }
+
+        /* FOOTER MOBILE */
+        .bottom-nav {
+            display: none; position: fixed; bottom: 0; width: 100%; background: white;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1); justify-content: space-around; padding: 12px; z-index: 999;
+        }
+        .bottom-item { text-align: center; color: #b2bec3; font-size: 0.7rem; text-decoration: none; }
+        .bottom-item i { display: block; font-size: 1.2rem; margin-bottom: 4px; }
+        .bottom-item.active { color: var(--primary); }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .nav-desktop { display: none; }
+            .menu-toggle { display: block; }
+            .sidebar { display: none; }
+            .mobile-lang-nav { display: block; }
+            .layout-wrapper { display: block; margin-top: 0; }
+            .section-title { font-size: 1.5rem; margin-top: 20px; }
+            .bottom-nav { display: flex; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <a href="app_info.html" class="logo"><i class="fas fa-code"></i> FOCUS CODE</a>
+        <nav class="nav-desktop">
+            <a href="index.html" class="nav-link">Accueil</a>
+            <a href="app_info.html" class="nav-link">APP Info Hub</a>
+            <a href="bdd.html" class="nav-link">BDD</a>
+            <a href="codage.html" class="nav-link active">Codage</a>
+        </nav>
+        <div class="menu-toggle" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+
+    <div id="mobileMenu" class="mobile-menu">
+        <a href="index.html" class="mobile-link"><i class="fas fa-home"></i> Accueil</a>
+        <a href="app_info.html" class="mobile-link"><i class="fas fa-layer-group"></i> APP Info Hub</a>
+        <a href="bdd.html" class="mobile-link"><i class="fas fa-database"></i> BDD</a>
+        <a href="#" class="mobile-link"><i class="fas fa-cog"></i> Paramètres</a>
+    </div>
+
+    <div class="mobile-lang-nav">
+        <div class="mob-pill active" onclick="switchLang('web')"><i class="fab fa-html5"></i> Web</div>
+        <div class="mob-pill" onclick="switchLang('react')"><i class="fab fa-react"></i> React</div>
+        <div class="mob-pill" onclick="switchLang('java')"><i class="fab fa-java"></i> Java</div>
+        <div class="mob-pill" onclick="switchLang('python')"><i class="fab fa-python"></i> Python</div>
+        <div class="mob-pill" onclick="switchLang('c')"><i class="fas fa-c"></i> Langage C</div>
+        <div class="mob-pill" onclick="switchLang('ocaml')"><i class="fas fa-cubes"></i> OCaml</div>
+        <div class="mob-pill" onclick="switchLang('latex')"><i class="fas fa-subscript"></i> LaTeX</div>
+    </div>
+
+    <div class="layout-wrapper">
+        
+        <aside class="sidebar">
+            <h3><i class="fas fa-globe"></i> Web Dev</h3>
+            <button class="lang-btn active" onclick="switchLang('web')"><i class="fab fa-html5"></i> HTML / CSS</button>
+            <button class="lang-btn" onclick="switchLang('react')"><i class="fab fa-react"></i> React / JS</button>
+            
+            <h3><i class="fas fa-laptop-code"></i> Algorithmique</h3>
+            <button class="lang-btn" onclick="switchLang('java')"><i class="fab fa-java"></i> Java</button>
+            <button class="lang-btn" onclick="switchLang('python')"><i class="fab fa-python"></i> Python</button>
+            <button class="lang-btn" onclick="switchLang('c')"><i class="fas fa-copyright"></i> Langage C</button>
+            <button class="lang-btn" onclick="switchLang('ocaml')"><i class="fas fa-cubes"></i> OCaml</button>
+            
+            <h3><i class="fas fa-flask"></i> Sciences</h3>
+            <button class="lang-btn" onclick="switchLang('latex')"><i class="fas fa-subscript"></i> LaTeX</button>
+            <button class="lang-btn" onclick="switchLang('r')"><i class="fas fa-chart-bar"></i> Langage R</button>
+        </aside>
+
+        <main class="content-area">
+
+            <div id="web" class="lang-section active">
+                <h1 class="section-title"><i class="fab fa-html5"></i> HTML & CSS Moderne</h1>
+                
+                <div class="tip-box">
+                    <i class="fas fa-lightbulb"></i>
+                    <div>
+                        <strong>Le Saint Graal du centrage :</strong> Oublie les <code>margin: auto</code> compliqués. Utilise Flexbox pour tout centrer parfaitement.
+                    </div>
+                </div>
+
+                <div class="code-card">
+                    <div class="card-header">Centrer une DIV (Flexbox) <span class="badge-pro">Essential</span></div>
+                    <pre><code class="language-css">.container {
+    display: flex;
+    justify-content: center; /* Horizontal */
+    align-items: center;     /* Vertical */
+    height: 100vh;           /* Pleine hauteur */
+}</code></pre>
+                </div>
+
+                <div class="code-card">
+                    <div class="card-header">Structure HTML5 Propre</div>
+                    <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="fr"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;link rel="stylesheet" href="style.css"&gt;
+    &lt;title&gt;Mon Site&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;...&lt;/header&gt;
+    &lt;main&gt;...&lt;/main&gt;
+    &lt;footer&gt;...&lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                </div>
+            </div>
+
+            <div id="react" class="lang-section">
+                <h1 class="section-title"><i class="fab fa-react"></i> React & Hooks</h1>
+                
+                <div class="code-card">
+                    <div class="card-header">useState (Variable d'état)</div>
+                    <pre><code class="language-javascript">import React, { useState } from 'react';
+
+function Compteur() {
+    const [count, setCount] = useState(0); // Init à 0
+
+    return (
+        &lt;button onClick={() => setCount(count + 1)}&gt;
+            Clique : {count}
+        &lt;/button&gt;
+    );
+}</code></pre>
+                </div>
+
+                <div class="code-card">
+                    <div class="card-header">useEffect (Cycle de vie)</div>
+                    <pre><code class="language-javascript">useEffect(() => {
+    console.log("Composant monté");
+    
+    // Cleanup function (équivalent componentWillUnmount)
+    return () => {
+        console.log("Composant démonté");
+    };
+}, []); // [] = S'exécute une seule fois</code></pre>
+                </div>
+            </div>
+
+            <div id="java" class="lang-section">
+                <h1 class="section-title"><i class="fab fa-java"></i> Java (POO)</h1>
+                
+                <div class="code-card">
+                    <div class="card-header">Structure de Classe & Main</div>
+                    <pre><code class="language-java">public class Etudiant {
+    private String nom;
+
+    // Constructeur
+    public Etudiant(String nom) {
+        this.nom = nom;
+    }
+
+    // Point d'entrée
+    public static void main(String[] args) {
+        Etudiant e = new Etudiant("Alice");
+        System.out.println("Bonjour " + e.nom);
+    }
+}</code></pre>
+                </div>
+
+                <div class="code-card">
+                    <div class="card-header">Collections (List & Map)</div>
+                    <pre><code class="language-java">import java.util.ArrayList;
+import java.util.HashMap;
+
+// Liste dynamique
+ArrayList&lt;String&gt; liste = new ArrayList<>();
+liste.add("Pomme");
+
+// Dictionnaire (Clé -> Valeur)
+HashMap&lt;String, Integer&gt; notes = new HashMap<>();
+notes.put("Maths", 18);</code></pre>
+                </div>
+            </div>
+
+            <div id="python" class="lang-section">
+                <h1 class="section-title"><i class="fab fa-python"></i> Python (Data)</h1>
+                
+                <div class="tip-box">
+                    <i class="fas fa-rocket"></i>
+                    <div>
+                        <strong>List Comprehension :</strong> C'est la manière "Pythonique" de créer des listes en une ligne. Très puissant.
+                    </div>
+                </div>
+
+                <div class="code-card">
+                    <div class="card-header">Manipulation de Listes</div>
+                    <pre><code class="language-python"># Classique
+carres = []
+for i in range(10):
+    carres.append(i**2)
+
+# Pythonique (List Comprehension)
+carres = [i**2 for i in range(10)]
+
+# Filtrage
+pairs = [x for x in range(20) if x % 2 == 0]</code></pre>
+                </div>
+
+                <div class="code-card">
+                    <div class="card-header">Pandas (Basics)</div>
+                    <pre><code class="language-python">import pandas as pd
+
+df = pd.read_csv('data.csv')
+print(df.head())       # 5 premières lignes
+print(df.describe())   # Stats (moyenne, min, max...)</code></pre>
+                </div>
+            </div>
+
+            <div id="c" class="lang-section">
+                <h1 class="section-title"><i class="fas fa-copyright"></i> Langage C</h1>
+                
+                <div class="tip-box" style="border-left-color: #e74c3c;">
+                    <i class="fas fa-exclamation-triangle" style="color:#e74c3c;"></i>
+                    <div>
+                        <strong>Gestion Mémoire :</strong> En C, si tu fais un <code>malloc</code>, tu DOIS faire un <code>free</code>. Sinon : fuite de mémoire (Memory Leak).
+                    </div>
+                </div>
+
+                <div class="code-card">
+                    <div class="card-header">Pointeurs & Allocation Dynamique</div>
+                    <pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main() {
+    // Allocation d'un tableau de 10 entiers
+    int *tab = (int*) malloc(10 * sizeof(int));
+
+    if (tab == NULL) return 1; // Vérif erreur
+
+    tab[0] = 42;
+    
+    // Libération obligatoire !
+    free(tab);
+    return 0;
+}</code></pre>
+                </div>
+            </div>
+
+             <div id="ocaml" class="lang-section">
+                <h1 class="section-title"><i class="fas fa-cubes"></i> OCaml</h1>
+                
+                <div class="code-card">
+                    <div class="card-header">Fonction Récursive (Factorielle)</div>
+                    <pre><code class="language-ocaml">let rec fact n =
+  if n = 0 then 1
+  else n * fact (n - 1);;
+  
+(* Appel *)
+fact 5;; (* Renvoie 120 *)</code></pre>
+                </div>
+
+                <div class="code-card">
+                    <div class="card-header">Pattern Matching (Listes)</div>
+                    <pre><code class="language-ocaml">let rec longueur liste =
+  match liste with
+  | [] -> 0          (* Cas de base : vide *)
+  | tete::queue -> 1 + longueur queue;;</code></pre>
+                </div>
+            </div>
+
+            <div id="latex" class="lang-section">
+                <h1 class="section-title"><i class="fas fa-subscript"></i> LaTeX</h1>
+                
+                <div class="code-card">
+                    <div class="card-header">Formules Mathématiques</div>
+                    <pre><code class="language-tex">% Fraction
+\frac{numérateur}{dénominateur}
+
+% Somme
+\sum_{i=0}^{n} i^2
+
+% Intégrale
+\int_{a}^{b} x^2 dx
+
+% Matrice
+\begin{pmatrix}
+1 & 2 \\
+3 & 4
+\end{pmatrix}</code></pre>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html" class="bottom-item"><i class="fas fa-home"></i>Accueil</a>
+        <a href="app_info.html" class="bottom-item"><i class="fas fa-layer-group"></i>Hub</a>
+        <a href="bdd.html" class="bottom-item"><i class="fas fa-database"></i>BDD</a>
+        <a href="codage.html" class="bottom-item active"><i class="fas fa-code"></i>Code</a>
+    </nav>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+        hljs.highlightAll();
+
+        function switchLang(langId) {
+            // 1. Cacher toutes les sections
+            document.querySelectorAll('.lang-section').forEach(el => el.classList.remove('active'));
+            // 2. Désactiver tous les boutons (Desktop & Mobile)
+            document.querySelectorAll('.lang-btn').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.mob-pill').forEach(el => el.classList.remove('active'));
+
+            // 3. Activer la section demandée
+            document.getElementById(langId).classList.add('active');
+
+            // 4. Activer les boutons correspondants (via une recherche textuelle ou index, ici simplifié)
+            // Astuce : On réactive le bouton cliqué visuellement
+            event.currentTarget.classList.add('active');
+            
+            // Remonter en haut de page sur mobile pour voir le titre
+            if(window.innerWidth < 768) {
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            }
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('open');
+        }
+    </script>
+</body>
+</html>
