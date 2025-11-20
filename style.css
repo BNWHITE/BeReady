@@ -1344,4 +1344,233 @@ button {
     #quiz-result.hidden {
         display: none;
     }
+    /* --- STYLES EXAMEN BDD --- */
+
+    /* Mode Exam & Hero */
+    .hero-section.exam-mode {
+        background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%); /* Rouge Urgence */
+        color: white;
+    }
+    
+    .alert-badge {
+        background: #ffeb3b;
+        color: #b71c1c;
+        display: inline-block;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-weight: 800;
+        margin-bottom: 15px;
+        animation: pulse 2s infinite;
+    }
+    
+    .centered { text-align: center; }
+    
+    /* Timer Flottant */
+    .exam-timer {
+        position: fixed;
+        top: 20px;
+        right: 20px; /* Changé à droite pour ne pas gêner */
+        background: var(--dark);
+        color: #ffeb3b; /* Jaune ISEP */
+        padding: 10px 20px;
+        border-radius: 30px;
+        font-family: monospace;
+        font-size: 1.2rem;
+        z-index: 9999;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        border: 2px solid #ffeb3b;
+    }
+    
+    .exam-timer.hidden { display: none; }
+    
+    .timer-btn {
+        background: transparent;
+        border: 1px solid #666;
+        color: white;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+    
+    .timer-btn:hover { background: rgba(255,255,255,0.2); }
+    
+    /* Cartes de Révision */
+    .revision-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+    }
+    
+    .concept-card {
+        background: var(--light);
+        padding: 25px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        border-left: 5px solid var(--primary);
+    }
+    
+    .concept-card.warning {
+        border-left-color: #f57c00; /* Orange attention */
+    }
+    
+    .check-list {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .check-list li {
+        margin-bottom: 10px;
+        padding-left: 20px;
+        position: relative;
+    }
+    
+    .check-list li::before {
+        content: '✓';
+        color: var(--secondary);
+        position: absolute;
+        left: 0;
+        font-weight: bold;
+    }
+    
+    .cardinality-visual {
+        background: #eee;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 15px;
+    }
+    
+    .card-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 0;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    /* Mapping Rules */
+    .rules-container {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    .rule-card {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+    .rule-card.highlight {
+        border: 2px solid var(--primary);
+        box-shadow: 0 0 15px rgba(var(--isep-blue-dark-rgb), 0.15);
+    }
+    
+    .rule-header {
+        background: #f5f5f5;
+        padding: 15px;
+        font-weight: 700;
+        border-bottom: 1px solid #e0e0e0;
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .rule-visual {
+        padding: 20px;
+        text-align: center;
+    }
+    
+    .er-view {
+        background: #e3f2fd;
+        padding: 10px;
+        border-radius: 5px;
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+    
+    .relational-view {
+        background: #fff3e0;
+        padding: 15px;
+        border-radius: 5px;
+        border: 1px dashed #f57c00;
+    }
+    
+    .relational-view code {
+        display: block;
+        margin-top: 10px;
+        font-family: monospace;
+        background: rgba(0,0,0,0.05);
+        padding: 5px;
+    }
+    
+    /* Exercices */
+    .exercise-card {
+        background: white;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+    }
+    
+    .ex-header {
+        background: var(--primary);
+        color: white;
+        padding: 15px 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .tag {
+        background: var(--secondary);
+        color: var(--dark);
+        padding: 2px 10px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+    
+    .ex-body {
+        padding: 25px;
+    }
+    
+    .reveal-btn {
+        background: var(--dark);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 15px;
+        width: 100%;
+        transition: background 0.3s;
+    }
+    
+    .reveal-btn:hover { background: #444; }
+    
+    .correction {
+        margin-top: 20px;
+        padding: 20px;
+        background: #f8f9fa;
+        border-left: 4px solid #28a745;
+        animation: slideDown 0.5s ease;
+    }
+    
+    .correction.hidden { display: none; }
+    
+    .correction-points li {
+        margin-bottom: 8px;
+    }
+    
+    @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
 }
