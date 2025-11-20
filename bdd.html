@@ -6,171 +6,235 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
     <link rel="stylesheet" href="style_hub.css">
+    <style>
+        /* Styles spécifiques pour les schémas MCD en CSS */
+        .mcd-visual { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 20px 0; flex-wrap: wrap;}
+        .entity-box { border: 2px solid var(--primary); border-radius: 4px; background: white; min-width: 100px; text-align: center; box-shadow: 2px 2px 0 rgba(0,0,0,0.1); }
+        .ent-head { background: var(--primary); color: white; font-weight: bold; padding: 5px; font-size: 0.8rem; text-transform: uppercase; }
+        .ent-body { padding: 8px; font-size: 0.8rem; color: #333; line-height: 1.4; }
+        .rel-oval { border: 2px solid #e67e22; background: #fff3e0; border-radius: 50%; padding: 10px 15px; font-weight: bold; font-size: 0.8rem; color: #d35400; min-width: 80px; text-align: center; z-index: 2;}
+        .link-line { height: 2px; background: #7f8c8d; width: 40px; position: relative; margin: 0 -5px; z-index: 1;}
+        .card-text { position: absolute; top: -20px; width: 100%; text-align: center; font-size: 0.75rem; font-weight: bold; color: #2c3e50; }
+        
+        /* Styles Exos */
+        .exo-wrapper { background: white; margin-bottom: 25px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #eee; }
+        .exo-bar { padding: 15px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: #f8f9fa; transition: 0.3s; }
+        .exo-bar:hover { background: #e9ecef; }
+        .exo-content { padding: 25px; display: none; border-top: 1px solid #ddd; }
+        .exo-content.open { display: block; }
+        .correction { background: #e8f6f3; border-left: 4px solid #27ae60; padding: 15px; margin-top: 20px; border-radius: 0 5px 5px 0; display: none; }
+        .correction.show { display: block; animation: slideIn 0.3s; }
+        
+        @keyframes slideIn { from {opacity:0; transform:translateY(10px);} to {opacity:1; transform:translateY(0);} }
+    </style>
 </head>
 <body>
     <nav class="top-nav">
-        <a href="app_info.html" class="back-link"><i class="fas fa-arrow-left"></i> HUB</a>
+        <a href="app_info.html" class="back-link"><i class="fas fa-arrow-left"></i> HUB CENTRAL</a>
         <div class="nav-tabs">
-            <button class="tab-btn active" onclick="openTab('mcd')">1. Conceptuel & Mapping</button>
-            <button class="tab-btn" onclick="openTab('sql')">2. SQL & Outils</button>
-            <button class="tab-btn" onclick="openTab('exos')">3. Exercices & Exam</button>
+            <button class="tab-btn" onclick="openTab('mcd')">1. Fiches Révision</button>
+            <button class="tab-btn active" onclick="openTab('exos')">2. Les 6 Exercices Types</button>
         </div>
     </nav>
 
     <main class="container">
         
-        <div id="mcd" class="tab-content active">
-            <div class="alert-box">
-                <i class="fas fa-exclamation-triangle"></i>
-                <strong>Rappel Exam :</strong> Vendredi = Papier/Crayon. Pas de PC. Concentre-toi sur les schémas et les flèches de mapping.
-            </div>
-
-            <div class="card-grid">
-                <div class="card">
-                    <h3><i class="fas fa-sitemap"></i> Règles d'Or du Mapping</h3>
-                    <table class="clean-table">
-                        <thead><tr><th>Cardinalités</th><th>Action</th><th>Résultat</th></tr></thead>
-                        <tbody>
-                            <tr>
-                                <td><code>(1,1) - (1,n)</code></td>
-                                <td>Clé part vers le (1,1)</td>
-                                <td>FK dans la table "fils"</td>
-                            </tr>
-                            <tr>
-                                <td><code>(0,n) - (0,n)</code></td>
-                                <td>Table de Jointure</td>
-                                <td>Nouvelle table avec 2 FK</td>
-                            </tr>
-                            <tr>
-                                <td><code>(1,1) - (1,1)</code></td>
-                                <td>Fusion</td>
-                                <td>Une seule table géante</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="card">
-                    <h3><i class="fas fa-lightbulb"></i> Tips de Modélisation</h3>
-                    <ul class="tips-list">
-                        <li><strong>Association Ternaire :</strong> Si tu as 3 entités reliées par une association, c'est FORCÉMENT une table de jointure avec 3 clés étrangères.</li>
-                        <li><strong>L'entité Faible :</strong> Une entité qui n'a pas d'ID propre (dépend d'une autre). Dans le mapping, sa PK est composée (Son ID + ID du Père).</li>
-                        <li><strong>Date :</strong> Si une association a une propriété "Date", vérifie si c'est une historique (n..n) ou une date unique.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div id="sql" class="tab-content">
-            
-            <div class="tools-section">
-                <h2><i class="fas fa-toolbox"></i> L'Écosystème BDD Moderne</h2>
-                <div class="tools-grid">
-                    <div class="tool-card">
-                        <div class="tool-header"><i class="fas fa-dolphin"></i> MySQL / MariaDB</div>
-                        <p>Le classique. Utilisé à l'ISEP avec WAMP/XAMPP.</p>
-                        <span class="tag">Syntaxe Standard</span>
-                    </div>
-                    <div class="tool-card postgres">
-                        <div class="tool-header"><i class="fas fa-elephant"></i> PostgreSQL</div>
-                        <p>Le plus puissant. Gère le JSON, les tableaux. C'est le standard industriel actuel.</p>
-                        <span class="tag">Robuste</span>
-                    </div>
-                    <div class="tool-card supabase">
-                        <div class="tool-header"><i class="fas fa-bolt"></i> Supabase</div>
-                        <p>Alternative Open Source à Firebase. C'est du PostgreSQL hébergé avec une API toute prête.</p>
-                        <div class="code-mini">
-                            <code>supabase.from('users').select('*')</code>
-                        </div>
-                        <span class="tag">Futur</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="sql-cheat-sheet">
-                <h2><i class="fas fa-code"></i> Syntaxe SQL : Le Récap'</h2>
+        <div id="mcd" class="tab-content">
+            <div class="card">
+                <h2><i class="fas fa-book"></i> Le Mémo du Mapping (À savoir par cœur)</h2>
+                <p>Pour l'examen papier, mémorise uniquement ces 3 situations graphiques.</p>
                 
-                <div class="split-view">
-                    <div class="code-block">
-                        <h4>DDL (Structure)</h4>
-                        <pre><code class="language-sql">
--- Création propre (Postgres/MySQL)
-CREATE TABLE Etudiant (
-    id SERIAL PRIMARY KEY, -- 'AUTO_INCREMENT' sur MySQL
-    nom VARCHAR(50) NOT NULL,
-    promo INT,
-    FOREIGN KEY (promo) REFERENCES Promo(id)
-        ON DELETE CASCADE -- Important !
-);
-
--- Modification
-ALTER TABLE Etudiant ADD COLUMN email VARCHAR(100);
-                        </code></pre>
-                    </div>
-                    <div class="code-block">
-                        <h4>DML (Données) & Jointures</h4>
-                        <pre><code class="language-sql">
--- La Jointure Classique (INNER)
-SELECT E.nom, C.titre 
-FROM Etudiant E
-JOIN Suivre S ON E.id = S.id_etud
-JOIN Cours C ON S.id_cours = C.id
-WHERE C.titre LIKE 'BDD%';
-
--- Group By & Having (Le piège)
-SELECT promo, COUNT(*) as nb_etudiants
-FROM Etudiant
-GROUP BY promo
-HAVING COUNT(*) > 10; -- Filtrer sur le groupe !
-                        </code></pre>
-                    </div>
-                </div>
+                <table class="clean-table">
+                    <thead>
+                        <tr>
+                            <th>Situation MCD</th>
+                            <th>Règle de Mapping</th>
+                            <th>Résultat Table</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Un vers Plusieurs</strong><br><code>(0,n) --- (1,1)</code></td>
+                            <td><span style="color:#d35400; font-weight:bold;">Migration de Clé</span><br>Le père (1,1) récupère l'ID du fils.</td>
+                            <td>Table_Fils (<u>id</u>, attributs, <span style="color:#d35400;">#id_Pere</span>)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Plusieurs vers Plusieurs</strong><br><code>(0,n) --- (0,n)</code></td>
+                            <td><span style="color:#2980b9; font-weight:bold;">Table de Jointure</span><br>On crée une table au milieu.</td>
+                            <td>Table_Relation (<u>#id_A, #id_B</u>, attributs_relation)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Un vers Un</strong><br><code>(1,1) --- (1,1)</code></td>
+                            <td><span style="color:#27ae60; font-weight:bold;">Fusion</span><br>Tout dans la même table.</td>
+                            <td>Table_Unique (<u>id_A</u>, attr_A, attr_B)</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <div id="exos" class="tab-content">
-            <h2><i class="fas fa-dumbbell"></i> Entraînement Intensif</h2>
-            
-            <div class="exercise-box">
-                <div class="exo-header" onclick="toggleExo('ex1')">
-                    <span>Exercice 1 : Le Festival de Musique (SQL)</span>
-                    <span class="badge-diff">Moyen</span>
+        <div id="exos" class="tab-content active">
+            <div class="alert-box">
+                <i class="fas fa-dumbbell"></i> <strong>Objectif :</strong> Prends une feuille. Fais le schéma E/R (Bulles) puis écris les Tables (Texte). Ne clique sur "Correction" qu'à la fin.
+            </div>
+
+            <div class="exo-wrapper">
+                <div class="exo-bar" onclick="toggleExo(this)">
+                    <strong><i class="fas fa-pen"></i> Exo 1 : Le Classique (1..n)</strong>
+                    <span class="badge">Facile</span>
                 </div>
-                <div id="ex1" class="exo-body hidden">
-                    <p><strong>Contexte :</strong> Tables <code>Groupe(id, nom)</code>, <code>Concert(id, date, #id_salle)</code>, <code>Jouer(#id_groupe, #id_concert)</code>.</p>
-                    <p><strong>Question :</strong> Lister les groupes qui n'ont jamais joué dans la salle "Zenith".</p>
-                    <button class="btn-reveal" onclick="toggleAns('ans1')">Voir la requête</button>
-                    <div id="ans1" class="answer hidden">
-                        <pre><code class="language-sql">
--- Méthode avec sous-requête (plus simple à comprendre)
-SELECT nom FROM Groupe
-WHERE id NOT IN (
-    SELECT J.id_groupe 
-    FROM Jouer J
-    JOIN Concert C ON J.id_concert = C.id
-    JOIN Salle S ON C.id_salle = S.id
-    WHERE S.nom = 'Zenith'
-);
-                        </code></pre>
+                <div class="exo-content">
+                    <p><strong>Contexte :</strong> Une <strong>Entreprise</strong> possède plusieurs <strong>Départements</strong>. Un département appartient à une seule entreprise. Un département a un nom et un budget.</p>
+                    <div style="margin:15px 0;">
+                        <button class="btn-reveal" onclick="toggleAns(this)">Voir Correction</button>
+                    </div>
+                    <div class="correction">
+                        <h4>MCD :</h4>
+                        <div class="mcd-visual">
+                            <div class="entity-box"><div class="ent-head">ENTREPRISE</div><div class="ent-body"><u>id_ent</u><br>nom</div></div>
+                            <div class="link-line"><span class="card-text">0,n</span></div>
+                            <div class="rel-oval">POSSEDER</div>
+                            <div class="link-line"><span class="card-text">1,1</span></div>
+                            <div class="entity-box"><div class="ent-head">DEPARTEMENT</div><div class="ent-body"><u>id_dep</u><br>budget</div></div>
+                        </div>
+                        <h4>Mapping :</h4>
+                        <p>La cardinalité (1,1) est côté Département. C'est lui qui reçoit la clé étrangère.</p>
+                        <code>Entreprise (<u>id_ent</u>, nom)</code><br>
+                        <code>Departement (<u>id_dep</u>, nom, budget, <span style="color:#d35400;">#id_ent</span>)</code>
                     </div>
                 </div>
             </div>
 
-            <div class="exercise-box">
-                <div class="exo-header" onclick="toggleExo('ex2')">
-                    <span>Exercice 2 : Modélisation Uber (MCD)</span>
-                    <span class="badge-diff">Difficile</span>
+            <div class="exo-wrapper">
+                <div class="exo-bar" onclick="toggleExo(this)">
+                    <strong><i class="fas fa-users"></i> Exo 2 : La Jointure avec Propriété (n..n)</strong>
+                    <span class="badge">Moyen</span>
                 </div>
-                <div id="ex2" class="exo-body hidden">
-                    <p><strong>Sujet :</strong> Un chauffeur conduit une voiture. Une voiture appartient à un chauffeur (ou une flotte). Un client réserve une course. Une course a lieu à une date, un prix, un départ, une arrivée. A la fin, le client note le chauffeur ET la voiture.</p>
-                    <p><strong>Piège :</strong> L'association de notation.</p>
-                    <button class="btn-reveal" onclick="toggleAns('ans2')">Voir Analyse</button>
-                    <div id="ans2" class="answer hidden">
-                        <ul>
-                            <li><strong>Entités :</strong> Client, Chauffeur, Voiture, Course.</li>
-                            <li><strong>Notation :</strong> C'est une association ternaire ou liée à la "Course" ?</li>
-                            <li><strong>Solution idéale :</strong> Lier la note à la "Course". Comme la course est liée au chauffeur et à la voiture, on retrouve tout.</li>
-                            <li>Mapping : Table <code>Course (id, date, prix, #id_client, #id_chauffeur, #id_voiture, note_client)</code>.</li>
-                        </ul>
+                <div class="exo-content">
+                    <p><strong>Contexte :</strong> Des <strong>Étudiants</strong> s'inscrivent à des <strong>Modules</strong> (Maths, Info...). À la fin du semestre, l'étudiant reçoit une <strong>Note</strong> pour ce module.</p>
+                    <p><em>Indice : Où met-on la note ? Dans étudiant ? Dans module ? Ou ailleurs ?</em></p>
+                    <div style="margin:15px 0;">
+                        <button class="btn-reveal" onclick="toggleAns(this)">Voir Correction</button>
+                    </div>
+                    <div class="correction">
+                        <h4>MCD :</h4>
+                        <div class="mcd-visual">
+                            <div class="entity-box"><div class="ent-head">ETUDIANT</div></div>
+                            <div class="link-line"><span class="card-text">0,n</span></div>
+                            <div class="rel-oval">INSCRIRE<br><u>note</u></div>
+                            <div class="link-line"><span class="card-text">0,n</span></div>
+                            <div class="entity-box"><div class="ent-head">MODULE</div></div>
+                        </div>
+                        <h4>Mapping :</h4>
+                        <p>Relation Plusieurs-à-Plusieurs = Nouvelle Table. L'attribut 'Note' glisse dans cette table.</p>
+                        <code>Etudiant (<u>id_etud</u>, nom)</code><br>
+                        <code>Module (<u>code_mod</u>, titre)</code><br>
+                        <code>Inscription (<u>#id_etud, #code_mod</u>, note)</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exo-wrapper">
+                <div class="exo-bar" onclick="toggleExo(this)">
+                    <strong><i class="fas fa-link"></i> Exo 3 : Le Piège de la Fusion (1..1)</strong>
+                    <span class="badge" style="background:#e74c3c; color:white;">Piège</span>
+                </div>
+                <div class="exo-content">
+                    <p><strong>Contexte :</strong> Un <strong>Stade</strong> possède exactement une <strong>Adresse</strong> géographique précise. Une adresse correspond à un seul stade (dans notre système simplifié).</p>
+                    <div style="margin:15px 0;">
+                        <button class="btn-reveal" onclick="toggleAns(this)">Voir Correction</button>
+                    </div>
+                    <div class="correction">
+                        <h4>MCD :</h4>
+                        <div class="mcd-visual">
+                            <div class="entity-box"><div class="ent-head">STADE</div></div>
+                            <div class="link-line"><span class="card-text">1,1</span></div>
+                            <div class="rel-oval">LOCALISER</div>
+                            <div class="link-line"><span class="card-text">1,1</span></div>
+                            <div class="entity-box"><div class="ent-head">ADRESSE</div></div>
+                        </div>
+                        <h4>Mapping :</h4>
+                        <p>Double (1,1) => On ne crée pas deux tables pour éviter de faire des jointures inutiles. On fusionne.</p>
+                        <code>Stade (<u>id_stade</u>, nom_stade, rue, ville, code_postal)</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exo-wrapper">
+                <div class="exo-bar" onclick="toggleExo(this)">
+                    <strong><i class="fas fa-undo"></i> Exo 4 : L'Association Réflexive</strong>
+                    <span class="badge" style="background:#8e44ad; color:white;">Technique</span>
+                </div>
+                <div class="exo-content">
+                    <p><strong>Contexte :</strong> Dans une équipe de <strong>Salariés</strong>, un salarié peut être le "Mentor" d'un autre salarié. Un salarié n'a qu'un seul mentor, mais un mentor peut suivre plusieurs salariés.</p>
+                    <p><em>Indice : Il n'y a qu'une seule entité "Salarié". L'association boucle sur elle-même.</em></p>
+                    <div style="margin:15px 0;">
+                        <button class="btn-reveal" onclick="toggleAns(this)">Voir Correction</button>
+                    </div>
+                    <div class="correction">
+                        <h4>MCD :</h4>
+                        <p>Entité : Salarié.<br>Relation : "MENTORER".<br>Bras 1 (Mentoré) : 0,1 (Un salarié a 0 ou 1 mentor).<br>Bras 2 (Mentor) : 0,n (Un mentor a plusieurs mentorés).</p>
+                        <h4>Mapping :</h4>
+                        <p>La clé étrangère reste dans la même table !</p>
+                        <code>Salarie (<u>id_sal</u>, nom, <span style="color:#d35400;">#id_mentor</span>)</code>
+                        <p><em>#id_mentor fait référence à id_sal de la même table.</em></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exo-wrapper">
+                <div class="exo-bar" onclick="toggleExo(this)">
+                    <strong><i class="fas fa-cubes"></i> Exo 5 : La Ternaire (Le Boss)</strong>
+                    <span class="badge" style="background:#2c3e50; color:white;">Difficile</span>
+                </div>
+                <div class="exo-content">
+                    <p><strong>Contexte :</strong> Un <strong>Fournisseur</strong> vend des <strong>Produits</strong> à un <strong>Magasin</strong>. Le prix dépend du fournisseur, du produit ET du magasin (négociation locale).</p>
+                    <p><em>Indice : Si tu relies juste Fournisseur et Produit, tu perds l'info du Magasin. Il faut relier les 3 bulles ensemble.</em></p>
+                    <div style="margin:15px 0;">
+                        <button class="btn-reveal" onclick="toggleAns(this)">Voir Correction</button>
+                    </div>
+                    <div class="correction">
+                        <h4>MCD :</h4>
+                        <p>Une relation centrale "VENDRE" reliée à 3 Entités (Fournisseur, Produit, Magasin).<br>Cardinalités : 0,n sur toutes les branches.</p>
+                        <h4>Mapping :</h4>
+                        <p>Une table de jointure avec 3 clés étrangères qui forment la Clé Primaire Composite.</p>
+                        <code>Vente (<u>#id_fourn, #id_prod, #id_mag</u>, prix_negocie)</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exo-wrapper">
+                <div class="exo-bar" onclick="toggleExo(this)">
+                    <strong><i class="fas fa-flag-checkered"></i> Exo 6 : Scénario Complet (UberEats)</strong>
+                    <span class="badge" style="background:#d35400; color:white;">Exam Type</span>
+                </div>
+                <div class="exo-content">
+                    <p><strong>Contexte :</strong> Un <strong>Client</strong> passe une <strong>Commande</strong>. Cette commande contient plusieurs <strong>Plats</strong>. Chaque commande est livrée par un <strong>Livreur</strong>. Le client note la commande.</p>
+                    <ul style="margin-left:20px; margin-bottom:15px; font-size:0.9rem;">
+                        <li>Un client passe plusieurs commandes.</li>
+                        <li>Une commande concerne 1 client et 1 livreur.</li>
+                        <li>Une commande contient plusieurs plats, et un plat peut être dans plusieurs commandes.</li>
+                        <li>Il faut stocker la quantité de chaque plat dans la commande.</li>
+                    </ul>
+                    <div style="margin:15px 0;">
+                        <button class="btn-reveal" onclick="toggleAns(this)">Voir Correction</button>
+                    </div>
+                    <div class="correction">
+                        <h4>Analyse & Mapping :</h4>
+                        <ol>
+                            <li><strong>Client - Commande (1,n) :</strong> La commande a un seul client.
+                                <br>-> FK <code>#id_client</code> dans Commande.</li>
+                            <li><strong>Livreur - Commande (1,n) :</strong> La commande a un seul livreur.
+                                <br>-> FK <code>#id_livreur</code> dans Commande.</li>
+                            <li><strong>Commande - Plat (n,n) :</strong> Une commande a plusieurs plats.
+                                <br>-> Table de jointure <code>Contenir</code> avec attribut <code>quantité</code>.</li>
+                        </ol>
+                        <h4>Schéma Relationnel Final :</h4>
+                        <code>Client (<u>id_cli</u>, nom)</code><br>
+                        <code>Livreur (<u>id_liv</u>, nom)</code><br>
+                        <code>Plat (<u>id_plat</u>, libelle, prix)</code><br>
+                        <code>Commande (<u>id_cmd</u>, date, note, <span style="color:#d35400;">#id_cli, #id_liv</span>)</code><br>
+                        <code>Contenir (<u>#id_cmd, #id_plat</u>, quantite)</code>
                     </div>
                 </div>
             </div>
@@ -181,14 +245,30 @@ WHERE id NOT IN (
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
     <script>
         hljs.highlightAll();
+        
+        // Gestion des Onglets
         function openTab(id) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            event.target.classList.add('active');
+            // Trouver le bouton cliqué (astuce simple)
+            event.currentTarget.classList.add('active');
         }
-        function toggleExo(id) { document.getElementById(id).classList.toggle('hidden'); }
-        function toggleAns(id) { document.getElementById(id).classList.toggle('hidden'); }
+
+        // Gestion Accordéon Exos
+        function toggleExo(element) {
+            const content = element.nextElementSibling;
+            // Fermer les autres si on veut être strict (optionnel)
+            // document.querySelectorAll('.exo-content').forEach(e => e.classList.remove('open'));
+            content.classList.toggle('open');
+        }
+
+        // Révéler la réponse
+        function toggleAns(btn) {
+            const corr = btn.parentElement.nextElementSibling;
+            corr.classList.add('show');
+            btn.style.display = 'none'; // Cache le bouton après clic
+        }
     </script>
 </body>
 </html>
