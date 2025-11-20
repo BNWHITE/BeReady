@@ -5,255 +5,325 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Module BDD - Focus ISEP</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style_hub.css">
+    <style>
+        :root {
+            --primary: #004E92;
+            --primary-dark: #000428;
+            --accent: #FFD700;
+            --text: #2d3436;
+            --bg: #f4f6f8;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --radius: 16px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background: var(--bg); color: var(--text); padding-bottom: 80px; }
+
+        /* --- HEADER & NAV MOBILE --- */
+        .main-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo { font-weight: 900; font-size: 1.4rem; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
+        .logo i { color: var(--accent); }
+
+        .nav-desktop { display: flex; gap: 20px; }
+        .nav-link { color: rgba(255,255,255,0.8); text-decoration: none; font-weight: 600; transition: 0.3s; font-size: 0.95rem; }
+        .nav-link:hover, .nav-link.active { color: white; }
+        .nav-link.active { border-bottom: 2px solid var(--accent); }
+
+        /* Hamburger Menu (Mobile) */
+        .menu-toggle { display: none; font-size: 1.5rem; cursor: pointer; }
+        .mobile-menu {
+            position: fixed; top: 60px; left: 0; width: 100%; background: white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1); transform: translateY(-150%); transition: 0.4s;
+            padding: 20px; z-index: 99;
+        }
+        .mobile-menu.open { transform: translateY(0); }
+        .mobile-link { display: block; padding: 12px; color: var(--text); text-decoration: none; font-weight: 600; border-bottom: 1px solid #eee; }
+        .mobile-link i { width: 25px; color: var(--primary); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            background: white;
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+        .hero h1 { font-size: 2rem; margin-bottom: 10px; color: var(--primary-dark); }
+        .hero p { color: #636e72; max-width: 600px; margin: 0 auto 20px; }
+        
+        /* --- NAVIGATION TABS --- */
+        .tabs-wrapper { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 30px; padding: 0 20px; }
+        .tab-btn {
+            background: white; border: 2px solid transparent; padding: 12px 25px;
+            border-radius: 50px; font-weight: 700; color: #636e72; cursor: pointer;
+            transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 8px;
+        }
+        .tab-btn.active { background: var(--primary); color: white; box-shadow: 0 8px 20px rgba(0, 78, 146, 0.3); }
+        .tab-btn:hover:not(.active) { transform: translateY(-2px); background: #f8f9fa; }
+
+        /* --- CONTENT CARDS --- */
+        .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+        .tab-content { display: none; animation: slideUp 0.4s ease; }
+        .tab-content.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* MAPPING SECTION STYLE */
+        .mapping-guide { display: grid; gap: 25px; }
+        .rule-card {
+            background: white; border-radius: var(--radius); overflow: hidden;
+            box-shadow: var(--shadow); border: 1px solid rgba(0,0,0,0.05);
+        }
+        .rule-header {
+            background: #f8f9fa; padding: 15px 20px; font-weight: 800; color: var(--primary);
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid #eee;
+        }
+        .rule-body { padding: 20px; }
+        
+        .visual-row { display: flex; align-items: center; justify-content: center; gap: 15px; margin: 20px 0; flex-wrap: wrap; }
+        .mcd-entity { border: 2px solid var(--primary); padding: 8px 15px; border-radius: 6px; font-weight: bold; font-size: 0.9rem; }
+        .mcd-rel { background: #fff3e0; color: #d35400; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; border: 1px solid #d35400; font-weight: bold; }
+        .arrow-down { text-align: center; font-size: 1.5rem; color: var(--accent); margin: 10px 0; }
+        
+        .code-box {
+            background: #2d3436; color: #dfe6e9; padding: 15px; border-radius: 8px;
+            font-family: 'Courier New', monospace; font-size: 0.9rem; line-height: 1.5;
+            border-left: 4px solid var(--accent);
+        }
+        .pk { text-decoration: underline; color: #74b9ff; }
+        .fk { color: #fab1a0; font-style: italic; }
+
+        /* EXERCICES STYLE */
+        .exo-card { background: white; border-radius: var(--radius); margin-bottom: 25px; box-shadow: var(--shadow); overflow: hidden; }
+        .exo-head {
+            padding: 20px; background: white; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+            transition: 0.2s; border-bottom: 1px solid #f1f1f1;
+        }
+        .exo-head:hover { background: #fcfcfc; }
+        .exo-title { font-weight: 700; font-size: 1.05rem; display: flex; gap: 10px; align-items: center; }
+        .badge { font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; font-weight: 800; text-transform: uppercase; }
+        .badge.easy { background: #e0f2f1; color: #00695c; }
+        .badge.medium { background: #fff3e0; color: #e65100; }
+        .badge.hard { background: #ffebee; color: #c62828; }
+        
+        .exo-body { padding: 25px; display: none; background: #fafafa; }
+        .exo-text { margin-bottom: 20px; line-height: 1.7; color: #444; text-align: justify; }
+        
+        .btn-action {
+            width: 100%; padding: 12px; background: var(--primary); color: white; border: none;
+            border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s;
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+        }
+        .btn-action:hover { background: var(--primary-dark); }
+
+        .correction-panel {
+            margin-top: 20px; border-top: 2px dashed #ddd; padding-top: 20px; display: none;
+            animation: fadeIn 0.5s;
+        }
+        .analysis-block { background: #e3f2fd; padding: 15px; border-radius: 8px; margin-bottom: 15px; font-size: 0.9rem; }
+        .analysis-block ul { margin-left: 20px; margin-top: 5px; }
+
+        /* FOOTER MOBILE */
+        .bottom-nav {
+            display: none; position: fixed; bottom: 0; width: 100%; background: white;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1); justify-content: space-around; padding: 12px; z-index: 999;
+        }
+        .bottom-item { text-align: center; color: #b2bec3; font-size: 0.7rem; text-decoration: none; }
+        .bottom-item i { display: block; font-size: 1.2rem; margin-bottom: 4px; }
+        .bottom-item.active { color: var(--primary); }
+
+        @media (max-width: 768px) {
+            .nav-desktop { display: none; }
+            .menu-toggle { display: block; }
+            .bottom-nav { display: flex; }
+            .hero h1 { font-size: 1.6rem; }
+            .container { padding-bottom: 20px; }
+            .mcd-entity { font-size: 0.8rem; padding: 5px 10px; }
+        }
+    </style>
 </head>
 <body>
 
-    <header class="hero-small">
-        <div class="hero-content-box">
-            <span class="badge-exam">MODE EXAMEN</span>
-            <h1>Entraînement Intensif BDD</h1>
-            <p>Scénarios complexes, pièges de modélisation et mapping relationnel.</p>
-            <a href="app_info.html" class="btn-back"><i class="fas fa-arrow-left"></i> Retour Hub</a>
+    <header class="main-header">
+        <a href="app_info.html" class="logo"><i class="fas fa-cube"></i> FOCUS BDD</a>
+        
+        <nav class="nav-desktop">
+            <a href="index.html" class="nav-link">Accueil</a>
+            <a href="app_info.html" class="nav-link active">APP Info Hub</a>
+            <a href="codage.html" class="nav-link">Codage</a>
+            <a href="#" class="nav-link" title="Connexion"><i class="fas fa-user-circle"></i></a>
+            <a href="#" class="nav-link" id="themeToggle"><i class="fas fa-moon"></i></a>
+        </nav>
+
+        <div class="menu-toggle" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars"></i>
         </div>
     </header>
 
-    <main class="container">
-        
-        <div class="nav-tabs-wrapper">
-            <button class="tab-btn active" onclick="openTab('exos')"><i class="fas fa-pen-nib"></i> 6 Scénarios "Examen"</button>
-            <button class="tab-btn" onclick="openTab('fiches')"><i class="fas fa-brain"></i> Rappels Mapping</button>
-        </div>
+    <div id="mobileMenu" class="mobile-menu">
+        <a href="index.html" class="mobile-link"><i class="fas fa-home"></i> Accueil</a>
+        <a href="app_info.html" class="mobile-link"><i class="fas fa-layer-group"></i> APP Info Hub</a>
+        <a href="codage.html" class="mobile-link"><i class="fas fa-code"></i> Fiches Code</a>
+        <a href="#" class="mobile-link"><i class="fas fa-user"></i> Connexion</a>
+        <a href="#" class="mobile-link"><i class="fas fa-cog"></i> Paramètres</a>
+        <a href="#" class="mobile-link" style="border:none;"><i class="fas fa-adjust"></i> Mode Sombre/Clair</a>
+    </div>
 
+    <section class="hero">
+        <h1><i class="fas fa-database"></i> Entraînement Intensif</h1>
+        <p>6 Exercices Types Exam (MCD & Mapping) + Fiches de Révision</p>
+        <div class="tabs-wrapper">
+            <button class="tab-btn active" onclick="showTab('exos')"><i class="fas fa-pen"></i> Exercices</button>
+            <button class="tab-btn" onclick="showTab('mapping')"><i class="fas fa-sitemap"></i> Rappels Mapping</button>
+        </div>
+    </section>
+
+    <div class="container">
+        
         <div id="exos" class="tab-content active">
             
-            <div class="intro-text">
-                <i class="fas fa-info-circle"></i> <strong>Consigne :</strong> Lis attentivement les textes. Ils contiennent des détails superflus. Extrais les <strong>Entités</strong> (Noms), les <strong>Associations</strong> (Verbes) et déduis les <strong>Cardinalités</strong>.
-            </div>
-
-            <div class="scenario-card">
-                <div class="card-header">
-                    <h3><span class="exo-number">#1</span> Gestion Hôpital (Hiérarchie)</h3>
-                    <span class="difficulty medium">Moyen</span>
+            <div class="exo-card">
+                <div class="exo-head" onclick="toggleExo(this)">
+                    <div class="exo-title"><span class="badge medium">Moyen</span> #1 Gestion Hôpital</div>
+                    <i class="fas fa-chevron-down"></i>
                 </div>
-                <div class="scenario-body">
-                    <p class="text-content">
-                        Le centre hospitalier "Saint-ISEP" souhaite informatiser la gestion de ses services. L'établissement est découpé en plusieurs <strong>Services</strong> (Cardiologie, Neurologie, etc.). Chaque service est dirigé par un <strong>Médecin</strong> chef de service, mais attention, un service ne peut avoir qu'un seul chef, et un médecin ne peut diriger qu'un seul service à la fois.
-                        Par ailleurs, les médecins sont rattachés à un service principal où ils exercent, mais ils ne peuvent pas appartenir à plusieurs services. Enfin, l'hôpital accueille des <strong>Patients</strong>. Un patient est admis dans un service unique à une date donnée. On souhaite conserver l'historique des admissions (date d'entrée, motif).
+                <div class="exo-body">
+                    <p class="exo-text">
+                        Le centre hospitalier est découpé en plusieurs <strong>Services</strong>. Chaque service est dirigé par un unique <strong>Médecin</strong> chef, et un médecin ne peut diriger qu'un seul service. Les médecins sont rattachés à un service principal. Les <strong>Patients</strong> sont admis dans un service à une date donnée. On veut l'historique des admissions.
                     </p>
-                    
-                    <button class="btn-reveal" onclick="toggleCorr('corr1')">Voir l'Analyse & Mapping</button>
-                    
-                    <div id="corr1" class="correction-box hidden">
-                        <div class="analysis">
-                            <strong><i class="fas fa-search"></i> Analyse :</strong>
+                    <button class="btn-action" onclick="revealCorr(this)">Voir Analyse & Mapping</button>
+                    <div class="correction-panel">
+                        <div class="analysis-block">
+                            <strong><i class="fas fa-lightbulb"></i> Analyse :</strong>
                             <ul>
-                                <li>"Un service est dirigé par UN médecin, un médecin dirige UN service" -> <strong>(1,1) - (1,1)</strong> (Relation bijective/One-to-One).</li>
-                                <li>"Médecins rattachés à un service" -> <strong>(1,1)</strong> côté Médecin, <strong>(1,n)</strong> côté Service.</li>
-                                <li>"Patient admis dans un service + Historique" -> Relation n..n (Plusieurs admissions au cours du temps).</li>
+                                <li>Chef de Service : Relation (1,1)-(1,1). On choisit de mettre la FK dans Service.</li>
+                                <li>Admission : Relation n..n avec attribut "Date". C'est une historique.</li>
                             </ul>
                         </div>
-                        <div class="mapping-result">
-                            <strong><i class="fas fa-table"></i> Mapping Relationnel :</strong>
-                            <pre>
-Service (<u>code_service</u>, nom_service, <span class="fk">#id_chef_medecin</span>)
-Medecin (<u>id_med</u>, nom, specialite, <span class="fk">#code_service_appartenance</span>)
-Patient (<u>id_pat</u>, nom, n_secu)
-Admission (<u>#id_pat, #code_service, date_entree</u>, motif)
-                            </pre>
-                            <p class="note">Note : Pour la relation Chef (1-1), on aurait pu mettre la clé étrangère dans Médecin, mais il est plus logique qu'un Service désigne son Chef.</p>
+                        <div class="code-box">
+                            Service (<span class="pk">code_s</span>, nom, <span class="fk">#id_chef</span>)<br>
+                            Medecin (<span class="pk">id_med</span>, nom, <span class="fk">#code_s</span>)<br>
+                            Admission (<span class="pk fk">#id_pat</span>, <span class="pk fk">#code_s</span>, <span class="pk">date_entree</span>)
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="scenario-card">
-                <div class="card-header">
-                    <h3><span class="exo-number">#2</span> La Bibliothèque Municipale (Gestion fine)</h3>
-                    <span class="difficulty hard">Difficile</span>
+            <div class="exo-card">
+                <div class="exo-head" onclick="toggleExo(this)">
+                    <div class="exo-title"><span class="badge hard">Difficile</span> #2 Bibliothèque & Exemplaires</div>
+                    <i class="fas fa-chevron-down"></i>
                 </div>
-                <div class="scenario-body">
-                    <p class="text-content">
-                        Nous gérons une bibliothèque qui possède des milliers de <strong>Livres</strong>. Attention, nous distinguons l'œuvre (ex: "Harry Potter") des exemplaires physiques (Le livre abîmé sur l'étagère 3). Une <strong>Œuvre</strong> est écrite par un ou plusieurs <strong>Auteurs</strong>.
-                        Les <strong>Abonnés</strong> peuvent emprunter des exemplaires. Un emprunt concerne un seul exemplaire à une date précise et doit être rendu avant une date limite. Si l'abonné rend le livre en retard, une pénalité est calculée. Un livre peut être emprunté plusieurs fois dans sa vie. Il faut aussi gérer l'état du livre (Neuf, Bon, Abîmé) lors de chaque emprunt.
+                <div class="exo-body">
+                    <p class="exo-text">
+                        Une bibliothèque gère des <strong>Œuvres</strong> (ex: Harry Potter). Une œuvre a plusieurs <strong>Exemplaires</strong> physiques. Une œuvre est écrite par plusieurs <strong>Auteurs</strong>. Un <strong>Abonné</strong> emprunte un exemplaire précis (pas l'œuvre abstraite) à une date donnée.
                     </p>
-                    
-                    <button class="btn-reveal" onclick="toggleCorr('corr2')">Voir l'Analyse & Mapping</button>
-                    
-                    <div id="corr2" class="correction-box hidden">
-                        <div class="analysis">
-                            <strong><i class="fas fa-search"></i> Analyse :</strong>
-                            <ul>
-                                <li>Distinction Œuvre vs Exemplaire -> <strong>1 Œuvre a n Exemplaires</strong>.</li>
-                                <li>Œuvre écrite par plusieurs Auteurs -> Relation <strong>n..n</strong> (Co-écriture).</li>
-                                <li>Emprunt -> Relation entre Abonné et <strong>Exemplaire</strong> (pas Œuvre !). C'est une relation historique (n..n) avec date et état.</li>
-                            </ul>
-                        </div>
-                        <div class="mapping-result">
-                            <strong><i class="fas fa-table"></i> Mapping Relationnel :</strong>
-                            <pre>
-Auteur (<u>id_aut</u>, nom)
-Oeuvre (<u>isbn</u>, titre, date_parution)
-Ecrire (<u>#id_aut, #isbn</u>)  <span class="comment">// Table de jointure n..n</span>
-
-Exemplaire (<u>id_exemp</u>, etat_actuel, <span class="fk">#isbn</span>) <span class="comment">// 1..n vers Oeuvre</span>
-Abonné (<u>id_ab</u>, nom, adresse)
-
-Emprunter (<u>#id_exemp, #id_ab, date_emprunt</u>, date_retour_reele, etat_retour)
-                            </pre>
+                    <button class="btn-action" onclick="revealCorr(this)">Voir Analyse & Mapping</button>
+                    <div class="correction-panel">
+                        <div class="code-box">
+                            Oeuvre (<span class="pk">isbn</span>, titre)<br>
+                            Exemplaire (<span class="pk">id_ex</span>, etat, <span class="fk">#isbn</span>)<br>
+                            Ecrire (<span class="pk fk">#id_auteur</span>, <span class="pk fk">#isbn</span>)<br>
+                            Emprunter (<span class="pk fk">#id_abonne</span>, <span class="pk fk">#id_ex</span>, <span class="pk">date_emprunt</span>)
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="scenario-card">
-                <div class="card-header">
-                    <h3><span class="exo-number">#3</span> Gestion de Projets (La Ternaire)</h3>
-                    <span class="difficulty hard">Piège</span>
+            <div class="exo-card">
+                <div class="exo-head" onclick="toggleExo(this)">
+                    <div class="exo-title"><span class="badge hard">Piège</span> #3 Projets & Consultants</div>
+                    <i class="fas fa-chevron-down"></i>
                 </div>
-                <div class="scenario-body">
-                    <p class="text-content">
-                        Une entreprise de conseil souhaite suivre l'activité de ses <strong>Consultants</strong>. Ces consultants travaillent sur des <strong>Projets</strong> pour le compte de <strong>Clients</strong> finaux.
-                        La règle de gestion est la suivante : Un consultant impute un nombre d'heures travaillées sur un projet spécifique pour un client donné. Par exemple, Alice a travaillé 4h sur le projet "Refonte Web" pour le client "Coca-Cola". 
-                        Attention : Un même projet (ex: "Refonte Web") peut être vendu à plusieurs clients différents, et plusieurs consultants peuvent bosser dessus. Le taux horaire de facturation dépend de la combinaison (Consultant + Projet + Client).
+                <div class="exo-body">
+                    <p class="exo-text">
+                        Un <strong>Consultant</strong> travaille sur un <strong>Projet</strong> pour un <strong>Client</strong>. Le tarif journalier dépend spécifiquement de ces trois éléments réunis (ex: Alice sur le Projet Web pour Coca-Cola coûte 500€, mais Alice sur le Projet Web pour Pepsi coûte 600€).
                     </p>
-                    
-                    <button class="btn-reveal" onclick="toggleCorr('corr3')">Voir l'Analyse & Mapping</button>
-                    
-                    <div id="corr3" class="correction-box hidden">
-                        <div class="analysis">
-                            <strong><i class="fas fa-search"></i> Analyse :</strong>
-                            <ul>
-                                <li>Le piège ici est de faire des relations binaires séparées.</li>
-                                <li>L'info (Heures + Taux) dépend des TROIS entités en même temps.</li>
-                                <li>C'est une <strong>Association Ternaire</strong> (Consultant - Projet - Client).</li>
-                            </ul>
+                    <button class="btn-action" onclick="revealCorr(this)">Voir Analyse & Mapping</button>
+                    <div class="correction-panel">
+                        <div class="analysis-block">
+                            C'est une <strong>Association Ternaire</strong>. Si on sépare en binaires, on perd la connexion du prix.
                         </div>
-                        <div class="mapping-result">
-                            <strong><i class="fas fa-table"></i> Mapping Relationnel :</strong>
-                            <pre>
-Consultant (<u>id_cons</u>, nom)
-Projet (<u>code_prj</u>, libelle_generique)
-Client (<u>id_cli</u>, raison_sociale)
-
-Mission (<u>#id_cons, #code_prj, #id_cli</u>, nb_heures, taux_horaire)
-                            </pre>
-                            <p class="note">La clé primaire est composée des 3 clés étrangères !</p>
+                        <div class="code-box">
+                            Mission (<span class="pk fk">#id_consultant</span>, <span class="pk fk">#id_projet</span>, <span class="pk fk">#id_client</span>, tarif)
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="scenario-card">
-                <div class="card-header">
-                    <h3><span class="exo-number">#4</span> Nomenclature Produit (Réflexive)</h3>
-                    <span class="difficulty medium">Technique</span>
+             <div class="exo-card">
+                <div class="exo-head" onclick="toggleExo(this)">
+                    <div class="exo-title"><span class="badge medium">Technique</span> #4 Nomenclature (Vélo)</div>
+                    <i class="fas fa-chevron-down"></i>
                 </div>
-                <div class="scenario-body">
-                    <p class="text-content">
-                        Dans une usine d'assemblage de vélos, on gère des <strong>Pièces</strong>. Certaines pièces sont élémentaires (vis, écrou, cadre), d'autres sont composées (une Roue est composée de : 1 jante, 32 rayons, 1 moyeu). Un vélo complet est lui-même composé de 2 Roues, 1 Cadre, etc.
-                        On veut modéliser cette nomenclature. Pour chaque composition, on doit connaître la quantité nécessaire (ex: 32 rayons pour 1 roue). Une pièce peut entrer dans la composition de plusieurs autres pièces.
+                <div class="exo-body">
+                    <p class="exo-text">
+                        On gère des <strong>Pièces</strong>. Une pièce peut être composée d'autres pièces (ex: une Roue est composée de Rayons et d'une Jante). On doit stocker la quantité nécessaire pour la composition.
                     </p>
-                    
-                    <button class="btn-reveal" onclick="toggleCorr('corr4')">Voir l'Analyse & Mapping</button>
-                    
-                    <div id="corr4" class="correction-box hidden">
-                        <div class="analysis">
-                            <strong><i class="fas fa-search"></i> Analyse :</strong>
-                            <ul>
-                                <li>Il n'y a qu'une seule entité : <strong>Pièce</strong>.</li>
-                                <li>L'association est "Composer" et elle relie Pièce à Pièce (Réflexive).</li>
-                                <li>C'est du <strong>n..n</strong> (Une pièce compose plusieurs assemblages, un assemblage a plusieurs pièces).</li>
-                            </ul>
+                    <button class="btn-action" onclick="revealCorr(this)">Voir Analyse & Mapping</button>
+                    <div class="correction-panel">
+                        <div class="analysis-block">
+                            C'est une <strong>Réflexive n..n</strong>. Une pièce est "Père" et "Fils" à la fois.
                         </div>
-                        <div class="mapping-result">
-                            <strong><i class="fas fa-table"></i> Mapping Relationnel :</strong>
-                            <pre>
-Piece (<u>ref_piece</u>, libelle, poids)
-
-Nomenclature (<u>#ref_composant, #ref_compose</u>, quantite)
-                            </pre>
-                            <p class="note">Exemple : (ref_rayon, ref_roue, 32). Les deux clés étrangères pointent vers la table Piece.</p>
+                        <div class="code-box">
+                            Piece (<span class="pk">ref_piece</span>, libelle)<br>
+                            Composition (<span class="pk fk">#ref_compose</span>, <span class="pk fk">#ref_composant</span>, qte)<br>
+                            <span style="color:#888">// Les 2 FK pointent vers la table Piece</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="scenario-card">
-                <div class="card-header">
-                    <h3><span class="exo-number">#5</span> Agence Immobilière (Le 0..1)</h3>
-                    <span class="difficulty medium">Classique</span>
+             <div class="exo-card">
+                <div class="exo-head" onclick="toggleExo(this)">
+                    <div class="exo-title"><span class="badge easy">Classique</span> #5 Agence Immo (0..1)</div>
+                    <i class="fas fa-chevron-down"></i>
                 </div>
-                <div class="scenario-body">
-                    <p class="text-content">
-                        Une agence gère des <strong>Biens</strong> immobiliers (Appartements, Maisons). Chaque bien appartient à un ou plusieurs <strong>Propriétaires</strong> (indivision). L'agence affecte un <strong>Agent</strong> commercial responsable de la vente du bien.
-                        Attention aux règles : Un agent gère plusieurs biens, mais un bien est géré par un seul agent. Parfois, un bien n'a pas encore d'agent affecté (nouveau dossier). Un bien se situe dans une <strong>Ville</strong> (Code postal, Nom). Une ville contient évidemment plusieurs biens.
+                <div class="exo-body">
+                    <p class="exo-text">
+                        Une agence gère des <strong>Biens</strong>. Un bien se trouve dans une <strong>Ville</strong>. Un bien est géré par un <strong>Agent</strong>, mais parfois un bien n'a pas encore d'agent (nouveau dossier).
                     </p>
-                    
-                    <button class="btn-reveal" onclick="toggleCorr('corr5')">Voir l'Analyse & Mapping</button>
-                    
-                    <div id="corr5" class="correction-box hidden">
-                        <div class="analysis">
-                            <strong><i class="fas fa-search"></i> Analyse :</strong>
-                            <ul>
-                                <li>Bien - Propriétaire : <strong>n..n</strong> (Indivision).</li>
-                                <li>Bien - Ville : <strong>1..n</strong> (Un bien est dans 1 ville).</li>
-                                <li>Bien - Agent : <strong>0..1</strong> (Un bien a 0 ou 1 agent). C'est une relation 1..n optionnelle.</li>
-                            </ul>
+                    <button class="btn-action" onclick="revealCorr(this)">Voir Analyse & Mapping</button>
+                    <div class="correction-panel">
+                        <div class="analysis-block">
+                            La relation Bien-Agent est (0,1). La clé étrangère est dans Bien, mais elle accepte NULL.
                         </div>
-                        <div class="mapping-result">
-                            <strong><i class="fas fa-table"></i> Mapping Relationnel :</strong>
-                            <pre>
-Agent (<u>id_agent</u>, nom)
-Ville (<u>code_insee</u>, nom_ville, cp)
-Proprio (<u>id_prop</u>, nom, tel)
-
-Bien (<u>id_bien</u>, surface, prix, <span class="fk">#code_insee</span>, <span class="fk">#id_agent</span>)
-<span class="comment">// id_agent peut être NULL ici ! (car 0..1)</span>
-
-Posseder (<u>#id_bien, #id_prop</u>, quote_part)
-                            </pre>
+                        <div class="code-box">
+                            Bien (<span class="pk">id_bien</span>, prix, <span class="fk">#code_ville</span>, <span class="fk">#id_agent NULL</span>)
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="scenario-card">
-                <div class="card-header">
-                    <h3><span class="exo-number">#6</span> Tournoi eSport (Le Final Boss)</h3>
-                    <span class="difficulty hard">Expert</span>
+             <div class="exo-card">
+                <div class="exo-head" onclick="toggleExo(this)">
+                    <div class="exo-title"><span class="badge hard">Exam</span> #6 Uber Eats (Complet)</div>
+                    <i class="fas fa-chevron-down"></i>
                 </div>
-                <div class="scenario-body">
-                    <p class="text-content">
-                        Organisons un tournoi de LoL. Nous avons des <strong>Équipes</strong> constituées de <strong>Joueurs</strong>. Un joueur appartient à une seule équipe à l'instant T. Une équipe a un Capitaine (qui est un des joueurs de l'équipe).
-                        Les équipes s'affrontent dans des <strong>Matchs</strong>. Un match oppose exactement 2 équipes et se déroule à une date donnée. Le résultat (Score A, Score B) est enregistré.
-                        Enfin, les matchs ont lieu dans des <strong>Arènes</strong> virtuelles (Serveurs). Un serveur accueille plusieurs matchs, mais un match est sur un seul serveur.
+                <div class="exo-body">
+                    <p class="exo-text">
+                        Un <strong>Client</strong> passe une <strong>Commande</strong>. La commande contient plusieurs <strong>Plats</strong> avec une quantité. La commande est livrée par un unique <strong>Livreur</strong>.
                     </p>
-                    
-                    <button class="btn-reveal" onclick="toggleCorr('corr6')">Voir l'Analyse & Mapping</button>
-                    
-                    <div id="corr6" class="correction-box hidden">
-                        <div class="analysis">
-                            <strong><i class="fas fa-search"></i> Analyse :</strong>
-                            <ul>
-                                <li>Equipe - Joueur : 1..n classique.</li>
-                                <li>Equipe - Capitaine : 1..1 (Un joueur est capitaine, une équipe a un capitaine).</li>
-                                <li>Match - Equipe : Attention ! Un match oppose 2 équipes. C'est deux relations 1..n distinctes (Equipe1 et Equipe2) ou une relation n..n ? Le mieux est de considérer "Jouer" comme n..n mais limité à 2 tuples ?
-                                <br><em>Approche relationnelle propre :</em> Table Match avec 2 clés étrangères vers Equipe (Equipe_A, Equipe_B).</li>
-                            </ul>
-                        </div>
-                        <div class="mapping-result">
-                            <strong><i class="fas fa-table"></i> Mapping Relationnel :</strong>
-                            <pre>
-Equipe (<u>id_team</u>, nom_team, <span class="fk">#id_capitaine</span>)
-Joueur (<u>id_gamer</u>, pseudo, <span class="fk">#id_team</span>)
-<span class="comment">// id_capitaine est une FK vers Joueur. id_team est une FK vers Equipe. (Boucle !)</span>
-
-Serveur (<u>ip_serv</u>, region)
-
-Match (<u>id_match</u>, date_match, score_A, score_B, <span class="fk">#ip_serv</span>, <span class="fk">#id_team_A</span>, <span class="fk">#id_team_B</span>)
-<span class="comment">// On stocke les deux équipes directement dans le match pour simplifier le duel.</span>
-                            </pre>
+                    <button class="btn-action" onclick="revealCorr(this)">Voir Analyse & Mapping</button>
+                    <div class="correction-panel">
+                        <div class="code-box">
+                            Commande (<span class="pk">id_cmd</span>, date, <span class="fk">#id_client</span>, <span class="fk">#id_livreur</span>)<br>
+                            Contenir (<span class="pk fk">#id_cmd</span>, <span class="pk fk">#id_plat</span>, qte)
                         </div>
                     </div>
                 </div>
@@ -261,39 +331,104 @@ Match (<u>id_match</u>, date_match, score_A, score_B, <span class="fk">#ip_serv<
 
         </div>
 
-        <div id="fiches" class="tab-content">
-            <div class="scenario-card">
-                <h2>Récapitulatif Visuel pour le Papier</h2>
-                <div class="mcd-visual-guide">
-                    <div class="guide-item">
-                        <div class="guide-diagram"> (0,n) --- (1,1) </div>
-                        <div class="guide-text">La flèche (la clé FK) va vers le (1,1).</div>
-                    </div>
-                    <div class="guide-item">
-                        <div class="guide-diagram"> (0,n) --- (0,n) </div>
-                        <div class="guide-text">Nouvelle Table au milieu (Jointure).</div>
-                    </div>
-                    <div class="guide-item">
-                        <div class="guide-diagram"> (1,1) --- (1,1) </div>
-                        <div class="guide-text">On fusionne les bulles en une seule table.</div>
+        <div id="mapping" class="tab-content">
+            <div class="mapping-guide">
+                
+                <div class="rule-card">
+                    <div class="rule-header">1. La Règle du Père et du Fils (1..n)</div>
+                    <div class="rule-body">
+                        <p>C'est la règle la plus courante (90% des cas).<br><strong>"La clé migre vers celui qui a le 1,1"</strong>.</p>
+                        
+                        <div class="visual-row">
+                            <div class="mcd-entity">CLIENT (0,n)</div>
+                            <div class="mcd-rel">PASSER</div>
+                            <div class="mcd-entity">COMMANDE (1,1)</div>
+                        </div>
+                        <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
+                        <div class="code-box">
+                            Client (<span class="pk">id_client</span>, nom)<br>
+                            Commande (<span class="pk">id_cmd</span>, date, <span class="fk">#id_client</span>)
+                        </div>
                     </div>
                 </div>
+
+                <div class="rule-card">
+                    <div class="rule-header">2. La Règle de la Jointure (n..n)</div>
+                    <div class="rule-body">
+                        <p>Quand il y a "Plusieurs" des deux côtés.<br><strong>"Création d'une nouvelle table"</strong>.</p>
+                        
+                        <div class="visual-row">
+                            <div class="mcd-entity">ETUDIANT (0,n)</div>
+                            <div class="mcd-rel">SUIVRE (note)</div>
+                            <div class="mcd-entity">COURS (0,n)</div>
+                        </div>
+                        <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
+                        <div class="code-box">
+                            Suivre (<span class="pk fk">#id_etudiant</span>, <span class="pk fk">#id_cours</span>, note)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rule-card">
+                    <div class="rule-header">3. La Règle de la Fusion (1..1)</div>
+                    <div class="rule-body">
+                        <p>Rare. Un Stade a 1 Adresse, Une Adresse est pour 1 Stade.<br><strong>"Tout dans la même table"</strong>.</p>
+                        <div class="code-box">
+                            Stade (<span class="pk">id</span>, nom, rue, ville, cp)
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
-    </main>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html" class="bottom-item"><i class="fas fa-home"></i>Accueil</a>
+        <a href="app_info.html" class="bottom-item active"><i class="fas fa-database"></i>BDD</a>
+        <a href="codage.html" class="bottom-item"><i class="fas fa-code"></i>Code</a>
+        <a href="#" class="bottom-item"><i class="fas fa-user"></i>Profil</a>
+    </nav>
 
     <script>
-        function openTab(id) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        // Gestion des Onglets
+        function showTab(id) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            event.currentTarget.classList.add('active');
+            // Trouver le bouton correspondant via event.target ou une logique simple
+            const btns = document.querySelectorAll('.tab-btn');
+            if(id === 'exos') btns[0].classList.add('active');
+            if(id === 'mapping') btns[1].classList.add('active');
         }
 
-        function toggleCorr(id) {
-            const el = document.getElementById(id);
-            el.classList.toggle('hidden');
+        // Menu Mobile
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('open');
+        }
+
+        // Accordéon Exos
+        function toggleExo(element) {
+            const body = element.nextElementSibling;
+            const icon = element.querySelector('.fa-chevron-down');
+            
+            if (body.style.display === "block") {
+                body.style.display = "none";
+                element.style.background = "white";
+                icon.style.transform = "rotate(0deg)";
+            } else {
+                body.style.display = "block";
+                element.style.background = "#fcfcfc";
+                icon.style.transform = "rotate(180deg)";
+            }
+        }
+
+        // Révéler correction
+        function revealCorr(btn) {
+            const panel = btn.nextElementSibling;
+            panel.style.display = "block";
+            btn.style.display = "none";
         }
     </script>
 </body>
