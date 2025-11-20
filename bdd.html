@@ -2,272 +2,298 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Module BDD - Focus ISEP</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
     <link rel="stylesheet" href="style_hub.css">
-    <style>
-        /* Styles spécifiques pour les schémas MCD en CSS */
-        .mcd-visual { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 20px 0; flex-wrap: wrap;}
-        .entity-box { border: 2px solid var(--primary); border-radius: 4px; background: white; min-width: 100px; text-align: center; box-shadow: 2px 2px 0 rgba(0,0,0,0.1); }
-        .ent-head { background: var(--primary); color: white; font-weight: bold; padding: 5px; font-size: 0.8rem; text-transform: uppercase; }
-        .ent-body { padding: 8px; font-size: 0.8rem; color: #333; line-height: 1.4; }
-        .rel-oval { border: 2px solid #e67e22; background: #fff3e0; border-radius: 50%; padding: 10px 15px; font-weight: bold; font-size: 0.8rem; color: #d35400; min-width: 80px; text-align: center; z-index: 2;}
-        .link-line { height: 2px; background: #7f8c8d; width: 40px; position: relative; margin: 0 -5px; z-index: 1;}
-        .card-text { position: absolute; top: -20px; width: 100%; text-align: center; font-size: 0.75rem; font-weight: bold; color: #2c3e50; }
-        
-        /* Styles Exos */
-        .exo-wrapper { background: white; margin-bottom: 25px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #eee; }
-        .exo-bar { padding: 15px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: #f8f9fa; transition: 0.3s; }
-        .exo-bar:hover { background: #e9ecef; }
-        .exo-content { padding: 25px; display: none; border-top: 1px solid #ddd; }
-        .exo-content.open { display: block; }
-        .correction { background: #e8f6f3; border-left: 4px solid #27ae60; padding: 15px; margin-top: 20px; border-radius: 0 5px 5px 0; display: none; }
-        .correction.show { display: block; animation: slideIn 0.3s; }
-        
-        @keyframes slideIn { from {opacity:0; transform:translateY(10px);} to {opacity:1; transform:translateY(0);} }
-    </style>
 </head>
 <body>
-    <nav class="top-nav">
-        <a href="app_info.html" class="back-link"><i class="fas fa-arrow-left"></i> HUB CENTRAL</a>
-        <div class="nav-tabs">
-            <button class="tab-btn" onclick="openTab('mcd')">1. Fiches Révision</button>
-            <button class="tab-btn active" onclick="openTab('exos')">2. Les 6 Exercices Types</button>
+
+    <header class="hero-small">
+        <div class="hero-content-box">
+            <span class="badge-exam">MODE EXAMEN</span>
+            <h1>Entraînement Intensif BDD</h1>
+            <p>Scénarios complexes, pièges de modélisation et mapping relationnel.</p>
+            <a href="app_info.html" class="btn-back"><i class="fas fa-arrow-left"></i> Retour Hub</a>
         </div>
-    </nav>
+    </header>
 
     <main class="container">
         
-        <div id="mcd" class="tab-content">
-            <div class="card">
-                <h2><i class="fas fa-book"></i> Le Mémo du Mapping (À savoir par cœur)</h2>
-                <p>Pour l'examen papier, mémorise uniquement ces 3 situations graphiques.</p>
-                
-                <table class="clean-table">
-                    <thead>
-                        <tr>
-                            <th>Situation MCD</th>
-                            <th>Règle de Mapping</th>
-                            <th>Résultat Table</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Un vers Plusieurs</strong><br><code>(0,n) --- (1,1)</code></td>
-                            <td><span style="color:#d35400; font-weight:bold;">Migration de Clé</span><br>Le père (1,1) récupère l'ID du fils.</td>
-                            <td>Table_Fils (<u>id</u>, attributs, <span style="color:#d35400;">#id_Pere</span>)</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Plusieurs vers Plusieurs</strong><br><code>(0,n) --- (0,n)</code></td>
-                            <td><span style="color:#2980b9; font-weight:bold;">Table de Jointure</span><br>On crée une table au milieu.</td>
-                            <td>Table_Relation (<u>#id_A, #id_B</u>, attributs_relation)</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Un vers Un</strong><br><code>(1,1) --- (1,1)</code></td>
-                            <td><span style="color:#27ae60; font-weight:bold;">Fusion</span><br>Tout dans la même table.</td>
-                            <td>Table_Unique (<u>id_A</u>, attr_A, attr_B)</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="nav-tabs-wrapper">
+            <button class="tab-btn active" onclick="openTab('exos')"><i class="fas fa-pen-nib"></i> 6 Scénarios "Examen"</button>
+            <button class="tab-btn" onclick="openTab('fiches')"><i class="fas fa-brain"></i> Rappels Mapping</button>
         </div>
 
         <div id="exos" class="tab-content active">
-            <div class="alert-box">
-                <i class="fas fa-dumbbell"></i> <strong>Objectif :</strong> Prends une feuille. Fais le schéma E/R (Bulles) puis écris les Tables (Texte). Ne clique sur "Correction" qu'à la fin.
+            
+            <div class="intro-text">
+                <i class="fas fa-info-circle"></i> <strong>Consigne :</strong> Lis attentivement les textes. Ils contiennent des détails superflus. Extrais les <strong>Entités</strong> (Noms), les <strong>Associations</strong> (Verbes) et déduis les <strong>Cardinalités</strong>.
             </div>
 
-            <div class="exo-wrapper">
-                <div class="exo-bar" onclick="toggleExo(this)">
-                    <strong><i class="fas fa-pen"></i> Exo 1 : Le Classique (1..n)</strong>
-                    <span class="badge">Facile</span>
+            <div class="scenario-card">
+                <div class="card-header">
+                    <h3><span class="exo-number">#1</span> Gestion Hôpital (Hiérarchie)</h3>
+                    <span class="difficulty medium">Moyen</span>
                 </div>
-                <div class="exo-content">
-                    <p><strong>Contexte :</strong> Une <strong>Entreprise</strong> possède plusieurs <strong>Départements</strong>. Un département appartient à une seule entreprise. Un département a un nom et un budget.</p>
-                    <div style="margin:15px 0;">
-                        <button class="btn-reveal" onclick="toggleAns(this)">Voir Correction</button>
-                    </div>
-                    <div class="correction">
-                        <h4>MCD :</h4>
-                        <div class="mcd-visual">
-                            <div class="entity-box"><div class="ent-head">ENTREPRISE</div><div class="ent-body"><u>id_ent</u><br>nom</div></div>
-                            <div class="link-line"><span class="card-text">0,n</span></div>
-                            <div class="rel-oval">POSSEDER</div>
-                            <div class="link-line"><span class="card-text">1,1</span></div>
-                            <div class="entity-box"><div class="ent-head">DEPARTEMENT</div><div class="ent-body"><u>id_dep</u><br>budget</div></div>
+                <div class="scenario-body">
+                    <p class="text-content">
+                        Le centre hospitalier "Saint-ISEP" souhaite informatiser la gestion de ses services. L'établissement est découpé en plusieurs <strong>Services</strong> (Cardiologie, Neurologie, etc.). Chaque service est dirigé par un <strong>Médecin</strong> chef de service, mais attention, un service ne peut avoir qu'un seul chef, et un médecin ne peut diriger qu'un seul service à la fois.
+                        Par ailleurs, les médecins sont rattachés à un service principal où ils exercent, mais ils ne peuvent pas appartenir à plusieurs services. Enfin, l'hôpital accueille des <strong>Patients</strong>. Un patient est admis dans un service unique à une date donnée. On souhaite conserver l'historique des admissions (date d'entrée, motif).
+                    </p>
+                    
+                    <button class="btn-reveal" onclick="toggleCorr('corr1')">Voir l'Analyse & Mapping</button>
+                    
+                    <div id="corr1" class="correction-box hidden">
+                        <div class="analysis">
+                            <strong><i class="fas fa-search"></i> Analyse :</strong>
+                            <ul>
+                                <li>"Un service est dirigé par UN médecin, un médecin dirige UN service" -> <strong>(1,1) - (1,1)</strong> (Relation bijective/One-to-One).</li>
+                                <li>"Médecins rattachés à un service" -> <strong>(1,1)</strong> côté Médecin, <strong>(1,n)</strong> côté Service.</li>
+                                <li>"Patient admis dans un service + Historique" -> Relation n..n (Plusieurs admissions au cours du temps).</li>
+                            </ul>
                         </div>
-                        <h4>Mapping :</h4>
-                        <p>La cardinalité (1,1) est côté Département. C'est lui qui reçoit la clé étrangère.</p>
-                        <code>Entreprise (<u>id_ent</u>, nom)</code><br>
-                        <code>Departement (<u>id_dep</u>, nom, budget, <span style="color:#d35400;">#id_ent</span>)</code>
-                    </div>
-                </div>
-            </div>
-
-            <div class="exo-wrapper">
-                <div class="exo-bar" onclick="toggleExo(this)">
-                    <strong><i class="fas fa-users"></i> Exo 2 : La Jointure avec Propriété (n..n)</strong>
-                    <span class="badge">Moyen</span>
-                </div>
-                <div class="exo-content">
-                    <p><strong>Contexte :</strong> Des <strong>Étudiants</strong> s'inscrivent à des <strong>Modules</strong> (Maths, Info...). À la fin du semestre, l'étudiant reçoit une <strong>Note</strong> pour ce module.</p>
-                    <p><em>Indice : Où met-on la note ? Dans étudiant ? Dans module ? Ou ailleurs ?</em></p>
-                    <div style="margin:15px 0;">
-                        <button class="btn-reveal" onclick="toggleAns(this)">Voir Correction</button>
-                    </div>
-                    <div class="correction">
-                        <h4>MCD :</h4>
-                        <div class="mcd-visual">
-                            <div class="entity-box"><div class="ent-head">ETUDIANT</div></div>
-                            <div class="link-line"><span class="card-text">0,n</span></div>
-                            <div class="rel-oval">INSCRIRE<br><u>note</u></div>
-                            <div class="link-line"><span class="card-text">0,n</span></div>
-                            <div class="entity-box"><div class="ent-head">MODULE</div></div>
+                        <div class="mapping-result">
+                            <strong><i class="fas fa-table"></i> Mapping Relationnel :</strong>
+                            <pre>
+Service (<u>code_service</u>, nom_service, <span class="fk">#id_chef_medecin</span>)
+Medecin (<u>id_med</u>, nom, specialite, <span class="fk">#code_service_appartenance</span>)
+Patient (<u>id_pat</u>, nom, n_secu)
+Admission (<u>#id_pat, #code_service, date_entree</u>, motif)
+                            </pre>
+                            <p class="note">Note : Pour la relation Chef (1-1), on aurait pu mettre la clé étrangère dans Médecin, mais il est plus logique qu'un Service désigne son Chef.</p>
                         </div>
-                        <h4>Mapping :</h4>
-                        <p>Relation Plusieurs-à-Plusieurs = Nouvelle Table. L'attribut 'Note' glisse dans cette table.</p>
-                        <code>Etudiant (<u>id_etud</u>, nom)</code><br>
-                        <code>Module (<u>code_mod</u>, titre)</code><br>
-                        <code>Inscription (<u>#id_etud, #code_mod</u>, note)</code>
                     </div>
                 </div>
             </div>
 
-            <div class="exo-wrapper">
-                <div class="exo-bar" onclick="toggleExo(this)">
-                    <strong><i class="fas fa-link"></i> Exo 3 : Le Piège de la Fusion (1..1)</strong>
-                    <span class="badge" style="background:#e74c3c; color:white;">Piège</span>
+            <div class="scenario-card">
+                <div class="card-header">
+                    <h3><span class="exo-number">#2</span> La Bibliothèque Municipale (Gestion fine)</h3>
+                    <span class="difficulty hard">Difficile</span>
                 </div>
-                <div class="exo-content">
-                    <p><strong>Contexte :</strong> Un <strong>Stade</strong> possède exactement une <strong>Adresse</strong> géographique précise. Une adresse correspond à un seul stade (dans notre système simplifié).</p>
-                    <div style="margin:15px 0;">
-                        <button class="btn-reveal" onclick="toggleAns(this)">Voir Correction</button>
-                    </div>
-                    <div class="correction">
-                        <h4>MCD :</h4>
-                        <div class="mcd-visual">
-                            <div class="entity-box"><div class="ent-head">STADE</div></div>
-                            <div class="link-line"><span class="card-text">1,1</span></div>
-                            <div class="rel-oval">LOCALISER</div>
-                            <div class="link-line"><span class="card-text">1,1</span></div>
-                            <div class="entity-box"><div class="ent-head">ADRESSE</div></div>
+                <div class="scenario-body">
+                    <p class="text-content">
+                        Nous gérons une bibliothèque qui possède des milliers de <strong>Livres</strong>. Attention, nous distinguons l'œuvre (ex: "Harry Potter") des exemplaires physiques (Le livre abîmé sur l'étagère 3). Une <strong>Œuvre</strong> est écrite par un ou plusieurs <strong>Auteurs</strong>.
+                        Les <strong>Abonnés</strong> peuvent emprunter des exemplaires. Un emprunt concerne un seul exemplaire à une date précise et doit être rendu avant une date limite. Si l'abonné rend le livre en retard, une pénalité est calculée. Un livre peut être emprunté plusieurs fois dans sa vie. Il faut aussi gérer l'état du livre (Neuf, Bon, Abîmé) lors de chaque emprunt.
+                    </p>
+                    
+                    <button class="btn-reveal" onclick="toggleCorr('corr2')">Voir l'Analyse & Mapping</button>
+                    
+                    <div id="corr2" class="correction-box hidden">
+                        <div class="analysis">
+                            <strong><i class="fas fa-search"></i> Analyse :</strong>
+                            <ul>
+                                <li>Distinction Œuvre vs Exemplaire -> <strong>1 Œuvre a n Exemplaires</strong>.</li>
+                                <li>Œuvre écrite par plusieurs Auteurs -> Relation <strong>n..n</strong> (Co-écriture).</li>
+                                <li>Emprunt -> Relation entre Abonné et <strong>Exemplaire</strong> (pas Œuvre !). C'est une relation historique (n..n) avec date et état.</li>
+                            </ul>
                         </div>
-                        <h4>Mapping :</h4>
-                        <p>Double (1,1) => On ne crée pas deux tables pour éviter de faire des jointures inutiles. On fusionne.</p>
-                        <code>Stade (<u>id_stade</u>, nom_stade, rue, ville, code_postal)</code>
+                        <div class="mapping-result">
+                            <strong><i class="fas fa-table"></i> Mapping Relationnel :</strong>
+                            <pre>
+Auteur (<u>id_aut</u>, nom)
+Oeuvre (<u>isbn</u>, titre, date_parution)
+Ecrire (<u>#id_aut, #isbn</u>)  <span class="comment">// Table de jointure n..n</span>
+
+Exemplaire (<u>id_exemp</u>, etat_actuel, <span class="fk">#isbn</span>) <span class="comment">// 1..n vers Oeuvre</span>
+Abonné (<u>id_ab</u>, nom, adresse)
+
+Emprunter (<u>#id_exemp, #id_ab, date_emprunt</u>, date_retour_reele, etat_retour)
+                            </pre>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="exo-wrapper">
-                <div class="exo-bar" onclick="toggleExo(this)">
-                    <strong><i class="fas fa-undo"></i> Exo 4 : L'Association Réflexive</strong>
-                    <span class="badge" style="background:#8e44ad; color:white;">Technique</span>
+            <div class="scenario-card">
+                <div class="card-header">
+                    <h3><span class="exo-number">#3</span> Gestion de Projets (La Ternaire)</h3>
+                    <span class="difficulty hard">Piège</span>
                 </div>
-                <div class="exo-content">
-                    <p><strong>Contexte :</strong> Dans une équipe de <strong>Salariés</strong>, un salarié peut être le "Mentor" d'un autre salarié. Un salarié n'a qu'un seul mentor, mais un mentor peut suivre plusieurs salariés.</p>
-                    <p><em>Indice : Il n'y a qu'une seule entité "Salarié". L'association boucle sur elle-même.</em></p>
-                    <div style="margin:15px 0;">
-                        <button class="btn-reveal" onclick="toggleAns(this)">Voir Correction</button>
-                    </div>
-                    <div class="correction">
-                        <h4>MCD :</h4>
-                        <p>Entité : Salarié.<br>Relation : "MENTORER".<br>Bras 1 (Mentoré) : 0,1 (Un salarié a 0 ou 1 mentor).<br>Bras 2 (Mentor) : 0,n (Un mentor a plusieurs mentorés).</p>
-                        <h4>Mapping :</h4>
-                        <p>La clé étrangère reste dans la même table !</p>
-                        <code>Salarie (<u>id_sal</u>, nom, <span style="color:#d35400;">#id_mentor</span>)</code>
-                        <p><em>#id_mentor fait référence à id_sal de la même table.</em></p>
+                <div class="scenario-body">
+                    <p class="text-content">
+                        Une entreprise de conseil souhaite suivre l'activité de ses <strong>Consultants</strong>. Ces consultants travaillent sur des <strong>Projets</strong> pour le compte de <strong>Clients</strong> finaux.
+                        La règle de gestion est la suivante : Un consultant impute un nombre d'heures travaillées sur un projet spécifique pour un client donné. Par exemple, Alice a travaillé 4h sur le projet "Refonte Web" pour le client "Coca-Cola". 
+                        Attention : Un même projet (ex: "Refonte Web") peut être vendu à plusieurs clients différents, et plusieurs consultants peuvent bosser dessus. Le taux horaire de facturation dépend de la combinaison (Consultant + Projet + Client).
+                    </p>
+                    
+                    <button class="btn-reveal" onclick="toggleCorr('corr3')">Voir l'Analyse & Mapping</button>
+                    
+                    <div id="corr3" class="correction-box hidden">
+                        <div class="analysis">
+                            <strong><i class="fas fa-search"></i> Analyse :</strong>
+                            <ul>
+                                <li>Le piège ici est de faire des relations binaires séparées.</li>
+                                <li>L'info (Heures + Taux) dépend des TROIS entités en même temps.</li>
+                                <li>C'est une <strong>Association Ternaire</strong> (Consultant - Projet - Client).</li>
+                            </ul>
+                        </div>
+                        <div class="mapping-result">
+                            <strong><i class="fas fa-table"></i> Mapping Relationnel :</strong>
+                            <pre>
+Consultant (<u>id_cons</u>, nom)
+Projet (<u>code_prj</u>, libelle_generique)
+Client (<u>id_cli</u>, raison_sociale)
+
+Mission (<u>#id_cons, #code_prj, #id_cli</u>, nb_heures, taux_horaire)
+                            </pre>
+                            <p class="note">La clé primaire est composée des 3 clés étrangères !</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="exo-wrapper">
-                <div class="exo-bar" onclick="toggleExo(this)">
-                    <strong><i class="fas fa-cubes"></i> Exo 5 : La Ternaire (Le Boss)</strong>
-                    <span class="badge" style="background:#2c3e50; color:white;">Difficile</span>
+            <div class="scenario-card">
+                <div class="card-header">
+                    <h3><span class="exo-number">#4</span> Nomenclature Produit (Réflexive)</h3>
+                    <span class="difficulty medium">Technique</span>
                 </div>
-                <div class="exo-content">
-                    <p><strong>Contexte :</strong> Un <strong>Fournisseur</strong> vend des <strong>Produits</strong> à un <strong>Magasin</strong>. Le prix dépend du fournisseur, du produit ET du magasin (négociation locale).</p>
-                    <p><em>Indice : Si tu relies juste Fournisseur et Produit, tu perds l'info du Magasin. Il faut relier les 3 bulles ensemble.</em></p>
-                    <div style="margin:15px 0;">
-                        <button class="btn-reveal" onclick="toggleAns(this)">Voir Correction</button>
-                    </div>
-                    <div class="correction">
-                        <h4>MCD :</h4>
-                        <p>Une relation centrale "VENDRE" reliée à 3 Entités (Fournisseur, Produit, Magasin).<br>Cardinalités : 0,n sur toutes les branches.</p>
-                        <h4>Mapping :</h4>
-                        <p>Une table de jointure avec 3 clés étrangères qui forment la Clé Primaire Composite.</p>
-                        <code>Vente (<u>#id_fourn, #id_prod, #id_mag</u>, prix_negocie)</code>
+                <div class="scenario-body">
+                    <p class="text-content">
+                        Dans une usine d'assemblage de vélos, on gère des <strong>Pièces</strong>. Certaines pièces sont élémentaires (vis, écrou, cadre), d'autres sont composées (une Roue est composée de : 1 jante, 32 rayons, 1 moyeu). Un vélo complet est lui-même composé de 2 Roues, 1 Cadre, etc.
+                        On veut modéliser cette nomenclature. Pour chaque composition, on doit connaître la quantité nécessaire (ex: 32 rayons pour 1 roue). Une pièce peut entrer dans la composition de plusieurs autres pièces.
+                    </p>
+                    
+                    <button class="btn-reveal" onclick="toggleCorr('corr4')">Voir l'Analyse & Mapping</button>
+                    
+                    <div id="corr4" class="correction-box hidden">
+                        <div class="analysis">
+                            <strong><i class="fas fa-search"></i> Analyse :</strong>
+                            <ul>
+                                <li>Il n'y a qu'une seule entité : <strong>Pièce</strong>.</li>
+                                <li>L'association est "Composer" et elle relie Pièce à Pièce (Réflexive).</li>
+                                <li>C'est du <strong>n..n</strong> (Une pièce compose plusieurs assemblages, un assemblage a plusieurs pièces).</li>
+                            </ul>
+                        </div>
+                        <div class="mapping-result">
+                            <strong><i class="fas fa-table"></i> Mapping Relationnel :</strong>
+                            <pre>
+Piece (<u>ref_piece</u>, libelle, poids)
+
+Nomenclature (<u>#ref_composant, #ref_compose</u>, quantite)
+                            </pre>
+                            <p class="note">Exemple : (ref_rayon, ref_roue, 32). Les deux clés étrangères pointent vers la table Piece.</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="exo-wrapper">
-                <div class="exo-bar" onclick="toggleExo(this)">
-                    <strong><i class="fas fa-flag-checkered"></i> Exo 6 : Scénario Complet (UberEats)</strong>
-                    <span class="badge" style="background:#d35400; color:white;">Exam Type</span>
+            <div class="scenario-card">
+                <div class="card-header">
+                    <h3><span class="exo-number">#5</span> Agence Immobilière (Le 0..1)</h3>
+                    <span class="difficulty medium">Classique</span>
                 </div>
-                <div class="exo-content">
-                    <p><strong>Contexte :</strong> Un <strong>Client</strong> passe une <strong>Commande</strong>. Cette commande contient plusieurs <strong>Plats</strong>. Chaque commande est livrée par un <strong>Livreur</strong>. Le client note la commande.</p>
-                    <ul style="margin-left:20px; margin-bottom:15px; font-size:0.9rem;">
-                        <li>Un client passe plusieurs commandes.</li>
-                        <li>Une commande concerne 1 client et 1 livreur.</li>
-                        <li>Une commande contient plusieurs plats, et un plat peut être dans plusieurs commandes.</li>
-                        <li>Il faut stocker la quantité de chaque plat dans la commande.</li>
-                    </ul>
-                    <div style="margin:15px 0;">
-                        <button class="btn-reveal" onclick="toggleAns(this)">Voir Correction</button>
+                <div class="scenario-body">
+                    <p class="text-content">
+                        Une agence gère des <strong>Biens</strong> immobiliers (Appartements, Maisons). Chaque bien appartient à un ou plusieurs <strong>Propriétaires</strong> (indivision). L'agence affecte un <strong>Agent</strong> commercial responsable de la vente du bien.
+                        Attention aux règles : Un agent gère plusieurs biens, mais un bien est géré par un seul agent. Parfois, un bien n'a pas encore d'agent affecté (nouveau dossier). Un bien se situe dans une <strong>Ville</strong> (Code postal, Nom). Une ville contient évidemment plusieurs biens.
+                    </p>
+                    
+                    <button class="btn-reveal" onclick="toggleCorr('corr5')">Voir l'Analyse & Mapping</button>
+                    
+                    <div id="corr5" class="correction-box hidden">
+                        <div class="analysis">
+                            <strong><i class="fas fa-search"></i> Analyse :</strong>
+                            <ul>
+                                <li>Bien - Propriétaire : <strong>n..n</strong> (Indivision).</li>
+                                <li>Bien - Ville : <strong>1..n</strong> (Un bien est dans 1 ville).</li>
+                                <li>Bien - Agent : <strong>0..1</strong> (Un bien a 0 ou 1 agent). C'est une relation 1..n optionnelle.</li>
+                            </ul>
+                        </div>
+                        <div class="mapping-result">
+                            <strong><i class="fas fa-table"></i> Mapping Relationnel :</strong>
+                            <pre>
+Agent (<u>id_agent</u>, nom)
+Ville (<u>code_insee</u>, nom_ville, cp)
+Proprio (<u>id_prop</u>, nom, tel)
+
+Bien (<u>id_bien</u>, surface, prix, <span class="fk">#code_insee</span>, <span class="fk">#id_agent</span>)
+<span class="comment">// id_agent peut être NULL ici ! (car 0..1)</span>
+
+Posseder (<u>#id_bien, #id_prop</u>, quote_part)
+                            </pre>
+                        </div>
                     </div>
-                    <div class="correction">
-                        <h4>Analyse & Mapping :</h4>
-                        <ol>
-                            <li><strong>Client - Commande (1,n) :</strong> La commande a un seul client.
-                                <br>-> FK <code>#id_client</code> dans Commande.</li>
-                            <li><strong>Livreur - Commande (1,n) :</strong> La commande a un seul livreur.
-                                <br>-> FK <code>#id_livreur</code> dans Commande.</li>
-                            <li><strong>Commande - Plat (n,n) :</strong> Une commande a plusieurs plats.
-                                <br>-> Table de jointure <code>Contenir</code> avec attribut <code>quantité</code>.</li>
-                        </ol>
-                        <h4>Schéma Relationnel Final :</h4>
-                        <code>Client (<u>id_cli</u>, nom)</code><br>
-                        <code>Livreur (<u>id_liv</u>, nom)</code><br>
-                        <code>Plat (<u>id_plat</u>, libelle, prix)</code><br>
-                        <code>Commande (<u>id_cmd</u>, date, note, <span style="color:#d35400;">#id_cli, #id_liv</span>)</code><br>
-                        <code>Contenir (<u>#id_cmd, #id_plat</u>, quantite)</code>
+                </div>
+            </div>
+
+            <div class="scenario-card">
+                <div class="card-header">
+                    <h3><span class="exo-number">#6</span> Tournoi eSport (Le Final Boss)</h3>
+                    <span class="difficulty hard">Expert</span>
+                </div>
+                <div class="scenario-body">
+                    <p class="text-content">
+                        Organisons un tournoi de LoL. Nous avons des <strong>Équipes</strong> constituées de <strong>Joueurs</strong>. Un joueur appartient à une seule équipe à l'instant T. Une équipe a un Capitaine (qui est un des joueurs de l'équipe).
+                        Les équipes s'affrontent dans des <strong>Matchs</strong>. Un match oppose exactement 2 équipes et se déroule à une date donnée. Le résultat (Score A, Score B) est enregistré.
+                        Enfin, les matchs ont lieu dans des <strong>Arènes</strong> virtuelles (Serveurs). Un serveur accueille plusieurs matchs, mais un match est sur un seul serveur.
+                    </p>
+                    
+                    <button class="btn-reveal" onclick="toggleCorr('corr6')">Voir l'Analyse & Mapping</button>
+                    
+                    <div id="corr6" class="correction-box hidden">
+                        <div class="analysis">
+                            <strong><i class="fas fa-search"></i> Analyse :</strong>
+                            <ul>
+                                <li>Equipe - Joueur : 1..n classique.</li>
+                                <li>Equipe - Capitaine : 1..1 (Un joueur est capitaine, une équipe a un capitaine).</li>
+                                <li>Match - Equipe : Attention ! Un match oppose 2 équipes. C'est deux relations 1..n distinctes (Equipe1 et Equipe2) ou une relation n..n ? Le mieux est de considérer "Jouer" comme n..n mais limité à 2 tuples ?
+                                <br><em>Approche relationnelle propre :</em> Table Match avec 2 clés étrangères vers Equipe (Equipe_A, Equipe_B).</li>
+                            </ul>
+                        </div>
+                        <div class="mapping-result">
+                            <strong><i class="fas fa-table"></i> Mapping Relationnel :</strong>
+                            <pre>
+Equipe (<u>id_team</u>, nom_team, <span class="fk">#id_capitaine</span>)
+Joueur (<u>id_gamer</u>, pseudo, <span class="fk">#id_team</span>)
+<span class="comment">// id_capitaine est une FK vers Joueur. id_team est une FK vers Equipe. (Boucle !)</span>
+
+Serveur (<u>ip_serv</u>, region)
+
+Match (<u>id_match</u>, date_match, score_A, score_B, <span class="fk">#ip_serv</span>, <span class="fk">#id_team_A</span>, <span class="fk">#id_team_B</span>)
+<span class="comment">// On stocke les deux équipes directement dans le match pour simplifier le duel.</span>
+                            </pre>
+                        </div>
                     </div>
                 </div>
             </div>
 
         </div>
+
+        <div id="fiches" class="tab-content">
+            <div class="scenario-card">
+                <h2>Récapitulatif Visuel pour le Papier</h2>
+                <div class="mcd-visual-guide">
+                    <div class="guide-item">
+                        <div class="guide-diagram"> (0,n) --- (1,1) </div>
+                        <div class="guide-text">La flèche (la clé FK) va vers le (1,1).</div>
+                    </div>
+                    <div class="guide-item">
+                        <div class="guide-diagram"> (0,n) --- (0,n) </div>
+                        <div class="guide-text">Nouvelle Table au milieu (Jointure).</div>
+                    </div>
+                    <div class="guide-item">
+                        <div class="guide-diagram"> (1,1) --- (1,1) </div>
+                        <div class="guide-text">On fusionne les bulles en une seule table.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
     <script>
-        hljs.highlightAll();
-        
-        // Gestion des Onglets
         function openTab(id) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            // Trouver le bouton cliqué (astuce simple)
             event.currentTarget.classList.add('active');
         }
 
-        // Gestion Accordéon Exos
-        function toggleExo(element) {
-            const content = element.nextElementSibling;
-            // Fermer les autres si on veut être strict (optionnel)
-            // document.querySelectorAll('.exo-content').forEach(e => e.classList.remove('open'));
-            content.classList.toggle('open');
-        }
-
-        // Révéler la réponse
-        function toggleAns(btn) {
-            const corr = btn.parentElement.nextElementSibling;
-            corr.classList.add('show');
-            btn.style.display = 'none'; // Cache le bouton après clic
+        function toggleCorr(id) {
+            const el = document.getElementById(id);
+            el.classList.toggle('hidden');
         }
     </script>
 </body>
