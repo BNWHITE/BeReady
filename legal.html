@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentions Légales - Focus ISEP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Styles spécifiques pour la page légale pour la rendre lisible */
+        .legal-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background: white;
+        }
+
+        .legal-section {
+            margin-bottom: 60px;
+            padding: 30px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            border-left: 5px solid #004E92; /* Bleu ISEP */
+        }
+
+        .legal-section h2 {
+            color: #004E92;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f1f1f1;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legal-section h3 {
+            font-size: 1.1rem;
+            color: #333;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .legal-section p, .legal-section ul {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .legal-section ul {
+            margin-left: 20px;
+        }
+
+        /* Ancre invisible pour compenser le header fixe */
+        .anchor-offset {
+            display: block;
+            position: relative;
+            top: -100px; 
+            visibility: hidden;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="header-content">
+            <a href="index.html" class="logo">FOCUS ISEP</a>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link">Accueil</a>
+                <a href="app_info.html" class="nav-link">APP Info</a>
+                <a href="app_elec.html" class="nav-link">APP Elec</a>
+                <a href="app_signal.html" class="nav-link">APP Signal</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="legal-container">
+        
+        <h1 style="text-align:center; margin-bottom:40px; color:#004E92;">Informations Légales</h1>
+
+        <span id="mentions" class="anchor-offset"></span>
+        <section class="legal-section">
+            <h2><i class="fas fa-gavel"></i> Mentions Légales</h2>
+            
+            <h3>Éditeur du site</h3>
+            <p>
+                Le site <strong>Focus ISEP</strong> est un projet étudiant à but pédagogique et non lucratif. Il a pour vocation d'aider les étudiants dans leurs révisions.
+            </p>
+            <p>
+                <strong>Responsable de publication :</strong> L'équipe Focus ISEP<br>
+                <strong>Contact :</strong> contact@focus-isep.fr (Fictif pour l'exercice)<br>
+                <strong>Statut :</strong> Projet étudiant bénévole.
+            </p>
+
+            <h3>Hébergement</h3>
+            <p>
+                Le site est hébergé par la plateforme <strong>GitHub Pages</strong>.<br>
+                GitHub Inc. - 88 Colin P Kelly Jr St, San Francisco, CA 94107, United States.
+            </p>
+        </section>
+
+        <span id="cgu" class="anchor-offset"></span>
+        <section class="legal-section">
+            <h2><i class="fas fa-file-contract"></i> Conditions Générales d'Utilisation (CGU)</h2>
+            
+            <h3>Objet</h3>
+            <p>
+                Les présentes CGU ont pour objet de définir les modalités de mise à disposition des services du site Focus ISEP et les conditions d'utilisation du service par l'utilisateur.
+            </p>
+
+            <h3>Propriété Intellectuelle</h3>
+            <p>
+                Les supports de cours, exercices originaux (PDF) et logos de l'école restent la propriété exclusive de l'ISEP et de leurs auteurs respectifs. Ce site ne fait qu'agréger des ressources d'aide à la révision.
+                Le code source du site et les fiches de synthèse rédigées par l'équipe Focus sont sous licence libre (MIT).
+            </p>
+
+            <h3>Limitation de responsabilité</h3>
+            <p>
+                Les informations diffusées sur le site Focus ISEP sont présentées à titre indicatif et général. Malgré des mises à jour régulières, le site ne peut être tenu responsable de la modification de dispositions administratives et juridiques survenant après la publication. 
+                De même, l'équipe ne peut garantir l'absence d'erreurs dans les corrections proposées. L'utilisation des informations se fait sous la seule et entière responsabilité de l'utilisateur.
+            </p>
+        </section>
+
+        <span id="privacy" class="anchor-offset"></span>
+        <section class="legal-section">
+            <h2><i class="fas fa-user-shield"></i> Politique de Confidentialité</h2>
+            
+            <h3>Collecte des données</h3>
+            <p>
+                Le site Focus ISEP est un site statique. Nous ne collectons <strong>aucune donnée personnelle</strong> sur nos serveurs (ni nom, ni email, ni mot de passe). Il n'y a pas de base de données backend.
+            </p>
+
+            <h3>Cookies et Stockage Local</h3>
+            <p>
+                Ce site n'utilise pas de cookies traceurs publicitaires.
+            </p>
+            <p>
+                Cependant, pour améliorer votre expérience (sauvegarde du mode sombre/clair, progression dans les exercices), nous utilisons la technologie du <strong>LocalStorage</strong> de votre navigateur. Ces données :
+            </p>
+            <ul>
+                <li>Restent stockées uniquement sur votre appareil.</li>
+                <li>Ne sont jamais transmises à des tiers.</li>
+                <li>Peuvent être effacées à tout moment en vidant le cache de votre navigateur.</li>
+            </ul>
+        </section>
+
+    </div>
+
+    <footer style="background: #333; color: white; padding: 40px 0; margin-top: auto;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; text-align: center;">
+            <div style="margin-bottom: 20px;">
+                <h4 style="color: #FFD700; margin-bottom: 15px;">Focus ISEP</h4>
+                <p style="font-size: 0.9rem; color: #ccc;">La plateforme de révision faite par les étudiants, pour les étudiants.</p>
+            </div>
+            
+            <div style="border-top: 1px solid #555; padding-top: 20px; margin-top: 20px; font-size: 0.8rem; color: #888;">
+                <p>&copy; 2025 Focus ISEP. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
